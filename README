@@ -1,0 +1,150 @@
+Steps to run an interannual simulation.
+
+
+This script is largely inspired from S. Mason routines.
+
+
+This file contains informations on how to use the script. 
+
+How is it working?
+------------------
+
+This script allows to run models (CROCO, WRF, WW3) in interannual mode. The principle is to carry out an experiment from a starting date (year and month) for a given duration in months. This is done by successively launching jobs with a duration specified by the user. The ouputs are given on the job duration. For example:
+
+If I carry out an expreriment from January 2005 to December 2005 with 2 months per jobs, I will have 6 successive jobs. 
+For each, you will have one output history file including the whole job period. Using the previous example you will have (let's say for CROCO) the following output:
+	croco_his_20050101_20050228.nc 
+	croco_his_20050301_20050430.nc
+	croco_his_20050501_20050630.nc
+	croco_his_20050701_20050831.nc
+	croco_his_20050901_20051031.nc
+	croco_his_20051101_20051231.nc
+
+Also, the last time step of one output is EQUAL to the first time step of the next job.
+
+
+Main files :
+------------
+
+The main files you should be worry about are:
+	- "submitjob.sh"    : It is the file to lauch the simulation
+	- "header.*"        : It is the header to submit a MPI job on the machine you are working 
+        - "module.sh"       : It is were you load the module for the simulation. At the moment module are set up for CURIE, VARGAS, DARTARMOR (also put as default)
+	- "namelist_exp.sh" : Main namelist for the experiment.
+
+What to do before running the experiment :
+------------------------------------------
+
+- The first thing to do is to eddit your header.*MACHINE* or to create one if not in the list. In this file you need to put:
+	* The INPUTDIR, for Ocean, Atmosphere, Wave, Coupling. It corresponds to where ALL forcing files are.
+	* EXEDIR_ROOT , where you want to run your job
+	* OUTPUTDIR_ROOT  , where to put the ouput files
+	* RESTDIR_ROOT    , were to put the restart files
+	
+- Then eddit module.sh if your machine is not in the list. Be careful, for some machine when you submit a job the hostname is changing which might have an impact on the proper functioning of the script. To avoid this problem, put your machine configuration in the "else"
+
+- Finally you need to complete the "namelist_exp.sh". It is where you put ALL the informations about your experiement. You need to decide which model(s) to use, the time step, namelist, frequency for output,... . If your machine is not in the list you also need to eddit last part about "WHICH COMPUTER" you are using. As for module.sh put you machine in the "else" to avoid error during the loop.
+
+NCO is loaded locally in getbry_oce.sh and getrst_atm.sh. Make sure to change the module call depending on which MACHINE you are on
+
+Some informations before running :
+----------------------------------
+
+Now that you have complete the different files you need to make sure about input file format:
+
+    ###	WRF ###
+    -----------
+By default the input files for WRF have the following format:
+	- wrfbdy_d01_${YEAR_BEGIN_EXP}_${EXP}_${YEAR_END_EXP}_${MONTH_END_EXP}
+	- wrflowinp_d??_${YEAR_BEGIN_EXP}_${EXP}_${YEAR_END_EXP}_${MONTH_END_EXP}
+	- wrfinput_d??_${YEAR_BEGIN_EXP}_${EXP}_${YEAR_END_EXP}_${MONTH_END_EXP}
+
+Check getfile_atm.sh, getrst_atm.sh or putfile_atm for any changes. 
+
+    ### CROCO ###  
+    -------------
+
+For CROCO the input files are:
+	- croco_grd.nc
+	- croco_${bry_ext}_Y????M??.nc !!!!!! Some change were made in create_bry to have only "bry_time" in the time dimension !!!!!!
+                                       !!!!!! If JOB DURATION >1 Each bry file need to have 3 for time dimension: One for overl-!!!!!!
+                                       !!!!!! apping the previous month, one for the current month, one for the next month.     !!!!!!
+
+        - croco_${frc_ext}_Y????M??.nc !!!!!! Only work for JOB DURATION = 1 for the moment                                     !!!!!!
+        - *_Y????M??.nc                !!!!!! When ONLINE interpolation is activated                                            !!!!!!
+
+Check getfile_oce.sh, getbry_oce.sh, getfrc_oce.sh, getrst_oce.sh or putfile_oce for any changes.
+
+    ### WW3 ###
+    -----------
+
+Names need to be put in the namelist if there is any. The script is written so the forcing (wind/ current) for the whole simulation is on one file.
+
+Check getfile_ww3.sh for any changes.
+
+
+The outputs : 
+-------------
+
+After the JOB DURATION is done, the output files are moved to OUTPUT_DIR/${DATE_BEGIN_JOB}_${DATE_END_JOB}/
+It means that a new folder is created for each job.
+
+Restarts :
+----------
+
+The restart time step is directly computed inside the code so that it matches the end of one job. When a job ends, files are moved to OUTPUT_DIR/${DATE_END_JOB}/
+When starting a new job, these files will be used to launch the new run.
+
+Where to find logs of a job:
+----------------------------
+
+The different logs for each models can be found in ${RUNDIR}/jobs_${CONFIG} where ${RUNDIR} being the folder where you have your croco_in,wrf_in,ww3_in,....
+
+
+How to lauch the script ?
+-------------------------
+
+To lauch the script just do:
+
+./submitjob.sh 
+
+
+
+
+
+
+
+!!!!!!!!!!          GOOOD LUCK          !!!!!!!!!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
