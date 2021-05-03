@@ -19,7 +19,7 @@ me=`printf "%02d"  ${MONTH_END_EXP}`
 #-------------------------------------------------------------------------------
 #                                                          BDY
 #-------------------------------------------------------------------------------
-${io_getfile} ${INPUTDIRA}/wrfbdy_d01_${YEAR_BEGIN_END}_${ms}_${YEAR_BEGIN_END}_${me} wrfbdy_d01  # maybe put month and day of simu istead
+${io_getfile} ${INPUTDIRA}/wrfbdy_d01_${YEAR_BEGIN_EXP}_${ms}_${YEAR_BEGIN_EXP}_${me} wrfbdy_d01  # maybe put month and day of simu istead
 
 #-------------------------------------------------------------------------------
 #                                            Forcing fields (interannual case)
