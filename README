@@ -90,6 +90,8 @@ The outputs :
 After the JOB DURATION is done, the output files are moved to OUTPUTDIR_ROOT/${DATE_BEGIN_JOB}_${DATE_END_JOB}/
 It means that a new folder is created for each job.
 
+For CROCO, if you activated supplementaty online diagnostic ( ek, vrt, trc, ...) please add into putfile_oce.sh the files names
+
 Restarts :
 ----------
 
