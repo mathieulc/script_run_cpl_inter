@@ -86,13 +86,13 @@ Check getfile_ww3.sh for any changes.
 The outputs : 
 -------------
 
-After the JOB DURATION is done, the output files are moved to OUTPUT_DIR/${DATE_BEGIN_JOB}_${DATE_END_JOB}/
+After the JOB DURATION is done, the output files are moved to OUTPUTDIR_ROOT/${DATE_BEGIN_JOB}_${DATE_END_JOB}/
 It means that a new folder is created for each job.
 
 Restarts :
 ----------
 
-The restart time step is directly computed inside the code so that it matches the end of one job. When a job ends, files are moved to OUTPUT_DIR/${DATE_END_JOB}/
+The restart time step is directly computed inside the code so that it matches the end of one job. When a job ends, files are moved to RESTDIR_ROOT/${DATE_END_JOB}/
 When starting a new job, these files will be used to launch the new run.
 
 Where to find logs of a job:
