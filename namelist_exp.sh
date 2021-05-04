@@ -38,7 +38,8 @@ export ini_ext='ini_SODA' # ini extension file (ini_SODA,...)
 export bry_ext='bry_SODA' # bry extension file (bry_SODA,...)
 export surfrc_flag="FALSE" # Flag if surface forcing is needed
 export interponline=0 # switch (1=on, 0=off) for online surface interpolation
-export frc_ext='blk_CFSR' # surface forcing extension. If interponline=1 just precise the type (ECMWF, CFSR,AROME,...)
+export frc_ext='blk_CFSR' # surface forcing extension(blk_CFSR, frc_CFSR,...). If interponline=1 just precise the type (ECMWF, CFSR,AROME,...)
+export tide_flag="FALSE"
 
 ### WW3 ###
 
