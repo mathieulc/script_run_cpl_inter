@@ -66,6 +66,7 @@ Check getfile_atm.sh, getrst_atm.sh or putfile_atm for any changes.
 
 For CROCO the input files are:
 	- croco_grd.nc
+	- croco_${ini_ext}_Y????M??.nc !!!!!! go to ----> getrst_oce.sh for any change                                          !!!!!!
 	- croco_${bry_ext}_Y????M??.nc !!!!!! Some change were made in create_bry to have only "bry_time" in the time dimension !!!!!!
                                        !!!!!! If JOB DURATION >1 Each bry file need to have 3 for time dimension: One for overl-!!!!!!
                                        !!!!!! apping the previous month, one for the current month, one for the next month.     !!!!!!
