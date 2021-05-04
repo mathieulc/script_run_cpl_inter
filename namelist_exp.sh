@@ -20,7 +20,7 @@ export USE_CPL=$(( ${USE_ATM} * ${USE_OCE} + ${USE_ATM} * ${USE_WW3} + ${USE_OCE
 export AGRIFZ=0
 export AGRIF_NAMES=""
 
-# Namelist files
+# Namelist files and forcing
 # ----------------------------
 ### OASIS namelist ###
 
@@ -32,14 +32,13 @@ export wrfnamelist=namelist.input.prep.CARAIBE.${RUN}
 export NB_dom=1 # Number of coupled domains
 export wrfcpldom='d01'
 
-# Forcing (if needed)
 ### CROCO ###
 export ini_ext='ini_SODA' # ini extension file (ini_SODA,...)
 export bry_ext='bry_SODA' # bry extension file (bry_SODA,...)
 export surfrc_flag="FALSE" # Flag if surface forcing is needed
 export interponline=0 # switch (1=on, 0=off) for online surface interpolation
 export frc_ext='blk_CFSR' # surface forcing extension(blk_CFSR, frc_CFSR,...). If interponline=1 just precise the type (ECMWF, CFSR,AROME,...)
-export tide_flag="FALSE"
+export tide_flag="FALSE" # the forcing extension must be blk_??? otherwise tide forcing overwrites it 
 
 ### WW3 ###
 
