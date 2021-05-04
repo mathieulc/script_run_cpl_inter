@@ -26,7 +26,8 @@ else
         if [ ${JOB_DUR_MTH} -eq 1 ]; then
             cur_Y=$( echo $DATE_BEGIN_JOB | cut -c 1-4 )
             cur_M=$( echo $DATE_BEGIN_JOB | cut -c 5-6 )
-            ln -sf ${INPUTDIRO}/croco_${frc_ext}_Y${cur_Y}M${cur_M}.nc croco_frc.nc
+            extend=$( echo $frc_ext | cut -c 1-3 )
+            ln -sf ${INPUTDIRO}/croco_${frc_ext}_Y${cur_Y}M${cur_M}.nc croco_${extend}.nc
         else
             printf "\n\nSurface forcing is not yet implemented for job duration longer than a month (need to solve overlapping problem)=>  we stop...\n\n"
             exit 1
