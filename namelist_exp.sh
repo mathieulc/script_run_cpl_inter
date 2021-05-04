@@ -34,7 +34,7 @@ export wrfcpldom='d01'
 
 # Forcing (if needed)
 ### CROCO ###
-
+export ini_ext='ini_SODA' # ini extension file (ini_SODA,...)
 export bry_ext='bry_SODA' # bry extension file (bry_SODA,...)
 export surfrc_flag="FALSE" # Flag if surface forcing is needed
 export interponline=0 # switch (1=on, 0=off) for online surface interpolation
