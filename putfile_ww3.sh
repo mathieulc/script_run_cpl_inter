@@ -14,7 +14,10 @@ month=`printf "%02d"  ${MONTH_BEGIN_JOB}`
   echo "${SERIAL_LAUNCH_WW3}ww3_ounf &> ounf.out"
   ${SERIAL_LAUNCH_WW3}ww3_ounf &> ounf.out 
  fi
+ module load nco/4.6.4_gcc-6.3.0
  ncrcat -O ww3.*.nc ww3.${year}${month}.nc #Concatenate all ww3*.nc file before exporting to OUTPUTDIR
+ module unload nco/4.6.4_gcc-6.3.0
+
 
  ${io_putfile} ww3.${year}${month}.nc ${OUTPUTDIR}/ww3_${DATE_BEGIN_JOB}_${DATE_END_JOB}.nc
 
