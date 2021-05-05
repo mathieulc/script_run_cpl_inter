@@ -133,7 +133,7 @@ cd ${EXEDIR}
 	rm -f app.conf
 	if [ ${USE_ATM} -eq 1 ]; then
 #	    echo "-np $NP_WRF ./wrfexe" >> app.conf
-            run_cmd="$MPI_LAUNCH_CMD -np ${NP_WRF} wrfexe"
+            run_cmd="$MPI_LAUNCH_CMD -n ${NP_WRF} wrfexe"
 	fi
 	if [ ${USE_XIOS} -eq 1 ]; then
 	    echo "$NXIOS ./xios_server.exe" >> app.conf
@@ -141,14 +141,14 @@ cd ${EXEDIR}
 	if [ ${USE_OCE} -eq 1 ]; then
 #	    echo "-np $NP_CRO ./crocox" >> app.conf
            if [ ! -z "$run_cmd" ] ; then
-              run_cmd="$run_cmd : -np $NP_CRO crocox"
+              run_cmd="$run_cmd : -n $NP_CRO crocox"
            else
-              run_cmd="$MPI_LAUNCH_CMD -np $NP_CRO crocox"
+              run_cmd="$MPI_LAUNCH_CMD -n $NP_CRO crocox"
            fi
         fi
 #
         if [ ${USE_WW3} -eq 1 ]; then
-           run_cmd="$run_cmd : -np $NP_WW3 wwatch"
+           run_cmd="$run_cmd : -n $NP_WW3 wwatch"
 	fi
 #        echo ${app.conf}
 #	. $HOME/loadnew.sh

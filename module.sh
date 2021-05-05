@@ -18,6 +18,15 @@ if [ `hostname  |cut -c 1-5` == "curie" ]; then
 ###   parallel
 #  module load netcdf/4.2_hdf5_parallel
 #  module load hdf5/1.8.9_parallel
+elif [ `hostname  |cut -c 1-5` == "irene" ]; then
+  export MACHINE="IRENE"
+  module purge
+  module load intel/17.0.6.256
+  module load mpi/openmpi/2.0.4
+  module load flavor/hdf5/parallel
+  module load netcdf-fortran/4.4.4
+  module load netcdf-c/4.6.0
+  module load hdf5/1.8.20
 
 elif [ `hostname  |cut -c 1-7` == "service" ]; then
   export MACHINE="ALTIX_JADE"

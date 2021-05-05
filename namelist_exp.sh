@@ -48,7 +48,7 @@ export forcww3=() # name of ww3_prnc.inp extension/input file
 #-------------------------------------------------------------------------------
 #  Nombre of core used
 #-------------------------------------------------------------------------------
-MPI_LAUNCH_CMD=$MPI_LAUNCH
+MPI_LAUNCH_CMD=$MPI_LAUNCH # ccc_mprun :for irene / $MPI_LAUCH for datarmor (or mpiexec.hydra )
 export NXIOS=16 # 4
 #
 ### IF COMPILE CROCO ONLINE ###
@@ -70,7 +70,7 @@ export wrf_niogp=1        # 1 for default settings
 
 ### PROC WW3 ###
 export NP_WW3=12
-export SERIAL_LAUNCH_WW3="$MPI_LAUNCH -np 1 "
+export SERIAL_LAUNCH_WW3="$MPI_LAUNCH -n 1 "
 #export SERIAL_LAUNCH_WW3='./'
 
 #
@@ -173,7 +173,7 @@ export    RUNDIR=${PWD1%/*}
 #-------------------------------------------------------------------------------
 export  JOBDIR_ROOT=${RUNDIR}/jobs_${CONFIG}
 export    SCRIPTDIR=${RUNDIR}/scripts
-
+export      COMPDIR=${RUNDIR}/compile
 
 #-------------------------------------------------------------------------------
 #  Calendar computation
@@ -188,7 +188,7 @@ cd -
 export    ROOT_NAME_1="${CEXPER}_${DATE_BEGIN_JOB}_${DATE_END_JOB}${MODE_TEST}"
 export              ROOT_NAME_2="${DATE_BEGIN_JOB}_${DATE_END_JOB}${MODE_TEST}"
 export                                ROOT_NAME_3="${DATE_END_JOB}${MODE_TEST}"
-export    jobname="job_${ROOT_NAME_1}.pbs"
+export    jobname="job_${ROOT_NAME_1}.sh"
 
 
 #-------------------------------------------------------------------------------
@@ -197,6 +197,9 @@ export    jobname="job_${ROOT_NAME_1}.pbs"
 if [ `hostname  |cut -c 1-5` == "curie" ]; then
    export QSUB="ccc_msub"
    export COMPUTER="CURIE"
+elif [ `hostname  |cut -c 1-5` == "irene" ]; then
+   export QSUB="ccc_msub -m work,store,scratch"
+   export COMPUTER="IRENE"
 elif [ `hostname  |cut -c 1-6` == "vargas" ]; then
    export QSUB="llsubmit"
    export COMPUTER="VARGAS"
