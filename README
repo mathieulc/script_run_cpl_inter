@@ -45,7 +45,7 @@ What to do before running the experiment :
 
 - Finally you need to complete the "namelist_exp.sh". It is where you put ALL the informations about your experiement. You need to decide which model(s) to use, the time step, namelist, frequency for output,... . If your machine is not in the list you also need to eddit last part about "WHICH COMPUTER" you are using. As for module.sh put you machine in the "else" to avoid error during the loop. BE CAREFUL about your jobname extension, it's ".pbs" for datarmor but might be any other thing. 
 
-NCO is loaded locally in getbry_oce.sh and getrst_atm.sh. Make sure to change the module call depending on which MACHINE you are on
+NCO is loaded locally in putfile_ww3.sh and getrst_atm.sh. Make sure to change the module call depending on which MACHINE you are on
 
 Some informations before running :
 ----------------------------------
@@ -67,8 +67,7 @@ Check getfile_atm.sh, getrst_atm.sh or putfile_atm for any changes.
 For CROCO the input files are:
 	- croco_grd.nc
 	- croco_${ini_ext}_Y????M??.nc !!!!!! go to ----> getrst_oce.sh for any change                                          !!!!!!
-	- croco_${bry_ext}_Y????M??.nc !!!!!! Some change were made in create_bry to have only "bry_time" in the time dimension !!!!!!
-                                       !!!!!! If JOB DURATION >1 Each bry file need to have 3 for time dimension: One for overl-!!!!!!
+	- croco_${bry_ext}_Y????M??.nc !!!!!! If JOB DURATION >1 Each bry file need to have 3 for time dimension: One for overl-!!!!!!
                                        !!!!!! apping the previous month, one for the current month, one for the next month.     !!!!!!
 
         - croco_${frc_ext}_Y????M??.nc !!!!!! Only work for JOB DURATION = 1 for the moment                                     !!!!!!
