@@ -58,6 +58,7 @@ sed -e "/< insert here variables definitions >/r namelist_exp.tmp" \
     \rm HEADER_tmp
     \rm ./namelist_exp.tmp
 
+
 cd ${JOBDIR_ROOT}
 chmod 755 ${jobname}
 
@@ -79,10 +80,16 @@ printf "  ROOT_NAME_3: ${ROOT_NAME_3}\n"
 
 if [ "${SCRIPT_DEBUG}" == "TRUE" ] ; then
    printf "\n\n\n\n  SCRIPT_DEBUG=${SCRIPT_DEBUG}  Mode script debug => Pas de soumission en queue\n\n\n\n"
-else
-   ${QSUB} ${jobname}
-   if [ "${MODE_TEST}" != "" ] ; then
-      printf "\n\n\n\n  MODE_TEST=${MODE_TEST}  Mode test et non production => Pas d'enchainement de jobs.\n\n\n\n"
-   fi
+else 
+    if [ ${CHAINED_JOB} == "TRUE" ]; then
+        [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ] && . ${SCRIPTDIR}/chained_job.sh
+
+    else
+       ${QSUB} ${jobname}
+    fi 
+#
+    if [ "${MODE_TEST}" != "" ] ; then
+        printf "\n\n\n\n  MODE_TEST=${MODE_TEST}  Mode test et non production => Pas d'enchainement de jobs.\n\n\n\n"
+    fi
 fi
 

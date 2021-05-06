@@ -35,7 +35,7 @@ export wrfcpldom='d01'
 ### CROCO ###
 export ini_ext='ini_SODA' # ini extension file (ini_SODA,...)
 export bry_ext='bry_SODA' # bry extension file (bry_SODA,...)
-export surfrc_flag="FALSE" # Flag if surface forcing is needed
+export surfrc_flag="FALSE" # Flag if surface forcing is needed (FALSE if cpl)
 export interponline=0 # switch (1=on, 0=off) for online surface interpolation
 export frc_ext='blk_CFSR' # surface forcing extension(blk_CFSR, frc_CFSR,...). If interponline=1 just precise the type (ECMWF, CFSR,AROME,...)
 export tide_flag="FALSE" # the forcing extension must be blk_??? otherwise tide forcing overwrites it 
@@ -92,11 +92,11 @@ export YEAR_BEGIN_EXP=2005
 export MONTH_BEGIN_EXP=1
 export DAY_BEGIN_EXP=1
 #                                                     Duration of the Experiment
-export EXP_DUR_MTH=$(( 2 * 1 ))
+export EXP_DUR_MTH=$(( 3 * 1 ))
 export EXP_DUR_DAY=0
 #                                                                  Period of Job
 export YEAR_BEGIN_JOB=2005
-export MONTH_BEGIN_JOB=3
+export MONTH_BEGIN_JOB=1
 export DAY_BEGIN_JOB=1
 #                                                            Duration of the Job
 export JOB_DUR_MTH=1
@@ -188,9 +188,13 @@ cd -
 export    ROOT_NAME_1="${CEXPER}_${DATE_BEGIN_JOB}_${DATE_END_JOB}${MODE_TEST}"
 export              ROOT_NAME_2="${DATE_BEGIN_JOB}_${DATE_END_JOB}${MODE_TEST}"
 export                                ROOT_NAME_3="${DATE_END_JOB}${MODE_TEST}"
-export    jobname="job_${ROOT_NAME_1}.sh"
+export    jobname="job_${ROOT_NAME_1}.pbs"
 
-
+#-------------------------------------------------------------------------------
+#  Job submission type
+#-------------------------------------------------------------------------------
+export CHAINED_JOB="TRUE" #If TRUE  , place all the jobs in the queue at the begining,
+                          #Ff FALSE , place job in the queue after the previous one ended
 #-------------------------------------------------------------------------------
 #  Which Computer?
 #-------------------------------------------------------------------------------
