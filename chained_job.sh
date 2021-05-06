@@ -49,4 +49,5 @@ while [ ${newedate} -lt ${DATE_END_EXP} ] ; do
 done
 
 cd ${JOBDIR_ROOT}
-[ ${MACHINE} == "DATARMOR" ] && jobid=$( echo $( qselect -N ${ROOT_NAME_1}) | cut -c 1-7 ) ; qrls $jobid
+
+[ ${MACHINE} == "DATARMOR" ] && { jobid=$( echo $( qselect -N ${ROOT_NAME_1}) | cut -c 1-7 ) ; qrls $jobid ; }
