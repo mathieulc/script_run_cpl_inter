@@ -188,7 +188,7 @@ cd -
 export    ROOT_NAME_1="${CEXPER}_${DATE_BEGIN_JOB}_${DATE_END_JOB}${MODE_TEST}"
 export              ROOT_NAME_2="${DATE_BEGIN_JOB}_${DATE_END_JOB}${MODE_TEST}"
 export                                ROOT_NAME_3="${DATE_END_JOB}${MODE_TEST}"
-export    jobname="job_${ROOT_NAME_1}.pbs"
+export    jobname="job_${ROOT_NAME_1}"
 
 #-------------------------------------------------------------------------------
 #  Job submission type
@@ -201,19 +201,24 @@ export CHAINED_JOB="TRUE" #If TRUE  , place all the jobs in the queue at the beg
 if [ `hostname  |cut -c 1-5` == "curie" ]; then
    export QSUB="ccc_msub"
    export COMPUTER="CURIE"
+   export sub_ext='.sh'
 elif [ `hostname  |cut -c 1-5` == "irene" ]; then
    export QSUB="ccc_msub -m work,store,scratch"
    export COMPUTER="IRENE"
+   export sub_ext='.pbs'
 elif [ `hostname  |cut -c 1-6` == "vargas" ]; then
    export QSUB="llsubmit"
    export COMPUTER="VARGAS"
 elif [ `hostname  |cut -c 1-8` == "datarmor" ]; then
    export QSUB="qsub"
    export COMPUTER="DATARMOR"
+   export sub_ext='.pbs'
 else
 #elif [ `hostname  |cut -c 1-7` == "service" ]; then 
    export QSUB="qsub"
    export COMPUTER="DATARMOR" #"JADE"
+   export sub_ext='.pbs'
+   
 fi
 
 echo ${COMPUTER}
