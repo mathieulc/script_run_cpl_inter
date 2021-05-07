@@ -22,7 +22,12 @@ cat common_definitions.sh >> namelist_exp.tmp
 cd ${JOBDIR_ROOT} 
 ls ${jobname}  > /dev/null  2>&1 
 if [ "$?" -eq "0" ] ; then
-   printf "\n\n\n\n  Un fichier ${jobname} existe deja  dans  ${JOBDIR_ROOT} \n             => exit. \n\n  Nettoyer et relancer\n\n\n\n"; exit
+   if [ ${CHAINED_JOB} == "FALSE" ]; then 
+       printf "\n\n\n\n  Un fichier ${jobname} existe deja  dans  ${JOBDIR_ROOT} \n             => exit. \n\n  Nettoyer et relancer\n\n\n\n"; exit
+   elif [ ${CHAINED_JOB} == "TRUE" && ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP}]; then
+       printf "\n\n\n\n  Un fichier ${jobname} existe deja  dans  ${JOBDIR_ROOT} \n             => exit. \n\n  Nettoyer et relancer\n\n\n\n"; exit
+   fi
+      
 fi
 cd -
 #-------------------------------------------------------------------------------
