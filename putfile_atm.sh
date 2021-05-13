@@ -14,12 +14,11 @@ done
 #-------------------------------------------------------------------------------
 #                                                                      Restart
 #-------------------------------------------------------------------------------
-year=`printf "%04d"   ${YEAR_BEGIN_JOBp1}`
-month=`printf "%02d"   ${MONTH_BEGIN_JOBp1}`
-day=`printf "%02d"   ${DAY_BEGIN_JOBp1}`
+year=$( printf "%04d"   ${YEAR_BEGIN_JOBp1} )
+month=$( printf "%02d"   ${MONTH_BEGIN_JOBp1} )
+day=$( printf "%02d"   ${DAY_BEGIN_JOBp1} )
 
 date_rst="${year}-${month}-${day}"
-echo date_rst = ${date_rst}
 
 for i in  wrfrst_d0?_${date_rst}_* 
    do

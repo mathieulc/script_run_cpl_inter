@@ -45,7 +45,7 @@ else
    done
    
    for file in ${rstfile} ; do
-       ${io_getfile} ${RESTDIR_IN}/${file}_${DATE_END_JOBm1} ./${file}
+       cpfile ${RESTDIR_IN}/${file}_${DATE_END_JOBm1} ./${file}
    done
 
 fi

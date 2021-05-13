@@ -1,5 +1,6 @@
 #!/bin/bash
 #PBS -q mpi_<nmpi>
+#PBS -l select=1:ncpus=28:mpiprocs=13:mem=115g
 #PBS -l walltime=24:00:00
 #PBS -N <exp> 
 cd $PBS_O_WORKDIR
@@ -9,10 +10,6 @@ cd $PBS_O_WORKDIR
 umask 022
 set -u
 set +x   #  set -x par defaut sur Curie
-
-
-source ~/.bashrc
-source /home2/datawork/mlecorre/COUPLING/CONFIG/CARAIBE_LR_OWA_inter/run_env
 
 # < insert here variables definitions > !!! DO NOT REMOVE THIS LINE (used by submitjob) !!!
 
@@ -29,7 +26,7 @@ export INPUTDIRO=$CROCO_FILES_DIR
 export INPUTDIRA=$WRF_FILES_DIR
 export INPUTDIRW=$WW3_FILES_DIR
 export INPUTDIRC=$OASIS_FILES_DIR
-
+export INPUTDIRX=$XIOS_FILES_DIR
 #-------------------------------------------------------------------------------
 #  where do we execute the job?
 #-------------------------------------------------------------------------------

@@ -39,13 +39,11 @@ What to do before running the experiment :
 	* The INPUTDIR, for Ocean, Atmosphere, Wave, Coupling. It corresponds to where ALL forcing files are.
 	* EXEDIR_ROOT , where you want to run your job
 	* OUTPUTDIR_ROOT  , where to put the ouput files
-	* RESTDIR_ROOT    , were to put the restart files
+	* RESTDIR_ROOT    , where to put the restart files
 	
 - Then eddit module.sh if your machine is not in the list. Be careful, for some machine when you submit a job the hostname is changing which might have an impact on the proper functioning of the script. To avoid this problem, put your machine configuration in the "else"
 
 - Finally you need to complete the "namelist_exp.sh". It is where you put ALL the informations about your experiement. You need to decide which model(s) to use, the time step, namelist, frequency for output,... . If your machine is not in the list you also need to eddit last part about "WHICH COMPUTER" you are using. As for module.sh put you machine in the "else" to avoid error during the loop. BE CAREFUL about your jobname extension, it's ".pbs" for datarmor but might be any other thing. 
-
-NCO is loaded locally in putfile_ww3.sh and getrst_atm.sh. Make sure to change the module call depending on which MACHINE you are on
 
 Some informations before running :
 ----------------------------------
@@ -78,7 +76,7 @@ Check getfile_oce.sh, getbry_oce.sh, getfrc_oce.sh, getrst_oce.sh or putfile_oce
     ### WW3 ###
     -----------
 
-Names need to be put in the namelist if there is any. The script is written so the forcing (wind/ current) for the whole simulation is on one file.
+Names need to be put in the namelist if there is any. The script is written so the forcing (wind/current) for the whole simulation is in one file.
 
 Check getfile_ww3.sh for any changes.
 
@@ -109,9 +107,6 @@ How to lauch the script ?
 To lauch the script just do:
 
 ./submitjob.sh 
-
-
-
 
 
 

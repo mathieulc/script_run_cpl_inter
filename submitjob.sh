@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash  
 set -u
 set +x     # pour CURIE
 
@@ -7,15 +7,14 @@ umask 022
 #-------------------------------------------------------------------------------
 #  Which Computer and modules?
 #-------------------------------------------------------------------------------
-. ./module.sh # To eddit
+cp module.sh module_exp.tmp
 #-------------------------------------------------------------------------------
 #  namelist of the experiment
 #-------------------------------------------------------------------------------
-cp namelist_exp.sh namelist_exp.tmp
+cat namelist_exp.sh >> module_exp.tmp
+cat common_definitions.sh >> module_exp.tmp
 
-cat common_definitions.sh >> namelist_exp.tmp
-
-. ./namelist_exp.tmp
+. ./module_exp.tmp
 
 [ ! -d ${JOBDIR_ROOT} ] && mkdir -p ${JOBDIR_ROOT}  # for the first submitjob.sh call
 
@@ -24,7 +23,7 @@ ls ${jobname}  > /dev/null  2>&1
 if [ "$?" -eq "0" ] ; then
    if [ ${CHAINED_JOB} == "FALSE" ]; then 
        printf "\n\n\n\n  Un fichier ${jobname} existe deja  dans  ${JOBDIR_ROOT} \n             => exit. \n\n  Nettoyer et relancer\n\n\n\n"; exit
-   elif [ ${CHAINED_JOB} == "TRUE" && ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP}]; then
+   elif [ ${CHAINED_JOB} == "TRUE" ] && [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
        printf "\n\n\n\n  Un fichier ${jobname} existe deja  dans  ${JOBDIR_ROOT} \n             => exit. \n\n  Nettoyer et relancer\n\n\n\n"; exit
    fi
       
@@ -48,20 +47,20 @@ fi
 # create job and submit it
 #-------------------------------------------------------------------------------
 
-[ ${USE_OCE}  -eq 1 ] && TOTOCE=$NP_CRO || TOTOCE=0
-[ ${USE_ATM}  -eq 1 ] && TOTATM=$NP_WRF || TOTATM=0
-[ ${USE_WW3}  -eq 1 ] && TOTWW3=$NP_WW3 || TOTWW3=0
-[ ${USE_XIOS} -eq 0 ] && NXIOS=0
-totalcore=$(( $TOTOCE + $TOTATM + $TOTWW3 + $NXIOS ))
+[ ${USE_OCE}  -eq 1 ] && TOTOCE=$NP_CRO  || TOTOCE=0
+[ ${USE_ATM}  -eq 1 ] && TOTATM=$NP_WRF  || TOTATM=0
+[ ${USE_WW3}  -eq 1 ] && TOTWW3=$NP_WW3  || TOTWW3=0
+[ ${USE_XIOS} -eq 1 ] && TOTXIO=$NP_XIOS || TOTXIO=0
+totalcore=$(( $TOTOCE + $TOTATM + $TOTWW3 + $TOTXIO ))
 [ ${COMPUTER}=="DATARMOR" ] && totalcore=$(( $totalcore /29 +1)) 
-sed -e "/< insert here variables definitions >/r namelist_exp.tmp" \
+sed -e "/< insert here variables definitions >/r module_exp.tmp" \
     -e "s/<exp>/${ROOT_NAME_1}/g" \
     -e "s/<nmpi>/${totalcore}/g" \
     -e "s/<time_second>/${TIMEsnd}/g" \
     ./header.${COMPUTER} > HEADER_tmp
     cat HEADER_tmp job.base.pbs >  ${JOBDIR_ROOT}/${jobname}
     \rm HEADER_tmp
-    \rm ./namelist_exp.tmp
+    \rm ./module_exp.tmp
 
 
 cd ${JOBDIR_ROOT}

@@ -1,7 +1,7 @@
-#!/bin/sh 
 
-#set -u
-#set -vx
+
+#########################   LOAD MODULE  ########################
+
 
 if [ `hostname  |cut -c 1-5` == "curie" ]; then
   export MACHINE="X64_CURIE"
@@ -57,17 +57,18 @@ elif [ `hostname  |cut -c 1-6` == "vargas" ]; then
   module load phdf5/1.8.7
 
 elif [ `hostname  |cut -c 1-8` == "datarmor" ]; then
+
   export MACHINE="DATARMOR"
-  module purge
   source ~/.bashrc
   source ../run_env
-  
+  export ncomod='nco/4.6.4_gcc-6.3.0'
+
 else
-#  echo "Run loop"
+  
   export MACHINE="DATARMOR"
-  module purge
   source ~/.bashrc
   source ../run_env
+  export ncomod='nco/4.6.4_gcc-6.3.0'
 #  printf "\n\n Machine unknown  => EXIT \n\n"; exit;
 fi
 printf "\n  MACHINE: ${MACHINE}\n\n\n\n\n"

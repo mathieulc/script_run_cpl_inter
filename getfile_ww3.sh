@@ -6,10 +6,10 @@ echo 'copy and fill ww3 settings files *.inp'
 
 cp ${WW3_IN_DIR}/inputs_ww3/*.inp .
 
-ms=`printf "%02d"  ${MONTH_BEGIN_JOB}`
-me=`printf "%02d"  ${MONTH_END_JOB}`
-ds=`printf "%02d"  ${DAY_BEGIN_JOB}`
-de=`printf "%02d"  ${DAY_END_JOB}`
+ms=$( printf "%02d"  ${MONTH_BEGIN_JOB} )
+me=$( printf "%02d"  ${MONTH_END_JOB} )
+ds=$( printf "%02d"  ${DAY_BEGIN_JOB} )
+de=$( printf "%02d"  ${DAY_END_JOB} )
 
  ## - Fill ww3_grid.inp file -##
 sed -e "s/<wavdt>/${TSP_WW3}/g" \

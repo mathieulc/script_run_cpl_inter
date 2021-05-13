@@ -3,11 +3,11 @@
 if [ ${MACHINE} == "DATARMOR" ] ; then
 
     ${QSUB} -h -N ${ROOT_NAME_1} ${jobname}
-    sub_ext='.pbs'
+    sub_ext=".pbs"
     launchcmd="-W depend=afterany:$( echo $( qselect -N ${ROOT_NAME_1}) | cut -c 1-7 )"
 elif [ ${MACHINE} == "IRENE" ]; then
     ${QSUB} ${jobname}
-    sub_ext='.sh'
+    sub_ext=".sh"
     prejobname=${ROOT_NAME_1}
 else
     printf "\n\n Chained job for your machine is not set up yet, we stop...\n\n" && exit 1
@@ -33,21 +33,37 @@ while [ ${newedate} -lt ${DATE_END_EXP} ] ; do
     #
     future_date="${CEXPER}_${newsdate}_${newedate}${MODE_TEST}"   
     future_job="job_${future_date}${sub_ext}"
-    cp ${JOBDIR_ROOT}/${jobname} ${JOBDIR_ROOT}/${future_job}  
+    cd ${JOBDIR_ROOT} 
     #
-    [ ${MACHINE} == "DATARMOR" ] && { cd ${JOBDIR_ROOT} ; newjobname="${CEXPER}_${newsdate}_${newedate}${MODE_TEST}"; ${QSUB} -N ${newjobname} ${launchcmd} ${future_job} ; launchcmd="${launchcmd} -W depend=afterany:$( echo $( qselect -N ${newjobname}) | cut -c 1-7 )" ; cd ${SCRIPTDIR}; }
-    [ ${MACHINE} == "IRENE" ] && { cd ${JOBDIR_ROOT} ; ${QSUB} -a ${prejobname} ${future_job} ; prejobname="${CEXPER}_${newsdate}_${newedate}${MODE_TEST} " cd ${SCRIPTDIR}; } 
+    sed -e "s/YEAR_BEGIN_JOB=${YEAR_BEGIN_JOB}/YEAR_BEGIN_JOB=${years}/" \
+        -e "s/MONTH_BEGIN_JOB=${MONTH_BEGIN_JOB}/MONTH_BEGIN_JOB=${months}/" \
+        -e "s/DAY_BEGIN_JOB=${DAY_BEGIN_JOB}/DAY_BEGIN_JOB=${days}/" \
+        ${jobname} > ${future_job}
+
+    chmod 755 ${future_job}
     #
-   
+    if [ ${MACHINE} == "DATARMOR" ] ; then 
+#
+        newjobname="${CEXPER}_${newsdate}_${newedate}${MODE_TEST}"
+        ${QSUB} -N ${newjobname} ${launchcmd} ${future_job} 
+        launchcmd="-W depend=afterany:$( echo $( qselect -N ${newjobname}) | cut -c 1-7 )"
+        cd ${SCRIPTDIR}
+#
+    elif [ ${MACHINE} == "IRENE" ] ; then 
+
+         ${QSUB} -a ${prejobname} ${future_job} 
+         prejobname="${CEXPER}_${newsdate}_${newedate}${MODE_TEST}"
+         cd ${SCRIPTDIR} 
+    fi
+#    
     mdy=$( valid_date $(( $monthe )) $(( $daye + 1 )) $yeare )
     months=$( echo $mdy | cut -d " " -f 1 )
     days=$( echo $mdy | cut -d " " -f 2 )
     years=$( echo $mdy | cut -d " " -f 3 )
     newsdate=$( makedate $months $days $years )
     
-
 done
-
+#
 cd ${JOBDIR_ROOT}
 
-[ ${MACHINE} == "DATARMOR" ] && { jobid=$( echo $( qselect -N ${ROOT_NAME_1}) | cut -c 1-7 ) ; qrls $jobid ; }
+[ ${MACHINE} == "DATARMOR" ] && { jobid=$( echo $( qselect -N ${ROOT_NAME_1}) | cut -c 1-7 ) ; qrls ${jobid} ; }

@@ -13,8 +13,8 @@ echo 'link wrf data files'
 echo "ln -sf ${wrf}/data/* ."
 ln -sf ${wrf}/data/* .
 
-ms=`printf "%02d"  ${MONTH_BEGIN_EXP}`
-me=`printf "%02d"  ${MONTH_END_EXP}`
+ms=$( printf "%02d"  ${MONTH_BEGIN_EXP} )
+me=$(printf "%02d"  ${MONTH_END_EXP} )
 
 #-------------------------------------------------------------------------------
 #                                                          BDY
