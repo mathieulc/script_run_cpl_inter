@@ -62,17 +62,9 @@ elif [ `hostname  |cut -c 1-8` == "jean-zay" ]; then
   export MPI_LAUNCH=srun 
   source ../run_env
   module load intel-compilers/19.0.4
-  module load intel-mpi
-  module load intel-mkl
   module load netcdf/4.7.2-mpi
   module load netcdf-fortran/4.5.2-mpi
-  module load nco
-  module load cdo
   module load hdf5/1.10.5-mpi
-  module load ferret
-  module load ncview
-  module load git
-  module load bbcp/git
   export ncomod='nco'
 
 elif [ `hostname  |cut -c 1-8` == "datarmor" ]; then
@@ -87,17 +79,9 @@ else
   export MPI_LAUNCH=srun
   source ../run_env
   module load intel-compilers/19.0.4
-  module load intel-mpi
-  module load intel-mkl
   module load netcdf/4.7.2-mpi
   module load netcdf-fortran/4.5.2-mpi
-  module load nco
-  module load cdo
   module load hdf5/1.10.5-mpi
-  module load ferret
-  module load ncview
-  module load git
-  module load bbcp/git
   export ncomod='nco' 
    
 #  export MACHINE="DATARMOR"
