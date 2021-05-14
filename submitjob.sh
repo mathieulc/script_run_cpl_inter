@@ -59,7 +59,7 @@ sed -e "/< insert here variables definitions >/r module_exp.tmp" \
     -e "s/<nmpi>/${totalcore}/g" \
     -e "s/<time_second>/${TIMEsnd}/g" \
     ./header.${COMPUTER} > HEADER_tmp
-    cat HEADER_tmp job.base.pbs >  ${JOBDIR_ROOT}/${jobname}
+    cat HEADER_tmp job.base.sh >  ${JOBDIR_ROOT}/${jobname}
     \rm HEADER_tmp
     \rm ./module_exp.tmp
 
