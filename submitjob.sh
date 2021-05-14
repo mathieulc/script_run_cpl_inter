@@ -52,7 +52,8 @@ fi
 [ ${USE_WW3}  -eq 1 ] && TOTWW3=$NP_WW3  || TOTWW3=0
 [ ${USE_XIOS} -eq 1 ] && TOTXIO=$NP_XIOS || TOTXIO=0
 totalcore=$(( $TOTOCE + $TOTATM + $TOTWW3 + $TOTXIO ))
-[ ${COMPUTER}=="DATARMOR" ] && totalcore=$(( $totalcore /29 +1)) 
+[ ${COMPUTER} == "DATARMOR" ] && totalcore=$(( $totalcore /29 +1))
+
 sed -e "/< insert here variables definitions >/r module_exp.tmp" \
     -e "s/<exp>/${ROOT_NAME_1}/g" \
     -e "s/<nmpi>/${totalcore}/g" \

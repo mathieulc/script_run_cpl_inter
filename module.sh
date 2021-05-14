@@ -56,6 +56,25 @@ elif [ `hostname  |cut -c 1-6` == "vargas" ]; then
   module load netcdf/4.1.3-par
   module load phdf5/1.8.7
 
+elif [ `hostname  |cut -c 1-8` == "jean-zay" ]; then
+
+  export MACHINE="JEANZAY"
+  export MPI_LAUNCH=srun 
+  source ../run_env
+  module load intel-compilers/19.0.4
+  module load intel-mpi
+  module load intel-mkl
+  module load netcdf/4.7.2-mpi
+  module load netcdf-fortran/4.5.2-mpi
+  module load nco
+  module load cdo
+  module load hdf5/1.10.5-mpi
+  module load ferret
+  module load ncview
+  module load git
+  module load bbcp/git
+  export ncomod='nco'
+
 elif [ `hostname  |cut -c 1-8` == "datarmor" ]; then
 
   export MACHINE="DATARMOR"
@@ -64,11 +83,28 @@ elif [ `hostname  |cut -c 1-8` == "datarmor" ]; then
   export ncomod='nco/4.6.4_gcc-6.3.0'
 
 else
-  
-  export MACHINE="DATARMOR"
-  source ~/.bashrc
+  export MACHINE="JEANZAY"
+  export MPI_LAUNCH=srun
   source ../run_env
-  export ncomod='nco/4.6.4_gcc-6.3.0'
+  module load intel-compilers/19.0.4
+  module load intel-mpi
+  module load intel-mkl
+  module load netcdf/4.7.2-mpi
+  module load netcdf-fortran/4.5.2-mpi
+  module load nco
+  module load cdo
+  module load hdf5/1.10.5-mpi
+  module load ferret
+  module load ncview
+  module load git
+  module load bbcp/git
+  export ncomod='nco' 
+   
+#  export MACHINE="DATARMOR"
+#  source ~/.bashrc
+#  source ../run_env
+#  export ncomod='nco/4.6.4_gcc-6.3.0'
+
 #  printf "\n\n Machine unknown  => EXIT \n\n"; exit;
 fi
 printf "\n  MACHINE: ${MACHINE}\n\n\n\n\n"

@@ -10,9 +10,9 @@
 export CONFIG=BEGUELA
 export RUN=frc
 
-export USE_XIOS= 0 
+export USE_XIOS=0 
 export USE_ATM=0  
-export USE_OCE=0
+export USE_OCE=1
 export USE_WW3=0
 export USE_ICE=0
 export USE_CPL=$(( ${USE_ATM} * ${USE_OCE} + ${USE_ATM} * ${USE_WW3} + ${USE_OCE} * ${USE_WW3}))
@@ -35,7 +35,7 @@ export wrfcpldom='d01'
 ### CROCO ###
 export ini_ext='ini_SODA' # ini extension file (ini_SODA,...)
 export bry_ext='bry_SODA' # bry extension file (bry_SODA,...)
-export surfrc_flag="FALSE" # Flag if surface forcing is needed (FALSE if cpl)
+export surfrc_flag="TRUE" # Flag if surface forcing is needed (FALSE if cpl)
 export interponline=0 # switch (1=on, 0=off) for online surface interpolation
 export frc_ext='blk_CFSR' # surface forcing extension(blk_CFSR, frc_CFSR,...). If interponline=1 just precise the type (ECMWF, CFSR,AROME,...)
 export tide_flag="FALSE" # the forcing extension must be blk_??? otherwise tide forcing overwrites it 
@@ -45,10 +45,13 @@ export tide_flag="FALSE" # the forcing extension must be blk_??? otherwise tide 
 export flagout="TRUE" # Keep (TRUE) or not (FALSE) ww3 full output binary file (out_grd.ww3)
 export forcin=() # forcing file(s) list (leave empty if none)
 export forcww3=() # name of ww3_prnc.inp extension/input file
+
+### XIOS ### 
+FILIN_XIOS="iodef.xml context_wrf.xml file_def_wrf.xml" # files needed for xios. Need to be in INPUTDIRX (cf header.*)
 #-------------------------------------------------------------------------------
 #  Nombre of core used
 #-------------------------------------------------------------------------------
-MPI_LAUNCH_CMD=$MPI_LAUNCH # ccc_mprun :for irene / $MPI_LAUCH for datarmor (or mpiexec.hydra )
+MPI_LAUNCH_CMD=$MPI_LAUNCH  # ccc_mprun :for irene / $MPI_LAUCH for datarmor (or mpiexec.hydra )
 export NP_XIOS=1 # 4
 
 ### PROC CROCO ###
@@ -88,7 +91,7 @@ export YEAR_BEGIN_EXP=2005
 export MONTH_BEGIN_EXP=1
 export DAY_BEGIN_EXP=1
 #                                                     Duration of the Experiment
-export EXP_DUR_MTH=$(( 3 * 1 ))
+export EXP_DUR_MTH=$(( 5 * 1 ))
 export EXP_DUR_DAY=0
 #                                                                  Period of Job
 export YEAR_BEGIN_JOB=2005
@@ -153,7 +156,7 @@ export ww3file=/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA/outputs_frc_ww3
 # MODE_TEST: extension du nom de l'experience
 #            pour tourner differents tests dans la meme experience
 # on peut lancer plusieurs tests en même temps mais pas être en production et lancer des tests
- export         MODE_TEST="XIOS"    #   mode Production 
+ export         MODE_TEST=""    #   mode Production 
 #export         MODE_TEST=".nouvelle_PHYSIQUE" 
 
 
@@ -183,12 +186,12 @@ cd -
 export    ROOT_NAME_1="${CEXPER}_${DATE_BEGIN_JOB}_${DATE_END_JOB}${MODE_TEST}"
 export              ROOT_NAME_2="${DATE_BEGIN_JOB}_${DATE_END_JOB}${MODE_TEST}"
 export                                ROOT_NAME_3="${DATE_END_JOB}${MODE_TEST}"
-export    jobname="job_${ROOT_NAME_1}.pbs"
+export    jobname="job_${ROOT_NAME_1}.sh"
 
 #-------------------------------------------------------------------------------
 #  Job submission type
 #-------------------------------------------------------------------------------
-export CHAINED_JOB="FALSE" #If TRUE  , place all the jobs in the queue at the begining,
+export CHAINED_JOB="TRUE" #If TRUE  , place all the jobs in the queue at the begining,
                           #Ff FALSE , place job in the queue after the previous one ended
 #-------------------------------------------------------------------------------
 #  Which Computer?
@@ -202,14 +205,19 @@ elif [ `hostname  |cut -c 1-5` == "irene" ]; then
 elif [ `hostname  |cut -c 1-6` == "vargas" ]; then
    export QSUB="llsubmit"
    export COMPUTER="VARGAS"
+elif [ `hostname  |cut -c 1-8` == "jean-zay" ]; then
+   export QSUB="sbatch"
+   export COMPUTER="JEANZAY"
 elif [ `hostname  |cut -c 1-8` == "datarmor" ]; then
    export QSUB="qsub"
    export COMPUTER="DATARMOR"
 else
 #elif [ `hostname  |cut -c 1-7` == "service" ]; then 
-   export QSUB="qsub"
-   export COMPUTER="DATARMOR" #"JADE"
-   export sub_ext='.pbs'
+   export QSUB="sbatch"
+   export COMPUTER="JEANZAY"
+#   export QSUB="qsub"
+#   export COMPUTER="DATARMOR" #"JADE"
+#   export sub_ext='.pbs'
    
 fi
 

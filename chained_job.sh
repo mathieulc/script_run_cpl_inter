@@ -1,7 +1,6 @@
 #!/bin/bash
 
 if [ ${MACHINE} == "DATARMOR" ] ; then
-
     ${QSUB} -h -N ${ROOT_NAME_1} ${jobname}
     sub_ext=".pbs"
     launchcmd="-W depend=afterany:$( echo $( qselect -N ${ROOT_NAME_1}) | cut -c 1-7 )"
@@ -9,6 +8,12 @@ elif [ ${MACHINE} == "IRENE" ]; then
     ${QSUB} ${jobname}
     sub_ext=".sh"
     prejobname=${ROOT_NAME_1}
+elif [ ${MACHINE} == "JEANZAY" ]; then
+    ${QSUB} -H ${jobname}
+    sub_ext=".sh"
+    launchcmd="--dependency=afterok:$( echo `squeue -u ${USER}` | cut -d " " -f 9 )"
+    firstjobid=$( echo `squeue -u ${USER}` | cut -d " " -f 9 )
+    cnt=0
 else
     printf "\n\n Chained job for your machine is not set up yet, we stop...\n\n" && exit 1
 
@@ -43,17 +48,30 @@ while [ ${newedate} -lt ${DATE_END_EXP} ] ; do
     chmod 755 ${future_job}
     #
     if [ ${MACHINE} == "DATARMOR" ] ; then 
-#
         newjobname="${CEXPER}_${newsdate}_${newedate}${MODE_TEST}"
         ${QSUB} -N ${newjobname} ${launchcmd} ${future_job} 
         launchcmd="-W depend=afterany:$( echo $( qselect -N ${newjobname}) | cut -c 1-7 )"
         cd ${SCRIPTDIR}
 #
     elif [ ${MACHINE} == "IRENE" ] ; then 
+        ${QSUB} -a ${prejobname} ${future_job} 
+        prejobname="${CEXPER}_${newsdate}_${newedate}${MODE_TEST}"
+        cd ${SCRIPTDIR} 
+#
+    elif [ ${MACHINE} == "JEANZAY" ] ; then
+	newjobname="${CEXPER}_${newsdate}_${newedate}${MODE_TEST}"
+	prevjobid=$(( 9 + 8 * ${cnt} ))
+	cnt=$(( ${cnt} + 1 ))
+	sed -e "s/#SBATCH --job-name=.*/#SBATCH --job-name=${newjobname}/" \
+	    -e "s/#SBATCH --output=.*/#SBATCH --output=${newjobname}.out/" \
+	    -e "s/#SBATCH --error=.*/#SBATCH --error=${newjobname}.out/" \
+	${future_job} > ${future_job}.tmp
+	mv ${future_job}.tmp ${future_job}
+	chmod 755 ${future_job}
+        ${QSUB} ${launchcmd} ${future_job}
+	launchcmd="--dependency=afterok:$( echo `squeue -u ${USER}` | cut -d " " -f ${prevjobid} )"
+        cd ${SCRIPTDIR}
 
-         ${QSUB} -a ${prejobname} ${future_job} 
-         prejobname="${CEXPER}_${newsdate}_${newedate}${MODE_TEST}"
-         cd ${SCRIPTDIR} 
     fi
 #    
     mdy=$( valid_date $(( $monthe )) $(( $daye + 1 )) $yeare )
@@ -67,3 +85,4 @@ done
 cd ${JOBDIR_ROOT}
 
 [ ${MACHINE} == "DATARMOR" ] && { jobid=$( echo $( qselect -N ${ROOT_NAME_1}) | cut -c 1-7 ) ; qrls ${jobid} ; }
+[ ${MACHINE} == "JEANZAY" ] && { scontrol release ${firstjobid} ; }

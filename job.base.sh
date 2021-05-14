@@ -14,8 +14,6 @@ if [ ${LOADL_STEP_NAME} == "get_file" ] || [ ${LOADL_STEP_NAME} == "XXX" ]; then
         #  attention si modif de ces variables, modif dans les 3 steps du job.base.sh
         export JOBDIR="${JOBDIR_ROOT}/${ROOT_NAME_2}"
         export EXEDIR="${EXEDIR_ROOT}/${ROOT_NAME_2}"
-#       export OUTPUTDIR="${OUTPUTDIR_ROOT}/${CEXPER}/${ROOT_NAME_2}"
-#       export RESTDIR_OUT="${RESTDIR_ROOT}/${CEXPER}/${ROOT_NAME_3}"
 
 # EXEDIR: Execution directory
         [ -d ${EXEDIR} ] && mv ${EXEDIR} ${EXEDIR}_${OLD}
@@ -24,11 +22,6 @@ if [ ${LOADL_STEP_NAME} == "get_file" ] || [ ${LOADL_STEP_NAME} == "XXX" ]; then
 # JOBDIR: job directory
         [ -d ${JOBDIR} ] && mv ${JOBDIR} ${JOBDIR}_${OLD}
         mkdir -p ${JOBDIR}
-
-# saving...
-#        cd ${RUNDIR}; tar cvf ${JOBDIR}/scripts.tar ./scripts; cd -;
-#        cd ${RUNDIR}; tar cvf ${JOBDIR}/param_inputs.tar ./param_inputs; cd -;
-#        ls -l ${COMPDIR} >  ${JOBDIR}/compile.txt
 
 # some printings
 . ${SCRIPTDIR}/common_printing.sh
@@ -42,31 +35,11 @@ cd ${EXEDIR}
 	    [ ${USE_OCE}  -eq 1 ] && cpfile ${CROCO_EXE_DIR}/croco.${RUN} crocox
 	    [ ${USE_ATM}  -eq 1 ] && cpfile ${WRF_EXE_DIR}/wrf.exe wrfexe
 	    [ ${USE_WW3}  -eq 1 ] && cp ${WW3_EXE_DIR}/ww3_* . && mv ww3_shel wwatch
-	    [ ${USE_XIOS} -eq 1 ] && cpfile ${COMPDIR}/xios/xios_server.exe .
+	    [ ${USE_XIOS} -eq 1 ] && cpfile ${XIOS_EXE_DIR}/xios_server.exe .
 
         printf "\n ************* PARAMETER files *****************\n"
 # if xios
-        FILIN_XIOS="iodef.xml"
-        [ ${USE_XIOS} -eq 1 ] && {  for file in ${FILIN_XIOS}; do cpfile ${PARAMDIR}/${file} . ; done; echo ""; }
-# if ocean
-#        FILIN_OCE="namelist.base.oce.${RUN}"
-#        FILIN_OCE="croco.in.base"
-#        [ ${USE_OCE} -eq 1 ] && {  for file in ${FILIN_OCE}; do cpfile ${CROCO_IN_DIR}/${file} . ; done; echo ""; }
-# if atmosphere
-#        FILIN_ATM="namelist.input.prep.CARAIBE.${RUN}"
-#        [ ${USE_ATM} -eq 1 ] && {  for file in ${FILIN_ATM}; do cpfile ${WRF_IN_DIR}/${file} . ; done; echo ""; }
-# if wave
-#        FILIN_WW3="ww3_strt.inp ww3_grid.inp.base ww3_ounf.inp.base ww3_shel.inp.base.${RUN}"
-#        [ ${USE_WW3} -eq 1 ] && {  for file in ${FILIN_ATM}; do cpfile ${WRF_IN_DIR}/${file} . ; done; cpfile2 ${WW3_FILES_DIR}/*.inp . ;  echo ""; }
-#
-#
-#ADD FORCING WW3
-#
-#
-# if oasis3-mct
-#        FILIN_CPL="namelist.base.${RUN}"
-#        [ ${USE_CPL} -eq 1 ] && {  for file in ${FILIN_CPL}; do cpfile ${OASIS_IN_DIR}/inputs_oasis/${file} . ; done; echo ""; }
-
+        [ ${USE_XIOS} -eq 1 ] && {  for file in ${FILIN_XIOS}; do cpfile ${INPUTDIRX}/${file} . ; done; echo ""; }
 
 # ocean/atmosphere input files (configuration, forcing, obc, levitus/restart...)
 
@@ -94,9 +67,6 @@ cd ${EXEDIR}
         [ ${USE_WW3} -eq 1 ] && printf "    see listing in ${EXEDIR}/ls_l/getrst_ww3.txt \n"
         [ ${USE_WW3} -eq 1 ] && { . ./getrst_ww3.sh ; } >> ls_l/getrst_ww3.txt
 
-#        [ ${USE_CPL} -eq 1 ] && printf "\n ************* get OA3MCT CONFIGURATION mozaic files *****************\n" 
-#        [ ${USE_CPL} -eq 1 ] && { . ./getfile_cpl.sh ; }
-
 	[ ${USE_CPL} -ge 1 ] && printf "\n ************* get OA3MCT RESTART files *****************\n"
 	[ ${USE_CPL} -ge 1 ] && { . ./getrst_cpl.sh ; }
 
@@ -116,8 +86,6 @@ if [ ${LOADL_STEP_NAME} == "run_model" ] || [ ${LOADL_STEP_NAME} == "XXX" ] ; th
         
         export JOBDIR="${JOBDIR_ROOT}/${ROOT_NAME_2}"
         export EXEDIR="${EXEDIR_ROOT}/${ROOT_NAME_2}"
-#       export OUTPUTDIR="${OUTPUTDIR_ROOT}/${CEXPER}/${ROOT_NAME_2}"
-#       export RESTDIR_OUT="${RESTDIR_ROOT}/${CEXPER}/${ROOT_NAME_3}"
  
 cd ${EXEDIR} 
 
@@ -130,23 +98,27 @@ cd ${EXEDIR}
 #        echo "${EXEC} > out_run.txt 2>&1" 
 #              ${EXEC} > out_run.txt 2>&1
 
-	rm -f app.conf
+	run_cmd=""
 	if [ ${USE_ATM} -eq 1 ]; then
 #	    echo "-np $NP_WRF ./wrfexe" >> app.conf
             run_cmd="$MPI_LAUNCH_CMD -n ${NP_WRF} wrfexe"
 	fi
-	if [ ${USE_XIOS} -eq 1 ]; then
-	    echo "$NXIOS ./xios_server.exe" >> app.conf
-	fi
-	if [ ${USE_OCE} -eq 1 ]; then
-#	    echo "-np $NP_CRO ./crocox" >> app.conf
-           if [ ! -z "$run_cmd" ] ; then
-              run_cmd="$run_cmd : -n $NP_CRO crocox"
-           else
-              run_cmd="$MPI_LAUNCH_CMD -n $NP_CRO crocox"
-           fi
+
+        if [ ${USE_OCE} -eq 1 ]; then
+#           echo "-np $NP_CRO ./crocox" >> app.conf
+            if [ ! -z "$run_cmd" ] ; then
+                run_cmd="$run_cmd : -n $NP_CRO crocox"
+            else
+                echo $USE_CPL
+                run_cmd="$MPI_LAUNCH_CMD -n $NP_CRO crocox"
+            fi
         fi
-#
+
+	if [ ${USE_XIOS} -eq 1 ]; then
+	    run_cmd="$run_cmd : -n ${NP_XIOS} xios_server.exe" 
+	fi
+	#
+
         if [ ${USE_WW3} -eq 1 ]; then
            run_cmd="$run_cmd : -n $NP_WW3 wwatch"
 	fi
@@ -156,12 +128,13 @@ cd ${EXEDIR}
 #	echo "striping_unit 1048576" > my_hints
 #	echo "striping_factor $NXIOS" >> my_hints
 #	export ROMIO_HINTS=./my_hints
-        if [ ${COMPUTER}  == "DATARMOR" ]; then
+#        if [ ${COMPUTER}  == "DATARMOR" ]; then       
 	echo 'launch run: ' ${run_cmd} #$app.conf
+
 ##### RUN ######
 ${run_cmd} #app.conf
 ################
-        fi
+#        fi
 #	time ccc_mprun -f app.conf > out_run.txt 2>&1
 #	time ccc_mprun -f app.conf 1>out_run.txt 2>err_run.txt
 
@@ -171,21 +144,21 @@ ${run_cmd} #app.conf
         printf "\n---------------   end    ---------------\n"
         printf "\n date_chris : `date "+%Y%m%d-%H:%M:%S"`\n"
         printf "\n see ls -l in ${EXEDIR}/ls_l/ls_post_exe.txt\n"
-#       ls -l > ls_l/ls_post_exe.txt
-
-
+        ls -l > ls_l/ls_post_exe.txt
+ 
 fi # Step2
+ 
 
 #===============================================================================
 #  Step 3 commands:  put_file step 
 #===============================================================================
-if [ ${LOADL_STEP_NAME} == "put_file" ] || [ ${LOADL_STEP_NAME} == "XXX" ]; then
-
+if [ ${LOADL_STEP_NAME} == "put_file" ] || [ "${LOADL_STEP_NAME}" == "XXX" ] ; then
+     
         export JOBDIR="${JOBDIR_ROOT}/${ROOT_NAME_2}"
         export EXEDIR="${EXEDIR_ROOT}/${ROOT_NAME_2}"
         export OUTPUTDIR="${OUTPUTDIR_ROOT}/${ROOT_NAME_2}"
         export RESTDIR_OUT="${RESTDIR_ROOT}/${ROOT_NAME_3}"
-
+        
 # OUTPUTDIR: output directory
         ${MACHINE_STOCKAGE} ls ${OUTPUTDIR}  >  /dev/null  2>&1
         [ "$?" -eq "0" ] && ${MACHINE_STOCKAGE} mv ${OUTPUTDIR} ${OUTPUTDIR}_${OLD}
@@ -197,7 +170,6 @@ if [ ${LOADL_STEP_NAME} == "put_file" ] || [ ${LOADL_STEP_NAME} == "XXX" ]; then
         ${MACHINE_STOCKAGE} mkdir -p ${RESTDIR_OUT}
 
 cd ${EXEDIR} 
-
         printf "\n date_chris : `date "+%Y%m%d-%H:%M:%S"`\n"
         [ ${USE_OCE} -eq 1 ] && printf "\n ************* put OCEAN OUTPUT/RESTART files *****************\n" |tee ls_l/putfile_oce.txt
         [ ${USE_OCE} -eq 1 ] && printf "    see listing in ${EXEDIR}/ls_l/putfile_oce.txt \n" 
@@ -279,6 +251,4 @@ else # en test
 fi
 
 fi # Step3
-
-
 

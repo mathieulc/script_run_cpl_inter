@@ -1,0 +1,63 @@
+#!/bin/bash
+#SBATCH --job-name=<exp>
+#SBATCH --ntasks=<nmpi>
+#SBATCH --ntasks-per-node=40
+#SBATCH --hint=nomultithread
+#SBATCH --time=1:00:00
+#SBATCH --output=<exp>.out
+#SBATCH --error=<exp>.out
+#SBATCH -A khe@cpu
+
+cd ${SLURM_SUBMIT_DIR}
+
+#===============================================================================
+
+umask 022
+set -u
+set +x   #  set -x par defaut sur Curie
+
+# < insert here variables definitions > !!! DO NOT REMOVE THIS LINE (used by submitjob) !!!
+
+
+#############################   from header.DATARMOR  #############################
+#===============================================================================
+#  only for JEAN-ZAY
+#===============================================================================
+
+#-------------------------------------------------------------------------------
+#  where do we get the input files?
+#-------------------------------------------------------------------------------
+export INPUTDIRO="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
+export INPUTDIRA="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
+export INPUTDIRW="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
+export INPUTDIRC="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
+export INPUTDIRX="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
+#-------------------------------------------------------------------------------
+#  where do we execute the job?
+#-------------------------------------------------------------------------------
+export EXEDIR_ROOT="/gpfswork/rech/khe/umi89tk/run_dir/BENGUELA_oce_frc/execute"
+#-------------------------------------------------------------------------------
+#  where do we store the output files?
+#-------------------------------------------------------------------------------
+export OUTPUTDIR_ROOT="${EXEDIR_ROOT}/../outputs"
+export RESTDIR_ROOT="${EXEDIR_ROOT}/../restarts"
+
+#-------------------------------------------------------------------------------
+#  To run the models
+#-------------------------------------------------------------------------------
+#export EXEC="time -p ccc_mprun ./nemo.exe"
+#export EXEC="time -p mpirun -np 64  ./nemo.exe"
+#export EXEC="time -p mpirun -np 64  ./nemo.exe  :  -np 1 ./xios_server.exe"
+#export EXEC="time -p ccc_mprun -n $(( $JPNI * $JPNJ )) ./nemo.exe  :  -n $NXIOS ./xios_server.exe"
+
+#-------------------------------------------------------------------------------
+#  define the function to get/put files
+#-------------------------------------------------------------------------------
+export io_getfile="lnfile"
+export io_putfile="mvfile"
+
+#-------------------------------------------------------------------------------
+#  Multi-Step
+#-------------------------------------------------------------------------------
+LOADL_STEP_NAME="XXX"
+
