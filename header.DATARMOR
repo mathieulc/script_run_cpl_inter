@@ -18,6 +18,13 @@ set +x   #  set -x par defaut sur Curie
 #===============================================================================
 #  only for DATARMOR  
 #===============================================================================
+#-------------------------------------------------------------------------------
+# where do we get the executables
+#-------------------------------------------------------------------------------
+export WRF_EXE_DIR=$wrf/exe_coupled_xios
+export WW3_EXE_DIR=$ww3/exe_owa_BENGUELA
+export CROCO_EXE_DIR=$hconf/croco_in
+export XIOS_EXE_DIR=$xiosdir/bin
 
 #-------------------------------------------------------------------------------
 #  where do we get the input files?

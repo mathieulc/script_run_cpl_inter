@@ -23,6 +23,13 @@ set +x   #  set -x par defaut sur Curie
 #===============================================================================
 #  only for JEAN-ZAY
 #===============================================================================
+#-------------------------------------------------------------------------------
+# where do we get the executables
+#-------------------------------------------------------------------------------
+export WRF_EXE_DIR="$HOME/WRF/exe_coupled_xios"
+export WW3_EXE_DIR="$HOME/WW3/exe_owa_BENGUELA"
+export CROCO_EXE_DIR="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_in"
+export XIOS_EXE_DIR="$HOME/XIOS/bin"
 
 #-------------------------------------------------------------------------------
 #  where do we get the input files?
