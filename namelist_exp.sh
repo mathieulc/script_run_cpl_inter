@@ -228,7 +228,7 @@ elif [ ${MACHINE} == "VARGAS" ]; then
 elif [ ${MACHINE} == "JEANZAY" ]; then
    export QSUB="sbatch"
    export COMPUTER="JEANZAY"
-elif [ ${MACHINE} == "DATARMR" ]; then
+elif [ ${MACHINE} == "DATARMOR" ]; then
    export QSUB="qsub"
    export COMPUTER="DATARMOR"
 else
