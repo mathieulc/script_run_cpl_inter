@@ -56,14 +56,6 @@ export OUTPUTDIR_ROOT="${SCRATCHDIR}/${CONFIG}/outputs"
 export   RESTDIR_ROOT="${SCRATCHDIR}/${CONFIG}/restarts"
 
 #-------------------------------------------------------------------------------
-#  To run the models
-#-------------------------------------------------------------------------------
-#export EXEC="time -p ccc_mprun ./nemo.exe"
-#export EXEC="time -p mpirun -np 64  ./nemo.exe"
-#export EXEC="time -p mpirun -np 64  ./nemo.exe  :  -np 1 ./xios_server.exe"
-#export EXEC="time -p ccc_mprun -n $(( $JPNI * $JPNJ )) ./nemo.exe  :  -n $NXIOS ./xios_server.exe"
-
-#-------------------------------------------------------------------------------
 #  define the function to get/put files
 #-------------------------------------------------------------------------------
 export io_getfile="lnfile"

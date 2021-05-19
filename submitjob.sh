@@ -50,7 +50,8 @@ fi
 [ ${USE_OCE}  -eq 1 ] && TOTOCE=$NP_CRO  || TOTOCE=0
 [ ${USE_ATM}  -eq 1 ] && TOTATM=$NP_WRF  || TOTATM=0
 [ ${USE_WW3}  -eq 1 ] && TOTWW3=$NP_WW3  || TOTWW3=0
-[ ${USE_XIOS} -eq 1 ] && TOTXIO=$NP_XIOS || TOTXIO=0
+[ ${USE_XIOS_ATM} -eq 1 ] && TOTXIO=$NP_XIOS_ATM || TOTXIO=0
+[ ${USE_XIOS_OCE} -eq 1 ] && TOTXIO=$(( ${TOTXIO} + ${NP_XIOS_OCE} ))
 totalcore=$(( $TOTOCE + $TOTATM + $TOTWW3 + $TOTXIO ))
 [ ${COMPUTER} == "DATARMOR" ] && totalcore=$(( $totalcore /29 +1))
 

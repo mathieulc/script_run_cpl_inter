@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -q mpi_<nmpi>
-#PBS -l select=1:ncpus=28:mpiprocs=13:mem=115g
+#PBS -l select=1:ncpus=28:mpiprocs=28:mem=115g
 #PBS -l walltime=24:00:00
 #PBS -N <exp> 
 cd $PBS_O_WORKDIR
@@ -44,14 +44,6 @@ export EXEDIR_ROOT="${SCRATCH}/${CONFIG}/execute"
 #-------------------------------------------------------------------------------
 export OUTPUTDIR_ROOT="${SCRATCH}/${CONFIG}/outputs_cpl_oa"
 export RESTDIR_ROOT="${SCRATCH}/${CONFIG}/restarts_cpl_oa"
-
-#-------------------------------------------------------------------------------
-#  To run the models
-#-------------------------------------------------------------------------------
-#export EXEC="time -p ccc_mprun ./nemo.exe"
-#export EXEC="time -p mpirun -np 64  ./nemo.exe"
-#export EXEC="time -p mpirun -np 64  ./nemo.exe  :  -np 1 ./xios_server.exe"
-#export EXEC="time -p ccc_mprun -n $(( $JPNI * $JPNJ )) ./nemo.exe  :  -n $NXIOS ./xios_server.exe"
 
 #-------------------------------------------------------------------------------
 #  define the function to get/put files

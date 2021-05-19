@@ -3,14 +3,17 @@
 #-------------------------------------------------------------------------------
 
 
-for dom in `seq 1 $NB_dom`; do
-  
-    mv wrfout_d0${dom}_${YEAR_BEGIN_JOB}-* ${OUTPUTDIR}/wrfout_d0${dom}_${DATE_BEGIN_JOB}_${DATE_END_JOB}.nc
-    mv wrfxtrm_d0${dom}_${YEAR_BEGIN_JOB}-* ${OUTPUTDIR}/wrfxtrm_d0${dom}_${DATE_BEGIN_JOB}_${DATE_END_JOB}.nc
+if [ ${USE_XIOS_ATM} -eq 1 ] ; then
+    for file in ${ATM_XIOS_NAME}; do
+        mv ${file}* ${OUTPUTDIR}/${file}_${DATE_BEGIN_JOB}_${DATE_END_JOB}.nc
+    done
+else
+    for dom in `seq 1 $NB_dom`; do
+        mv wrfout_d0${dom}_${YEAR_BEGIN_JOB}-* ${OUTPUTDIR}/wrfout_d0${dom}_${DATE_BEGIN_JOB}_${DATE_END_JOB}.nc
+        mv wrfxtrm_d0${dom}_${YEAR_BEGIN_JOB}-* ${OUTPUTDIR}/wrfxtrm_d0${dom}_${DATE_BEGIN_JOB}_${DATE_END_JOB}.nc
+   done
+fi
 
-#    rm -f wrfout_d0${dom}_${YEAR_BEGIN_JOB}-*
-#    rm -f wrfxtrm_d0${dom}_${YEAR_BEGIN_JOB}-*
-done
 #-------------------------------------------------------------------------------
 #                                                                      Restart
 #-------------------------------------------------------------------------------

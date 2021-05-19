@@ -35,11 +35,11 @@ cd ${EXEDIR}
 	    [ ${USE_OCE}  -eq 1 ] && cpfile ${CROCO_EXE_DIR}/croco.${RUN} crocox
 	    [ ${USE_ATM}  -eq 1 ] && cpfile ${WRF_EXE_DIR}/wrf.exe wrfexe
 	    [ ${USE_WW3}  -eq 1 ] && cp ${WW3_EXE_DIR}/ww3_* . && mv ww3_shel wwatch
-	    [ ${USE_XIOS} -eq 1 ] && cpfile ${XIOS_EXE_DIR}/xios_server.exe .
+	    [ ${USE_XIOS} -ge 1 ] && cpfile ${XIOS_EXE_DIR}/xios_server.exe .
 
         printf "\n ************* PARAMETER files *****************\n"
 # if xios
-        [ ${USE_XIOS} -eq 1 ] && {  for file in ${FILIN_XIOS}; do cpfile ${INPUTDIRX}/${file} . ; done; echo ""; }
+        [ ${USE_XIOS} -ge 1 ] && {  for file in ${FILIN_XIOS}; do cpfile ${INPUTDIRX}/${file} . ; done; echo ""; }
 
 # ocean/atmosphere input files (configuration, forcing, obc, levitus/restart...)
 
@@ -102,6 +102,9 @@ cd ${EXEDIR}
 	if [ ${USE_ATM} -eq 1 ]; then
 #	    echo "-np $NP_WRF ./wrfexe" >> app.conf
             run_cmd="$MPI_LAUNCH_CMD -n ${NP_WRF} wrfexe"
+            if [ ${USE_XIOS_ATM} -eq 1 ]; then
+                run_cmd="$run_cmd : -n ${NP_XIOS_ATM} xios_server.exe"
+            fi
 	fi
 
         if [ ${USE_OCE} -eq 1 ]; then
@@ -112,11 +115,11 @@ cd ${EXEDIR}
                 echo $USE_CPL
                 run_cmd="$MPI_LAUNCH_CMD -n $NP_CRO crocox"
             fi
+            if [ ${USE_XIOS_OCE} -eq 1 ]; then
+                run_cmd="$run_cmd : -n ${NP_XIOS_OCE} xios_server.exe"
+            fi
         fi
 
-	if [ ${USE_XIOS} -eq 1 ]; then
-	    run_cmd="$run_cmd : -n ${NP_XIOS} xios_server.exe" 
-	fi
 	#
 
         if [ ${USE_WW3} -eq 1 ]; then
