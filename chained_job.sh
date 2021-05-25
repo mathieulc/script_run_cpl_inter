@@ -14,9 +14,14 @@ elif [ ${MACHINE} == "IRENE" ]; then
 elif [ ${MACHINE} == "JEANZAY" ]; then
     ${QSUB} -H ${jobname}
     sub_ext=".sh"
-    launchcmd="--dependency=afterok:$( echo `squeue -u ${USER}` | cut -d " " -f 9 )"
-    firstjobid=$( echo `squeue -u ${USER}` | cut -d " " -f 9 )
-    cnt=0
+    prejobname=${ROOT_NAME_1}
+    echo "$( squeue --format="%.18i %.100j" -u $USER )" >tmp.text
+    cnt=$(( $(wc -l tmp.text | awk '{ print $1 }') + 1 ))
+    for linenb in `seq 1 $cnt`; do 
+        line=$(sed -n "${linenb}p" tmp.text  )
+	[[ $line == *"${prejobname}"* ]] && { prejobid=$( echo ${line} | cut -c 1-7 ); break; }       
+    done
+    firstjobid=${prejobid}
 else
     printf "\n\n Chained job for your machine is not set up yet, we stop...\n\n" && exit 1
 
@@ -80,16 +85,23 @@ while [ ${newedate} -lt ${DATE_END_EXP} ] ; do
 #
     elif [ ${MACHINE} == "JEANZAY" ] ; then
 	newjobname="${CEXPER}_${newsdate}_${newedate}${MODE_TEST}"
-	prevjobid=$(( 9 + 8 * ${cnt} ))
-	cnt=$(( ${cnt} + 1 ))
 	sed -e "s/#SBATCH --job-name=.*/#SBATCH --job-name=${newjobname}/" \
 	    -e "s/#SBATCH --output=.*/#SBATCH --output=${newjobname}.out/" \
 	    -e "s/#SBATCH --error=.*/#SBATCH --error=${newjobname}.out/" \
 	${future_job} > ${future_job}.tmp
 	mv ${future_job}.tmp ${future_job}
 	chmod 755 ${future_job}
+	echo "$( squeue --format="%.18i %.100j" -u $USER )" >tmp.text
+        for linenb in `seq 1 $cnt`; do
+            line=$(sed -n "${linenb}p" tmp.text  )
+            [[ $line == *"${prejobname}"* ]] && { prejobid=$( echo ${line} | cut -c 1-7 ); break; }
+        done
+        \rm -f tmp.text
+        #
+        cnt=$(( ${cnt} + 1 ))
+	launchcmd="--dependency=afterok:${prejobid}"
         ${QSUB} ${launchcmd} ${future_job}
-	launchcmd="--dependency=afterok:$( echo `squeue -u ${USER}` | cut -d " " -f ${prevjobid} )"
+	prejobname="${newjobname}"
         cd ${SCRIPTDIR}
 
     fi
