@@ -36,14 +36,15 @@ What to do before running the experiment :
 ------------------------------------------
 
 - The first thing to do is to eddit your header.*MACHINE* or to create one if not in the list. In this file you need to put:
+        * the EXE_DIR, where to find executable for each model
 	* The INPUTDIR, for Ocean, Atmosphere, Wave, Coupling. It corresponds to where ALL forcing files are.
 	* EXEDIR_ROOT , where you want to run your job
 	* OUTPUTDIR_ROOT  , where to put the ouput files
 	* RESTDIR_ROOT    , where to put the restart files
 	
-- Then eddit module.sh if your machine is not in the list. Be careful, for some machine when you submit a job the hostname is changing which might have an impact on the proper functioning of the script. To avoid this problem, put your machine configuration in the "else"
+- Then eddit module.sh if your machine is not in the list. Please eddit l.4 so it matches with your script dir 
 
-- Finally you need to complete the "namelist_exp.sh". It is where you put ALL the informations about your experiement. You need to decide which model(s) to use, the time step, namelist, frequency for output,... . If your machine is not in the list you also need to eddit last part about "WHICH COMPUTER" you are using. As for module.sh put you machine in the "else" to avoid error during the loop. BE CAREFUL about your jobname extension, it's ".pbs" for datarmor but might be any other thing. 
+- Finally you need to complete the "namelist_exp.sh". It is where you put ALL the informations about your experiement. You need to decide which model(s) to use, the time step, namelist, frequency for output,... . If your machine is not in the list you also need to eddit last part about "WHICH COMPUTER" you are using. BE CAREFUL about your jobname extension, it's ".pbs" for datarmor but might be any other thing. 
 
 Some informations before running :
 ----------------------------------

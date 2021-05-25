@@ -1,7 +1,7 @@
 
 
 #########################   LOAD MODULE  ########################
-file=../script_run_cpl_inter/namelist_exp.sh
+file=../scripts/namelist_exp.sh
 MACHINE=$( echo $(cat $file) | cut -d '"' -f 2) 
 
 if [ ${MACHINE} == "CURIE" ]; then
@@ -19,6 +19,8 @@ if [ ${MACHINE} == "CURIE" ]; then
 #  module load netcdf/4.2_hdf5_parallel
 #  module load hdf5/1.8.9_parallel
 elif [ ${MACHINE} == "IRENE" ]; then
+  export MPI_LAUNCH=ccc_mprun
+  export MPI_ext="-f"
   module purge
   module load intel/17.0.6.256
   module load mpi/openmpi/2.0.4
@@ -56,7 +58,8 @@ elif [ ${MACHINE} == "VARGAS" ]; then
 
 elif [ ${MACHINE} == "JEANZAY" ]; then
 
-  export MPI_LAUNCH=srun 
+  export MPI_LAUNCH=srun
+  export MPI_ext="--multi-prog" 
   source ../run_env
   module load intel-compilers/19.0.4
   module load netcdf/4.7.2-mpi
@@ -65,7 +68,7 @@ elif [ ${MACHINE} == "JEANZAY" ]; then
   export ncomod='nco'
 
 elif [ ${MACHINE} == "DATARMOR" ]; then
-
+  export MPI_ext="-configfile"
   source ~/.bashrc
   source ../run_env
   export ncomod='nco/4.6.4_gcc-6.3.0'

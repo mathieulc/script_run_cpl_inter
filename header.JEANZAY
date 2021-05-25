@@ -38,7 +38,7 @@ export INPUTDIRO="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files
 export INPUTDIRA="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
 export INPUTDIRW="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
 export INPUTDIRC="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
-export INPUTDIRX="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
+export INPUTDIRX="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/xios_files_croco_frc"
 #-------------------------------------------------------------------------------
 #  where do we execute the job?
 #-------------------------------------------------------------------------------
@@ -48,6 +48,14 @@ export EXEDIR_ROOT="/gpfswork/rech/khe/umi89tk/run_dir/BENGUELA_oce_frc/execute"
 #-------------------------------------------------------------------------------
 export OUTPUTDIR_ROOT="${EXEDIR_ROOT}/../outputs"
 export RESTDIR_ROOT="${EXEDIR_ROOT}/../restarts"
+
+#-------------------------------------------------------------------------------
+#  To run the models
+#-------------------------------------------------------------------------------
+#export EXEC="time -p ccc_mprun ./nemo.exe"
+#export EXEC="time -p mpirun -np 64  ./nemo.exe"
+#export EXEC="time -p mpirun -np 64  ./nemo.exe  :  -np 1 ./xios_server.exe"
+#export EXEC="time -p ccc_mprun -n $(( $JPNI * $JPNJ )) ./nemo.exe  :  -n $NXIOS ./xios_server.exe"
 
 #-------------------------------------------------------------------------------
 #  define the function to get/put files

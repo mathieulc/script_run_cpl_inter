@@ -8,6 +8,9 @@ elif [ ${MACHINE} == "IRENE" ]; then
     ${QSUB} ${jobname}
     sub_ext=".sh"
     prejobname=${ROOT_NAME_1}
+    echo "$( ccc_mstat -f -u $USER )" >tmp.text
+    cnt=$(( $(wc -l tmp.text | awk '{ print $1 }') + 1 )) # check if there are already jobs running
+    \rm -f tmp.text  
 elif [ ${MACHINE} == "JEANZAY" ]; then
     ${QSUB} -H ${jobname}
     sub_ext=".sh"
@@ -53,9 +56,26 @@ while [ ${newedate} -lt ${DATE_END_EXP} ] ; do
         launchcmd="-W depend=afterany:$( echo $( qselect -N ${newjobname}) | cut -c 1-7 )"
         cd ${SCRIPTDIR}
 #
-    elif [ ${MACHINE} == "IRENE" ] ; then 
-        ${QSUB} -a ${prejobname} ${future_job} 
-        prejobname="${CEXPER}_${newsdate}_${newedate}${MODE_TEST}"
+    elif [ ${MACHINE} == "IRENE" ] ; then
+        # 
+        newjobname="${CEXPER}_${newsdate}_${newedate}${MODE_TEST}"
+        sed -e "s/#MSUB -r .*/#MSUB -r ${newjobname}/" \
+            -e "s/#MSUB -o .*/#MSUB -o ${newjobname}.jobid_%I.o/" \
+            -e "s/#MSUB -e .*/#MSUB -e ${newjobname}.jobid_%I.e/" \
+        ${future_job} > ${future_job}.tmp
+        mv ${future_job}.tmp ${future_job}
+        chmod 755 ${future_job}
+        #
+        echo "$( ccc_mstat -f -u $USER )" >tmp.text
+        for linenb in `seq 3 $cnt`; do
+            line=$(sed -n "${linenb}p" tmp.text  )
+            [[ $line == *"${prejobname}"* ]] && { prejobid=$( echo ${line} | cut -c 1-7 ); break; }
+        done
+        \rm -f tmp.text
+        #
+        cnt=$(( ${cnt} + 1 ))
+        ${QSUB} -a ${prejobid} ${future_job} 
+        prejobname="${newjobname}"
         cd ${SCRIPTDIR} 
 #
     elif [ ${MACHINE} == "JEANZAY" ] ; then

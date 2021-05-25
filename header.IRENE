@@ -1,19 +1,14 @@
 #!/bin/bash
-#===============================================================================
-#                      header to submit a MPI batch job 
-#===============================================================================
-
-# Type ccc_mprun -h for an updated and complete documentation.
-
 #MSUB -r <exp>       # request name
-#MSUB -o <exp>.jobid_%I.txt
-#MSUB -e <exp>.jobid_%I.txt
+#MSUB -o <exp>.jobid_%I.o
+#MSUB -e <exp>.jobid_%I.e
 #MSUB -j oe          #  VERIFIER que c'est OK sur Curie XXX
 #MSUB -n <nmpi>        # Total number of mpi task to use
-#MSUB -T <time_second>        
+#MSUB -T 86400        
 #MSUB -x
-#MSUB -q standard  
+#MSUB -q skylake 
 #MSUB -A gen6895
+#MSUB -m scratch,store,work
 #===============================================================================
 
 umask 022
@@ -35,25 +30,26 @@ cd ${BRIDGE_MSUB_PWD}
 export WRF_EXE_DIR=$wrf/exe_coupled_xios
 export WW3_EXE_DIR=$ww3/exe_owa_BENGUELA
 export CROCO_EXE_DIR=$hconf/croco_in
-export XIOS_EXE_DIR=$xiosdir/bin
+export XIOS_EXE_DIR=$CCCHOME/XIOS/bin
 
 #-------------------------------------------------------------------------------
 #  where do we get the input files?
 #-------------------------------------------------------------------------------
-export INPUTDIRO="/ccc/work/cont005/ra0542/massons/now/input/croco_pech12"
-export INPUTDIRA="/ccc/work/cont005/ra0542/massons/now/input/wrf_pech025l40"
-export INPUTDIRC="/ccc/work/cont005/ra0542/massons/now/input/cow_pech12025"
-
+export INPUTDIRO="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_oce_frc/croco_files_frc"
+export INPUTDIRA="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_oce_frc/croco_files_frc"
+export INPUTDIRW="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_oce_frc/croco_files_frc"
+export INPUTDIRC="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_oce_frc/croco_files_frc"
+export INPUTDIRX="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_oce_frc/croco_files_frc"
 #-------------------------------------------------------------------------------
 #  where do we execute the job?
 #-------------------------------------------------------------------------------
- export EXEDIR_ROOT="${SCRATCHDIR}/${CONFIG}/execute"
+ export EXEDIR_ROOT="/ccc/work/cont005/gen6895/lecorrma/run_dir/BENGUELA_oce_frc/execute"
 
 #-------------------------------------------------------------------------------
 #  where do we store the output files?
 #-------------------------------------------------------------------------------
-export OUTPUTDIR_ROOT="${SCRATCHDIR}/${CONFIG}/outputs"
-export   RESTDIR_ROOT="${SCRATCHDIR}/${CONFIG}/restarts"
+export OUTPUTDIR_ROOT="${EXEDIR_ROOT}/../outputs"
+export   RESTDIR_ROOT="${EXEDIR_ROOT}/../restarts"
 
 #-------------------------------------------------------------------------------
 #  define the function to get/put files

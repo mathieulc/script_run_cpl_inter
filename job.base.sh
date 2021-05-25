@@ -98,44 +98,72 @@ cd ${EXEDIR}
 #        echo "${EXEC} > out_run.txt 2>&1" 
 #              ${EXEC} > out_run.txt 2>&1
 
-	run_cmd=""
-	if [ ${USE_ATM} -eq 1 ]; then
-#	    echo "-np $NP_WRF ./wrfexe" >> app.conf
-            run_cmd="$MPI_LAUNCH_CMD -n ${NP_WRF} wrfexe"
-            if [ ${USE_XIOS_ATM} -eq 1 ]; then
-                run_cmd="$run_cmd : -n ${NP_XIOS_ATM} xios_server.exe"
-            fi
-	fi
+#	run_cmd=""
+    [ ${MACHINE} == "JEANZAY" ] && { mystartproc=0 ; }
 
-        if [ ${USE_OCE} -eq 1 ]; then
-#           echo "-np $NP_CRO ./crocox" >> app.conf
-            if [ ! -z "$run_cmd" ] ; then
-                run_cmd="$run_cmd : -n $NP_CRO crocox"
-            else
-                echo $USE_CPL
-                run_cmd="$MPI_LAUNCH_CMD -n $NP_CRO crocox"
+    if [ ${USE_ATM} -eq 1 ]; then
+#
+       if [ ${MACHINE} == "JEANZAY" ]; then
+           myendproc=$(( ${NP_WRF} - 1 ))
+           mod_Str=$mystartproc"-"$myendproc
+           echo "$mod_Str ./wrfexe" >> app.conf
+           if [ ${USE_XIOS_ATM} -eq 1 ]; then
+               mystartproc=$(( ${myendproc} + 1 )) 
+               myendproc=$(( ${mystartproc} + ${NP_XIOS_ATM} - 1 ))
+               mod_Str=$mystartproc"-"$myendproc
+               echo "${NP_XIOS_ATM} ./xios_server.exe" >> app.conf
+           fi
+#
+       else
+           echo "${NP_WRF} ./wrfexe" >> app.conf
+           if [ ${USE_XIOS_ATM} -eq 1 ]; then
+                echo "${NP_XIOS_ATM} ./xios_server.exe" >> app.conf
             fi
+       fi
+    fi
+#
+    if [ ${USE_OCE} -eq 1 ]; then
+        if [ ${MACHINE} == "JEANZAY" ]; then
+            [ ${USE_ATM} -eq 1 ] && { mystartproc=$(( ${myendproc} + 1 )) ; myendproc=$(( ${mystartproc} + ${NP_CRO} - 1 )); } || { myendproc=$(( ${NP_CRO} - 1 )) ; }
+            mod_Str=$mystartproc"-"$myendproc
+            echo "$mod_Str ./crocox" >> app.conf
             if [ ${USE_XIOS_OCE} -eq 1 ]; then
-                run_cmd="$run_cmd : -n ${NP_XIOS_OCE} xios_server.exe"
+                mystartproc=$(( ${myendproc} + 1 ))
+                myendproc=$(( ${mystartproc} + ${NP_XIOS_OCE} - 1 ))
+                mod_Str=$mystartproc"-"$myendproc
+                echo "${mod_Str} ./xios_server.exe" >> app.conf
+            fi
+#
+        else
+            echo "${NP_CRO} ./crocox croco.in" >> app.conf
+     	    if [ ${USE_XIOS_OCE} -eq 1 ]; then
+                echo "${NP_XIOS_OCE} ./xios_server.exe" >> app.conf
+#                run_cmd="$run_cmd : -n ${NP_XIOS_OCE} xios_server.exe"
             fi
         fi
-
-	#
-
-        if [ ${USE_WW3} -eq 1 ]; then
-           run_cmd="$run_cmd : -n $NP_WW3 wwatch"
-	fi
-#        echo ${app.conf}
-#	. $HOME/loadnew.sh
-#	export OMPI_MCA_btl_openib_ib_timeout=20
-#	echo "striping_unit 1048576" > my_hints
-#	echo "striping_factor $NXIOS" >> my_hints
-#	export ROMIO_HINTS=./my_hints
+    fi
+#
+    if [ ${USE_WW3} -eq 1 ]; then
+        if [ ${MACHINE} == "JEANZAY" ]; then
+            if [ ${USE_ATM} -eq 1 ] || [ ${USE_OCE} -eq 1 ]; then
+                mystartproc=$(( ${myendproc} + 1 ))
+                myendproc=$(( ${mystartproc} + ${NP_WW3} - 1 ))
+            else
+                myendproc=$(( ${NP_WW3} - 1 )) 
+            fi
+            mod_Str=$mystartproc"-"$myendproc
+            echo "${mod_Str} ./wwatch" >> app.conf
+        else
+           echo "${NP_WW3} wwatch" >> app.conf
+        fi
+#           run_cmd="$run_cmd : -n $NP_WW3 wwatch"
+    fi
 #        if [ ${COMPUTER}  == "DATARMOR" ]; then       
-	echo 'launch run: ' ${run_cmd} #$app.conf
+	echo "launch run: $MPI_LAUNCH ${MPI_ext} app.conf " #${run_cmd} #$app.conf
 
 ##### RUN ######
-${run_cmd} #app.conf
+time $MPI_LAUNCH ${MPI_ext} app.conf > out_run.txt 2>&1
+#${run_cmd} #app.conf
 ################
 #        fi
 #	time ccc_mprun -f app.conf > out_run.txt 2>&1
@@ -213,6 +241,10 @@ cd ${EXEDIR}
         FILES_JOB="${jobname}"
         if [ ${COMPUTER} == "VARGAS" ] ; then
             FILES_JOB="${FILES_JOB} ${ROOT_NAME_1}.get_file.jobid_*.txt ${ROOT_NAME_1}.run_model.jobid_*.txt ${ROOT_NAME_1}.put_file.jobid_*.txt " 
+        elif [ ${COMPUTER} == "IRENE" ]; then
+            FILES_JOB="${FILES_JOB} ${ROOT_NAME_1}*.o ${ROOT_NAME_1}*.e"
+        elif [ ${COMPUTER} == "JEANZAY" ]; then
+            FILES_JOB="${FILES_JOB} ${ROOT_NAME_1}.out"
         else
             FILES_JOB="${FILES_JOB} ${ROOT_NAME_1}.jobid_*.txt ${ROOT_NAME_1}.o*"
         fi
