@@ -97,68 +97,8 @@ cd ${EXEDIR}
 #       time -p ./nemo.exe > out_run.txt 2>&1
 #        echo "${EXEC} > out_run.txt 2>&1" 
 #              ${EXEC} > out_run.txt 2>&1
-
-#	run_cmd=""
-    [ ${MACHINE} == "JEANZAY" ] && { mystartproc=0 ; }
-
-    if [ ${USE_ATM} -eq 1 ]; then
-#
-       if [ ${MACHINE} == "JEANZAY" ]; then
-           myendproc=$(( ${NP_WRF} - 1 ))
-           mod_Str=$mystartproc"-"$myendproc
-           echo "$mod_Str ./wrfexe" >> app.conf
-           if [ ${USE_XIOS_ATM} -eq 1 ]; then
-               mystartproc=$(( ${myendproc} + 1 )) 
-               myendproc=$(( ${mystartproc} + ${NP_XIOS_ATM} - 1 ))
-               mod_Str=$mystartproc"-"$myendproc
-               echo "${NP_XIOS_ATM} ./xios_server.exe" >> app.conf
-           fi
-#
-       else
-           echo "${NP_WRF} ./wrfexe" >> app.conf
-           if [ ${USE_XIOS_ATM} -eq 1 ]; then
-                echo "${NP_XIOS_ATM} ./xios_server.exe" >> app.conf
-            fi
-       fi
-    fi
-#
-    if [ ${USE_OCE} -eq 1 ]; then
-        if [ ${MACHINE} == "JEANZAY" ]; then
-            [ ${USE_ATM} -eq 1 ] && { mystartproc=$(( ${myendproc} + 1 )) ; myendproc=$(( ${mystartproc} + ${NP_CRO} - 1 )); } || { myendproc=$(( ${NP_CRO} - 1 )) ; }
-            mod_Str=$mystartproc"-"$myendproc
-            echo "$mod_Str ./crocox" >> app.conf
-            if [ ${USE_XIOS_OCE} -eq 1 ]; then
-                mystartproc=$(( ${myendproc} + 1 ))
-                myendproc=$(( ${mystartproc} + ${NP_XIOS_OCE} - 1 ))
-                mod_Str=$mystartproc"-"$myendproc
-                echo "${mod_Str} ./xios_server.exe" >> app.conf
-            fi
-#
-        else
-            echo "${NP_CRO} ./crocox croco.in" >> app.conf
-     	    if [ ${USE_XIOS_OCE} -eq 1 ]; then
-                echo "${NP_XIOS_OCE} ./xios_server.exe" >> app.conf
-#                run_cmd="$run_cmd : -n ${NP_XIOS_OCE} xios_server.exe"
-            fi
-        fi
-    fi
-#
-    if [ ${USE_WW3} -eq 1 ]; then
-        if [ ${MACHINE} == "JEANZAY" ]; then
-            if [ ${USE_ATM} -eq 1 ] || [ ${USE_OCE} -eq 1 ]; then
-                mystartproc=$(( ${myendproc} + 1 ))
-                myendproc=$(( ${mystartproc} + ${NP_WW3} - 1 ))
-            else
-                myendproc=$(( ${NP_WW3} - 1 )) 
-            fi
-            mod_Str=$mystartproc"-"$myendproc
-            echo "${mod_Str} ./wwatch" >> app.conf
-        else
-           echo "${NP_WW3} wwatch" >> app.conf
-        fi
-#           run_cmd="$run_cmd : -n $NP_WW3 wwatch"
-    fi
-#        if [ ${COMPUTER}  == "DATARMOR" ]; then       
+        printf "\n ***************** make app.conf file for Multiple Program Multiple Data *****************\n"
+        [ -f launch_${MACHINE}.sh ] && { ./launch_${MACHINE}.sh ; } || { printf "\n Please create a file launch_${MACHINE}.sh \n" ; exit 0 ; }       
 	echo "launch run: $MPI_LAUNCH ${MPI_ext} app.conf " #${run_cmd} #$app.conf
 
 ##### RUN ######
