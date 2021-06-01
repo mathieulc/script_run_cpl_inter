@@ -28,6 +28,6 @@ sed -e "s/<yr1>/${YEAR_BEGIN_JOB}/g"   -e "s/<yr2>/${YEAR_END_JOB}/g"  \
     -e "s/<nproc_x>/${wrf_nprocX}/g"            -e "s/<nproc_y>/${wrf_nprocY}/g"             \
     -e "s/<niotaskpg>/${wrf_niotaskpg}/g"       -e "s/<niogp>/${wrf_niogp}/g"                \
     -e "s/<dt>/${TSP_ATM}/g"                    \
-    $WRF_IN_DIR/${wrfnamelist} > ./namelist.input
+    $WRF_NAMEDIR/${wrfnamelist} > ./namelist.input
 
 

@@ -6,12 +6,12 @@ if [ ! -d ${WRF_EXE_DIR}/../data ] ; then
  mkdir ${WRF_EXE_DIR}/../data
  ln -s ${WRF_EXE_DIR}/../run/* ${WRF_EXE_DIR}/data/.
  # remove executables that could exist and namelist file
- rm -f ${WRF_EXE_DIR}/data/*.exe
- rm -f ${WRF_EXE_DIR}/data/namelist.input*
+ rm -f ${WRF_EXE_DIR}/../data/*.exe
+ rm -f ${WRF_EXE_DIR}/../data/namelist.input*
 fi
 echo 'link wrf data files'
 echo "ln -sf ${WRF_EXE_DIR}/../data/* ."
-ln -sf ${WRF_EXE_DIR}/data/* .
+ln -sf ${WRF_EXE_DIR}/../data/* .
 
 ms=$( printf "%02d"  ${MONTH_BEGIN_EXP} )
 me=$(printf "%02d"  ${MONTH_END_EXP} )

@@ -39,6 +39,14 @@ export INPUTDIRA="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files
 export INPUTDIRW="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
 export INPUTDIRC="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
 export INPUTDIRX="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/xios_files_croco_frc"
+
+#-------------------------------------------------------------------------------
+#  where do we get the namelist files?
+#-------------------------------------------------------------------------------
+export OCE_NAMEDIR="croco_in"
+export WRF_NAMEDIR="wrf_in"
+export WW3_NAMEDIR="ww3_in/inputs_ww3" # 
+export CPL_NAMEDIR="oasis_in/inputs_oasis"
 #-------------------------------------------------------------------------------
 #  where do we execute the job?
 #-------------------------------------------------------------------------------

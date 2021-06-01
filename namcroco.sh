@@ -39,11 +39,11 @@ do
     if [ ${nn} -gt 0 ] 
     then
 	namfile=croco.in.${nn}
-	cp ${CROCO_IN_DIR}/${nn}_croco.in.base ${namfile}
+	cp ${OCE_NAMEDIR}/${nn}_croco.in.base ${namfile}
 	SUBTIME=$( sed -n -e "$(( 2 * ${nn} )) p" AGRIF_FixedGrids.in | awk '{print $7 }' )
     else
 	namfile=croco.in
-	cp ${CROCO_IN_DIR}/croco.in.base ${namfile}
+	cp ${OCE_NAMEDIR}/croco.in.base ${namfile}
 	SUBTIME=1
     fi
     TSP_OCE_2=$(( ${TSP_OCE} / ${SUBTIME} ))

@@ -3,8 +3,9 @@
 #-------------------------------------------------------------------------------
 if [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
 
+    module load $ncomod
     echo 'copy oasis scripts'
-    cp -f ${OASIS_IN_DIR}/*.sh ./ #cpfile2
+    cp -f ${INPUTDIRC}/*.sh ./ #cpfile2
 #
     if [ ${USE_ATM} -eq 1 ] ; then
         varlist='WRF_d01_EXT_d01_SURF_NET_SOLAR WRF_d01_EXT_d01_EVAP-PRECIP WRF_d01_EXT_d01_SURF_NET_NON-SOLAR WRF_d01_EXT_d01_TAUX WRF_d01_EXT_d01_TAUY WRF_d01_EXT_d01_TAUMOD WRF_d01_EXT_d01_WND_U_01 WRF_d01_EXT_d01_WND_V_01'
@@ -23,7 +24,7 @@ if [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
         echo 'create restart file for oasis from calm conditions for variables:'${varlist}
         ./create_oasis_restart_from_calm_conditions.sh ${ww3file} wav.nc ww3 "${varlist}"
     fi
-  
+    module unload $ncomod
 
 else   
     
