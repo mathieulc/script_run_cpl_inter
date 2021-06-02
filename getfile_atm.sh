@@ -4,7 +4,7 @@
 # link data files necessary for running wrf in a dedicated directory $wrf/data
 if [ ! -d ${WRF_EXE_DIR}/../data ] ; then
  mkdir ${WRF_EXE_DIR}/../data
- ln -s ${WRF_EXE_DIR}/../run/* ${WRF_EXE_DIR}/data/.
+ ln -s ${WRF_EXE_DIR}/../run/* ${WRF_EXE_DIR}/../data/.
  # remove executables that could exist and namelist file
  rm -f ${WRF_EXE_DIR}/../data/*.exe
  rm -f ${WRF_EXE_DIR}/../data/namelist.input*
