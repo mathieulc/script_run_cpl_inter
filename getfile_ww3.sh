@@ -4,7 +4,7 @@ echo ' '
 echo '-- WW3 inputs --------------'
 echo 'copy and fill ww3 settings files *.inp'
 
-cp ${WW3_NAMEDIR}/inputs_ww3/*.inp .
+cp ${WW3_NAMEDIR}/*.inp .
 
 ms=$( printf "%02d"  ${MONTH_BEGIN_JOB} )
 me=$( printf "%02d"  ${MONTH_END_JOB} )
