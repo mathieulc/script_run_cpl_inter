@@ -10,7 +10,7 @@ if [ ${USE_ATM} -eq 1 ]; then
         mystartproc=$(( ${myendproc} + 1 ))
         myendproc=$(( ${mystartproc} + ${NP_XIOS_ATM} - 1 ))
         mod_Str=$mystartproc"-"$myendproc
-        echo "${NP_XIOS_ATM} ./xios_server.exe" >> app.conf
+        echo "${mod_Str} ./xios_server.exe" >> app.conf
     fi
 
 fi
