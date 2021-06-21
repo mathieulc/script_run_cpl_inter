@@ -38,6 +38,7 @@ What to do before running the experiment :
 - The first thing to do is to eddit your header.*MACHINE* or to create one if not in the list. In this file you need to put:
         * the EXE_DIR, where to find executable for each model
 	* The INPUTDIR, for Ocean, Atmosphere, Wave, Coupling. It corresponds to where ALL forcing files are.
+        * *_NAMEDIR, where the located the namelist ( for ww3 is the path for the ww3_grid.inp, ww3_ounf.inp,...)
 	* EXEDIR_ROOT , where you want to run your job
 	* OUTPUTDIR_ROOT  , where to put the ouput files
 	* RESTDIR_ROOT    , where to put the restart files
@@ -54,9 +55,9 @@ Now that you have complete the different files you need to make sure about input
     ###	WRF ###
     -----------
 By default the input files for WRF have the following format:
-	- wrfbdy_d01_${YEAR_BEGIN_EXP}_${EXP}_${YEAR_END_EXP}_${MONTH_END_EXP}
-	- wrflowinp_d??_${YEAR_BEGIN_EXP}_${EXP}_${YEAR_END_EXP}_${MONTH_END_EXP}
-	- wrfinput_d??_${YEAR_BEGIN_EXP}_${EXP}_${YEAR_END_EXP}_${MONTH_END_EXP}
+	- wrfbdy_d01_${YEAR_BEGIN_EXP}_${MONTH_BEGIN_EXP}_${YEAR_END_EXP}_${MONTH_END_EXP}
+	- wrflowinp_d??_${YEAR_BEGIN_EXP}_${MONTH_BEGIN_EXP}_${YEAR_END_EXP}_${MONTH_END_EXP}
+	- wrfinput_d??_${YEAR_BEGIN_EXP}_${MONTH_BEGIN_EXP}_${YEAR_END_EXP}_${MONTH_END_EXP}
 
 Check getfile_atm.sh, getrst_atm.sh or putfile_atm for any changes. 
 
