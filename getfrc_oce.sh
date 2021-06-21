@@ -33,4 +33,13 @@ else
             exit 1
         fi
     done
+
+    if [ ${JOB_DUR_MTH} -eq 0 ] ; then
+        printf "Job duration is less than a month ---> Using netcdf of the current month"
+        cur_Y=$( echo $DATE_BEGIN_JOB | cut -c 1-4 )
+        cur_M=$( echo $DATE_BEGIN_JOB | cut -c 5-6 )
+	extend=$( echo $frc_ext | cut -c 1-3 )
+        ln -sf ${INPUTDIRO}/croco_${frc_ext}_Y${cur_Y}M${cur_M}.nc croco_${extend}.nc
+    fi
+
 fi
