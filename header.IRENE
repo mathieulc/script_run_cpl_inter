@@ -47,7 +47,8 @@ export INPUTDIRX="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_oce_frc/cro
 export OCE_NAMEDIR="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_cpl_owa/croco_in"
 export WRF_NAMEDIR="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_cpl_owa/wrf_in"
 export WW3_NAMEDIR="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_cpl_owa/ww3_in/inputs_ww3" # 
-export CPL_NAMEDIR="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_cpl_owa/oasis_in/inputs_oasis"#-------------------------------------------------------------------------------
+export CPL_NAMEDIR="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_cpl_owa/oasis_in/inputs_oasis"
+#-------------------------------------------------------------------------------
 #  where do we execute the job?
 #-------------------------------------------------------------------------------
  export EXEDIR_ROOT="/ccc/work/cont005/gen6895/lecorrma/run_dir/BENGUELA_oce_frc/execute"
