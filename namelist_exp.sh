@@ -191,7 +191,7 @@ export    RUNDIR=${PWD1%/*}
 #  Directories
 #-------------------------------------------------------------------------------
 export  JOBDIR_ROOT=${RUNDIR}/jobs_${CONFIG}
-export    SCRIPTDIR=${RUNDIR}/scripts
+export    SCRIPTDIR=${RUNDIR}/script_run_cpl_inter
 
 #-------------------------------------------------------------------------------
 #  Calendar computation
@@ -206,7 +206,7 @@ cd -
 export    ROOT_NAME_1="${CEXPER}_${DATE_BEGIN_JOB}_${DATE_END_JOB}${MODE_TEST}"
 export              ROOT_NAME_2="${DATE_BEGIN_JOB}_${DATE_END_JOB}${MODE_TEST}"
 export                                ROOT_NAME_3="${DATE_END_JOB}${MODE_TEST}"
-export    jobname="job_${ROOT_NAME_1}.pbs"
+export    jobname="job_${ROOT_NAME_1}.sh"  # File submitted. For DATRAMOR the extension is changed by .pbs
 
 #-------------------------------------------------------------------------------
 #  Job submission type
@@ -231,6 +231,7 @@ elif [ ${MACHINE} == "JEANZAY" ]; then
 elif [ ${MACHINE} == "DATARMOR" ]; then
    export QSUB="qsub"
    export COMPUTER="DATARMOR"
+   export jobname="job_${ROOT_NAME_1}.pbs"
 else
    printf "\n\n Machine unknown  => EXIT \n\n"; exit;
 fi

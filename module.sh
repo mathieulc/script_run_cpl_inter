@@ -1,7 +1,7 @@
 
 
 #########################   LOAD MODULE  ########################
-file=../scripts/namelist_exp.sh
+file=../script_run_cpl_inter/namelist_exp.sh
 MACHINE=$( echo $(cat $file) | cut -d '"' -f 2) 
 
 if [ ${MACHINE} == "CURIE" ]; then
