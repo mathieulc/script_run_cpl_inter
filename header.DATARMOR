@@ -30,6 +30,7 @@ export XIOS_EXE_DIR=$xiosdir/bin
 #  where do we get the input files?
 #-------------------------------------------------------------------------------
 export INPUTDIRO=$CROCO_FILES_DIR
+export INPUTDIRO_onlinefrc="" # When using online interpolation with CROCO
 export INPUTDIRA=$WRF_FILES_DIR
 export INPUTDIRW=$WW3_FILES_DIR
 export INPUTDIRC=$OASIS_FILES_DIR  #Where restart_from_calm condition.sh is located, help to define namelist too

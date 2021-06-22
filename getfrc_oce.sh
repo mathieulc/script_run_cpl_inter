@@ -10,16 +10,29 @@ if [ ${interponline} -eq 1 ]; then
     else
         vnames='Temperature_height_above_ground Specific_humidity Precipitation_rate Downward_Short-Wave_Rad_Flux_surface Upward_Short-Wave_Rad_Flux_surface Downward_Long-Wave_Rad_Flux Upward_Long-Wave_Rad_Flux_surface U-component_of_wind V-component_of_wind'
     fi
-#
-    for i in `seq 0 $(( ${JOB_DUR_MTH}-1 ))`; do
+#    
+    printf "Creating link to data for the job duration"
+    
+    for i in `seq -1 $(( ${JOB_DUR_MTH} ))`; do
+        [ ${i} -eq -1 ] && printf "Adding link to the previous month (for temporal interpolation)"
+        [ ${i} -eq ${JOB_DUR_MTH} ] && printf "Adding link to the following month (for temporal interpolation)"
+
         mdy=$( valid_date $(( $MONTH_BEGIN_JOB + $i )) $DAY_BEGIN_JOB $YEAR_BEGIN_JOB )
         cur_Y=$( printf "%04d\n"  $( echo $mdy | cut -d " " -f 3) )
         cur_M=$( printf "%02d\n"  $( echo $mdy | cut -d " " -f 1) )
   
         for varname in ${vnames} ; do
-        ${io_getfile} ${INPUTDIRO}/${varname}_Y${cur_Y}M${cur_M}.nc ./
+            ${io_getfile} ${INPUTDIRO_onlinefrc}/${varname}_Y${cur_Y}M${cur_M}.nc ./
         done
     done
+    if [ ${JOB_DUR_MTH} -eq 0 ] ; then
+        mdy=$( valid_date $(( $MONTH_BEGIN_JOB + 1 )) $DAY_BEGIN_JOB $YEAR_BEGIN_JOB )
+        cur_Y=$( printf "%04d\n"  $( echo $mdy | cut -d " " -f 3) )
+        cur_M=$( printf "%02d\n"  $( echo $mdy | cut -d " " -f 1) )
+        for varname in ${vnames} ; do
+            ${io_getfile} ${INPUTDIRO_onlinefrc}/${varname}_Y${cur_Y}M${cur_M}.nc ./
+        done
+    fi
 #
 else 
     for i in `seq 0 $(( ${JOB_DUR_MTH}-1 ))`; do

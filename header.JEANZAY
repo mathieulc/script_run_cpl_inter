@@ -35,6 +35,7 @@ export XIOS_EXE_DIR="$HOME/XIOS/bin"
 #  where do we get the input files?
 #-------------------------------------------------------------------------------
 export INPUTDIRO="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
+export INPUTDIRO_onlinefrc="" # When using online interpolation with CROCO
 export INPUTDIRA="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
 export INPUTDIRW="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"
 export INPUTDIRC="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_files_frc"

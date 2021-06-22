@@ -36,6 +36,7 @@ export XIOS_EXE_DIR=$CCCHOME/XIOS/bin
 #  where do we get the input files?
 #-------------------------------------------------------------------------------
 export INPUTDIRO="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_oce_frc/croco_files_frc"
+export INPUTDIRO_onlinefrc="" # When using online interpolation with CROCO
 export INPUTDIRA="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_oce_frc/croco_files_frc"
 export INPUTDIRW="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_oce_frc/croco_files_frc"
 export INPUTDIRC="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_oce_frc/croco_files_frc"
