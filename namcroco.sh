@@ -56,14 +56,18 @@ do
 #-------
 # change some namelist values
 #-------
-# General changes
+# Change in endding date for online interpolation
+
+    mdy=$( valid_date $(( $MONTH_END_JOB + 1 )) $DAY_END_JOB $YEAR_END_JOB )
+    end_Y=$( printf "%04d\n"  $( echo $mdy | cut -d " " -f 3) )
+    end_M=$( printf "%02d\n"  $( echo $mdy | cut -d " " -f 1) )
 #
-    DATE0="${DATE_BEGIN_JOB}"
+
 
 sed -e "s/<ocentimes>/${OCE_NTIMES}/g" -e "s/<ocedt>/${TSP_OCE_2}/g"   -e "s/<ocendtfast>/${TSP_OCEF}/g" \
     -e "s/<oce_nrst>/${OCE_NTIMES}/g"   -e "s/<oce_nhis>/${oce_nhis}/g" -e "s/<oce_navg>/${oce_navg}/g"     \
     -e "s/<yr1>/${YEAR_BEGIN_JOB}/g"             -e "s/<mo1>/${MONTH_BEGIN_JOB}/g"           \
-    -e "s/<yr2>/${YEAR_END_JOB}/g"             -e "s/<mo2>/${MONTH_END_JOB}/g"           \
+    -e "s/<yr2>/${end_Y}/g"             -e "s/<mo2>/${end_M}/g"           \
     -e "s/<title>/${CONFIG}/g"  \
     ${namfile} > namelist.tmp
 
