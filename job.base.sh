@@ -35,6 +35,7 @@ cd ${EXEDIR}
 	    [ ${USE_OCE}  -eq 1 ] && cpfile ${CROCO_EXE_DIR}/croco.${RUN} crocox
 	    [ ${USE_ATM}  -eq 1 ] && cpfile ${WRF_EXE_DIR}/wrf.exe wrfexe
 	    [ ${USE_WW3}  -eq 1 ] && cp ${WW3_EXE_DIR}/ww3_* . && mv ww3_shel wwatch
+            [ ${USE_TOY}  -eq 1 ] && cpfile ${TOY_EXE_DIR}/toy_model toyexe
 	    [ ${USE_XIOS} -ge 1 ] && cpfile ${XIOS_EXE_DIR}/xios_server.exe .
 
         printf "\n ************* PARAMETER files *****************\n"
@@ -70,11 +71,16 @@ cd ${EXEDIR}
 	[ ${USE_CPL} -ge 1 ] && printf "\n ************* get OA3MCT RESTART files *****************\n"
 	[ ${USE_CPL} -ge 1 ] && { . ./getrst_cpl.sh ; }
 
+        [ ${USE_TOY} -eq 1 ] && printf "\n ************* get TOY CONFIGURATION files *****************\n"
+        [ ${USE_TOY} -eq 1 ] && { . ./getfile_toy.sh ; }
+
+
 # make the namelists from the namelist.base files
         printf "\n ************* make namelist files from namelist base files *****************\n"
 	[ ${USE_OCE} -eq 1 ] && ./namcroco.sh
 	[ ${USE_ATM} -eq 1 ] && ./namwrf.sh
         [ ${USE_WW3} -eq 1 ] && echo "No namelist for WW3"
+        [ ${USE_TOY} -eq 1 ] && ./namtoy.sh
 	[ ${USE_CPL} -ge 1 ] && ./namoa3mct.sh
         printf "\n date_chris : `date "+%Y%m%d-%H:%M:%S"`\n"
 

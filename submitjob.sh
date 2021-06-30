@@ -36,7 +36,8 @@ if [ ${USE_CPL} -ge 1 ]; then
   if [ $(( ${CPL_FREQ} % ${TSP_ATM} )) -ne 0 ] || \
      [ $(( ${CPL_FREQ} % ${TSP_OCE} )) -ne 0 ] || \
      [ $(( ${CPL_FREQ} % ${TSP_WW3} )) -ne 0 ] || \
-     [ $(( ${CPL_FREQ} % ${TSP_ICE} )) -ne 0 ] ; then
+     [ $(( ${CPL_FREQ} % ${TSP_TOY} )) -ne 0 ] ; then
+#     [ $(( ${CPL_FREQ} % ${TSP_ICE} )) -ne 0 ] ; then
      printf "\n\n Problem of consistency between Coupling Frequency and Time Step, we stop...\n\n" && exit 1
   fi
 fi
@@ -50,15 +51,15 @@ fi
 [ ${USE_OCE}  -eq 1 ] && TOTOCE=$NP_CRO  || TOTOCE=0
 [ ${USE_ATM}  -eq 1 ] && TOTATM=$NP_WRF  || TOTATM=0
 [ ${USE_WW3}  -eq 1 ] && TOTWW3=$NP_WW3  || TOTWW3=0
+[ ${USE_TOY}  -eq 1 ] && TOTTOY=$NP_TOY  || TOTTOY=0
 [ ${USE_XIOS_ATM} -eq 1 ] && TOTXIO=$NP_XIOS_ATM || TOTXIO=0
 [ ${USE_XIOS_OCE} -eq 1 ] && TOTXIO=$(( ${TOTXIO} + ${NP_XIOS_OCE} ))
-totalcore=$(( $TOTOCE + $TOTATM + $TOTWW3 + $TOTXIO ))
+totalcore=$(( $TOTOCE + $TOTATM + $TOTWW3 + $TOTTOY + $TOTXIO ))
 [ ${COMPUTER} == "DATARMOR" ] && totalcore=$(( $totalcore /29 +1))
 
 sed -e "/< insert here variables definitions >/r module_exp.tmp" \
     -e "s/<exp>/${ROOT_NAME_1}/g" \
     -e "s/<nmpi>/${totalcore}/g" \
-    -e "s/<time_second>/${TIMEsnd}/g" \
     ./header.${COMPUTER} > HEADER_tmp
     cat HEADER_tmp job.base.sh >  ${JOBDIR_ROOT}/${jobname}
     \rm HEADER_tmp

@@ -1,6 +1,7 @@
 #-------------------------------------------------------------------------------
 #                                                                      Restart
 #-------------------------------------------------------------------------------
+
 if [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
 
     module load $ncomod
@@ -24,16 +25,31 @@ if [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
         echo 'create restart file for oasis from calm conditions for variables:'${varlist}
         ./create_oasis_restart_from_calm_conditions.sh ${ww3file} wav.nc ww3 "${varlist}"
     fi
+#
+    if [ ${USE_TOY} -eq 1 ] ; then
+        varlist='TOY_V_01 TOY_U_01 TOY_TAUX TOY_TAUY TOY_TAUM TOYSRFLX TOYSTFLX TOY__EMP TOY_UOCE TOY_VOCE TOY__SST TOY__SSH TOY_T0M1 TOY___HS TOY__DIR TOY_TWOX TOY_TWOY TOY_TAWX TOY_TAWY TOY__CHA'
+        echo 'create restart file for oasis from calm conditions for variables:'${varlist}
+        ./create_oasis_restart_from_calm_conditions.sh $toyfile ${toytype}.nc $model_to_toy "$varlist"
+    fi
     module unload $ncomod
 
 else   
     
     [ ${USE_ATM} -eq 1 ] && cpfile ${RESTDIR_IN}/atm_${CEXPER}_${DATE_END_JOBm1}.nc atm.nc
     [ ${USE_OCE} -eq 1 ] && cpfile ${RESTDIR_IN}/oce_${CEXPER}_${DATE_END_JOBm1}.nc oce.nc
-    [ ${USE_WW3} -eq 1 ] && cpfile ${RESTDIR_IN}/wav_${CEXPER}_${DATE_END_JOBm1}.nc wav.nc
+    [ ${USE_WW3} -eq 1 ] && cpfile ${RESTDIR_IN}/wav_${CEXPER}_${DATE_END_JOBm1}.nc wav.nc 
+
     [[ ${USE_ATM} -eq 1 && ${USE_OCE} -eq 1 ]] && cp ${RESTDIR_IN}/*atmt_to_ocnt* . && cp ${RESTDIR_IN}/*ocnt_to_atmt* . 
     [[ ${USE_ATM} -eq 1 && ${USE_WW3} -eq 1 ]] && cp ${RESTDIR_IN}/*atmt_to_ww3t* . && cp ${RESTDIR_IN}/*ww3t_to_atmt* .
     [[ ${USE_OCE} -eq 1 && ${USE_WW3} -eq 1 ]] && cp ${RESTDIR_IN}/*ocn*_to_ww3t* . && cp ${RESTDIR_IN}/*ww3t_to_ocnt* .  
+
+    if [ ${USE_TOY} -eq 1 ] ; then
+        cpfile ${RESTDIR_IN}/${toytype}_${CEXPER}_${DATE_END_JOBm1}.nc ${toytype}.nc
+	[ ${USE_OCE} -eq 1 ] && cp ${RESTDIR_IN}/*toyt_to_ocnt* . && cp ${RESTDIR_IN}/*ocn*_to_toyt* . 
+	[ ${USE_WW3} -eq 1 ] && cp ${RESTDIR_IN}/*toyt_to_ww3t* . && cp ${RESTDIR_IN}/*ww3t_to_toyt* .
+        [ ${USE_ATM} -eq 1 ] && cp ${RESTDIR_IN}/*atmt_to_toyt* . && cp ${RESTDIR_IN}/*toyt_to_atmt*
+    fi
+
     cpfile2 ${RESTDIR_IN}/grids.nc ./ ; cpfile2 ${RESTDIR_IN}/masks.nc  ./ ; cpfile2 ${RESTDIR_IN}/areas.nc ./
     
 

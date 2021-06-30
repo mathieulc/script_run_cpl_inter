@@ -72,7 +72,7 @@ elif [ ${MACHINE} == "DATARMOR" ]; then
   export MPI_ext="-configfile"
   source ~/.bashrc
   #[ -f ../run_env ] && source ../run_env
-  export ncomod='nco/4.6.4_gcc-6.3.0'
+  export ncomod='nco'
 
 else
   printf "\n\n Machine unknown  => EXIT \n\n"; exit;

@@ -26,9 +26,10 @@ set +x   #  set -x par defaut sur Curie
 #-------------------------------------------------------------------------------
 # where do we get the executables
 #-------------------------------------------------------------------------------
+export CROCO_EXE_DIR="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_in"
 export WRF_EXE_DIR="$HOME/WRF/exe_coupled_xios"
 export WW3_EXE_DIR="$HOME/WW3/exe_owa_BENGUELA"
-export CROCO_EXE_DIR="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_in"
+export TOY_EXE_DIR="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/toy_in"
 export XIOS_EXE_DIR="$HOME/XIOS/bin"
 
 #-------------------------------------------------------------------------------
@@ -46,7 +47,8 @@ export INPUTDIRX="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/xios_files_
 #-------------------------------------------------------------------------------
 export OCE_NAMEDIR="croco_in"
 export WRF_NAMEDIR="wrf_in"
-export WW3_NAMEDIR="ww3_in/inputs_ww3" # 
+export WW3_NAMEDIR="ww3_in/inputs_ww3" #
+export TOY_NAMEDIR="toy_in"
 export CPL_NAMEDIR="oasis_in/inputs_oasis"
 #-------------------------------------------------------------------------------
 #  where do we execute the job?

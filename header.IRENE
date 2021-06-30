@@ -4,7 +4,7 @@
 #MSUB -e <exp>.jobid_%I.e
 #MSUB -j oe          #  VERIFIER que c'est OK sur Curie XXX
 #MSUB -n <nmpi>        # Total number of mpi task to use
-#MSUB -T 86400        
+#MSUB -T 1800         
 #MSUB -x
 #MSUB -q skylake 
 #MSUB -A gen6895
@@ -27,9 +27,10 @@ cd ${BRIDGE_MSUB_PWD}
 #-------------------------------------------------------------------------------
 # where do we get the executables
 #-------------------------------------------------------------------------------
+export CROCO_EXE_DIR=$hconf/croco_in
 export WRF_EXE_DIR=$wrf/exe_coupled_xios 
 export WW3_EXE_DIR=$ww3/exe_owa_BENGUELA
-export CROCO_EXE_DIR=$hconf/croco_in
+export TOY_EXE_DIR=$hconf/toy_in
 export XIOS_EXE_DIR=$CCCHOME/XIOS/bin
 
 #-------------------------------------------------------------------------------
@@ -47,7 +48,8 @@ export INPUTDIRX="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_oce_frc/cro
 #-------------------------------------------------------------------------------
 export OCE_NAMEDIR="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_cpl_owa/croco_in"
 export WRF_NAMEDIR="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_cpl_owa/wrf_in"
-export WW3_NAMEDIR="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_cpl_owa/ww3_in/inputs_ww3" # 
+export WW3_NAMEDIR="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_cpl_owa/ww3_in/inputs_ww3" #
+export TOY_NAMEDIR="toy_in"
 export CPL_NAMEDIR="/ccc/work/cont005/gen6895/lecorrma/CONFIG/BENGUELA_cpl_owa/oasis_in/inputs_oasis"
 #-------------------------------------------------------------------------------
 #  where do we execute the job?

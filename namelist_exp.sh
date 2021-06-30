@@ -8,20 +8,24 @@ export MACHINE="DATARMOR" #DATARMOR / JEANZAY /IRENE
 #  Config : Ocean - Atmosphere - Coupling
 #-------------------------------------------------------------------------------
 export CONFIG=BEGUELA
-export RUN=oa
+export RUN=frc
 
 #
-export USE_ATM=1  
-export USE_XIOS_ATM=1
+export USE_ATM=0
+export USE_XIOS_ATM=0
 #
 export USE_OCE=1
-export USE_XIOS_OCE=1
+export USE_XIOS_OCE=0
 #
 export USE_WW3=0
 #
+export USE_TOY=0
+#
 export USE_XIOS=$(( ${USE_XIOS_ATM} + ${USE_XIOS_OCE} ))
 #export USE_ICE=0 # Not setup yet
-export USE_CPL=$(( ${USE_ATM} * ${USE_OCE} + ${USE_ATM} * ${USE_WW3} + ${USE_OCE} * ${USE_WW3}))
+#export USE_CPL=$(( ${USE_ATM} * ${USE_OCE} + ${USE_ATM} * ${USE_WW3} + ${USE_OCE} * ${USE_WW3} ))
+[ ${USE_TOY} -eq 1 ] && export USE_CPL=1 || export USE_CPL=$(( ${USE_ATM} * ${USE_OCE} + ${USE_ATM} * ${USE_WW3} + ${USE_OCE} * ${USE_WW3} ))
+
 
 export AGRIFZ=0
 export AGRIF_NAMES=""
@@ -30,7 +34,7 @@ export AGRIF_NAMES=""
 # ----------------------------
 ### OASIS namelist ###
 
-export namcouplename=namcouple.base.${RUN}
+export namcouplename=namcouple.base.${RUN}.toywav 
 
 #### WRF namelist ###
 
@@ -41,7 +45,7 @@ export wrfcpldom='d01'
 ### CROCO ###
 export ini_ext='ini_SODA' # ini extension file (ini_SODA,...)
 export bry_ext='bry_SODA' # bry extension file (bry_SODA,...)
-export surfrc_flag="FALSE" # Flag if surface forcing is needed (FALSE if cpl)
+export surfrc_flag="TRUE" # Flag if surface forcing is needed (FALSE if cpl)
 export interponline=0 # switch (1=on, 0=off) for online surface interpolation
 export frc_ext='blk_CFSR' # surface forcing extension(blk_CFSR, frc_CFSR,...). If interponline=1 just precise the type (ECMWF, CFSR,AROME,...)
 export tide_flag="FALSE" # the forcing extension must be blk_??? otherwise tide forcing overwrites it 
@@ -51,6 +55,15 @@ export tide_flag="FALSE" # the forcing extension must be blk_??? otherwise tide 
 export flagout="TRUE" # Keep (TRUE) or not (FALSE) ww3 full output binary file (out_grd.ww3)
 export forcin=() # forcing file(s) list (leave empty if none)
 export forcww3=() # name of ww3_prnc.inp extension/input file
+
+### TOY ###
+export toyfile="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA/outputs_frc_ww3_CFSR/ww3.frc.200501.nc"
+export timerange='1,745'
+export toytype="wav" #oce,atm,wav
+[ ${toytype} == "oce" ] && model_to_toy="croco"
+[ ${toytype} == "atm" ] && model_to_toy="wrf"
+[ ${toytype} == "wav" ] && model_to_toy="ww3"
+export toynamelist="TOYNAMELIST.nam.${toytype}.${RUN}"
 
 ### XIOS ### 
 export FILIN_XIOS="iodef.xml context_roms.xml context_wrf.xml field_def.xml domain_def.xml file_def_croco.xml file_def_wrf.xml" # files needed for xios. Need to be in INPUTDIRX (cf header.*)
@@ -82,6 +95,9 @@ export NP_WW3=10
 export SERIAL_LAUNCH_WW3="$MPI_LAUNCH -n 1 "
 #export SERIAL_LAUNCH_WW3='./'
 
+### PROC TOY ###
+export NP_TOY=2
+
 #
 #-------------------------------------------------------------------------------
 #  Various
@@ -104,7 +120,7 @@ export EXP_DUR_MTH=$(( 3 * 1 ))
 export EXP_DUR_DAY=0
 #                                                                  Period of Job
 export YEAR_BEGIN_JOB=2005
-export MONTH_BEGIN_JOB=1
+export MONTH_BEGIN_JOB=4
 export DAY_BEGIN_JOB=1
 #                                                            Duration of the Job
 export JOB_DUR_MTH=1
@@ -113,12 +129,9 @@ export JOB_DUR_DAY=0
 #-------------------------------------------------------------------------------
 #  Time Steps
 #-------------------------------------------------------------------------------
-#!!!!!!!!!!!
-#  WARNING
-# 
-#
+
 ### WRF ###
-export TSP_ATM=100   # 100 90 75 72 60 45
+export TSP_ATM=21600 #100   # 100 90 75 72 60 45
 
 ### CROCO ###
 export TSP_OCE=1200
@@ -130,6 +143,8 @@ export TSP_WW_PRO=1200  # TCFL --> ww3.grid to see the definition
 export TSP_WW_REF=1800  # TMAX / 2
 export TSP_WW_SRC=10
 
+### TOY ###
+export TSP_TOY=${TSP_WW3} 
 
 ### CPL ###
 export CPL_FREQ=21600
