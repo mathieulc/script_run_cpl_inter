@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -q mpi_<nmpi>
-#PBS -l select=1:ncpus=28:mpiprocs=6:mem=115g
+#PBS -l select=1:ncpus=28:mpiprocs=28:mem=115g
 #PBS -l walltime=24:00:00
 #PBS -N <exp> 
 cd $PBS_O_WORKDIR

@@ -70,7 +70,13 @@ elif [ ${MACHINE} == "JEANZAY" ]; then
 
 elif [ ${MACHINE} == "DATARMOR" ]; then
   export MPI_ext="-configfile"
-  source ~/.bashrc
+  source /usr/share/Modules/3.2.10/init/bash
+  module purge
+  module load intel-comp/18
+  module load impi/2018.1.163
+  export PATH=${PATH}:/home/datawork-wave/NETCDF2019/INTEL/bin
+  export CPATH=${CPATH}:/home/datawork-wave/NETCDF2019/INTEL/include
+
   #[ -f ../run_env ] && source ../run_env
   export ncomod='nco'
 
