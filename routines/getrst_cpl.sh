@@ -23,7 +23,7 @@ if [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
     if [ ${USE_WAV} -eq 1 ] ; then
         varlist='WW3_T0M1 WW3__OHS WW3__DIR WW3_ACHA WW3_TAWX WW3_TAWY WW3_TWOX WW3_TWOY'
         echo 'create restart file for oasis from calm conditions for variables:'${varlist}
-        ./create_oasis_restart_from_calm_conditions.sh ${ww3file} wav.nc ww3 "${varlist}"
+        ./create_oasis_restart_from_calm_conditions.sh ${wavfile} wav.nc ww3 "${varlist}"
     fi
 #
     if [ ${USE_TOY} -eq 1 ] ; then

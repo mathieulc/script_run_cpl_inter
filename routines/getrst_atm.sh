@@ -17,8 +17,8 @@ then
  fi
  for file in $filelist
   do
-   echo "ln -sf ${INPUTDIRA}${file}_${YEAR_BEGIN_JOB}_${mm}_${YEAR_END_JOB}_${me} ./$file"
-   ln -sf ${INPUTDIRA}/${file}_${YEAR_BEGIN_JOB}_${mm}_${YEAR_END_JOB}_${me} ./$file
+   echo "ln -sf ${ATM_FILES_DIR}${file}_${YEAR_BEGIN_JOB}_${mm}_${YEAR_END_JOB}_${me} ./$file"
+   ln -sf ${ATM_FILES_DIR}/${file}_${YEAR_BEGIN_JOB}_${mm}_${YEAR_END_JOB}_${me} ./$file
   done
 
   for dom in $wrfcpldom ; do

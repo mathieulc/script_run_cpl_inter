@@ -10,15 +10,15 @@ export CONFIG=BEGUELA
 export RUN=owa
 
 #
-export USE_ATM=0
+export USE_ATM=1
 export USE_XIOS_ATM=0
 #
 export USE_OCE=1
 export USE_XIOS_OCE=0
 #
-export USE_WAV=0
+export USE_WAV=1
 #
-export USE_TOY=1
+export USE_TOY=0
 
 
 
@@ -27,7 +27,7 @@ export USE_TOY=1
 # ------------------------------------------------------------------------------
 ### OASIS namelist ###
 
-export namcouplename=namcouple.base.${RUN}.toywavatm
+export namcouplename=namcouple.base.${RUN}
 
 #### WRF namelist ###
 
@@ -103,7 +103,7 @@ export EXP_DUR_MTH=$(( 3 * 1 ))
 export EXP_DUR_DAY=0
 #                                                                  Period of Job
 export YEAR_BEGIN_JOB=2005
-export MONTH_BEGIN_JOB=4
+export MONTH_BEGIN_JOB=1
 export DAY_BEGIN_JOB=1
 #                                                            Duration of the Job
 export JOB_DUR_MTH=1
@@ -114,7 +114,7 @@ export JOB_DUR_DAY=0
 #-------------------------------------------------------------------------------
 
 ### WRF ###
-export TSP_ATM=21600 #100   # 100 90 75 72 60 45
+export TSP_ATM=100 #100   # 100 90 75 72 60 45
 
 ### CROCO ###
 export TSP_OCE=1200
@@ -172,7 +172,7 @@ export wavfile=/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA/outputs_frc_ww3
 #-------------------------------------------------------------------------------
 #  Job submission type
 #-------------------------------------------------------------------------------
-export CHAINED_JOB="TRUE" #If TRUE  , place all the jobs in the queue at the begining,
+export CHAINED_JOB="FALSE" #If TRUE  , place all the jobs in the queue at the begining,
                           #Ff FALSE , place job in the queue after the previous one ended
 
 # MODE_TEST: extension du nom de l'experience
@@ -194,7 +194,7 @@ export SCRIPT_DEBUG="FALSE"
 
 # KEY for XIOS and TOY #
 export USE_XIOS=$(( ${USE_XIOS_ATM} + ${USE_XIOS_OCE} ))
-[ ${USE_TOY} -eq 1 ] && export USE_CPL=1 || export USE_CPL=$(( ${USE_ATM} * ${USE_OCE} + ${USE_ATM} * ${USE_WW3} + ${USE_OCE} * ${USE_WW3} ))
+[ ${USE_TOY} -eq 1 ] && export USE_CPL=1 || export USE_CPL=$(( ${USE_ATM} * ${USE_OCE} + ${USE_ATM} * ${USE_WAV} + ${USE_OCE} * ${USE_WAV} ))
 
 ### TOY ###
 export nbtoy=${#toytype[@]}
