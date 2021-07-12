@@ -7,8 +7,8 @@ if [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
     echo 'WW3 pre-processing before run:'
  # WW3 grid 
 
-    echo "${SERIAL_LAUNCH_WW3}ww3_grid &> grid.out"
-    ${SERIAL_LAUNCH_WW3}ww3_grid &> grid.out
+    echo "${SERIAL_LAUNCH_WAV}ww3_grid &> grid.out"
+    ${SERIAL_LAUNCH_WAV}ww3_grid &> grid.out
     if [ ! -e mod_def.ww3 ]; then
         echo 'ERROR when running ww3_grid, mod_def.ww3 does not exist'
         exit 1
@@ -19,8 +19,8 @@ if [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
         echo "ln -sf ww3_prnc.inp.${forcww3[$k]} ww3_prnc.inp"
         ${io_getfile} ww3_prnc.inp.${forcww3[$k]}                          ww3_prnc.inp
 
-        echo "${SERIAL_LAUNCH_WW3}ww3_prnc &> prnc.${forcww3[$k]}.out"
-        ${SERIAL_LAUNCH_WW3}ww3_prnc &> prnc.${forcww3[$k]}.out
+        echo "${SERIAL_LAUNCH_WAV}ww3_prnc &> prnc.${forcww3[$k]}.out"
+        ${SERIAL_LAUNCH_WAV}ww3_prnc &> prnc.${forcww3[$k]}.out
         if [ ! -e ${forcww3[$k]}.ww3 ]; then
             echo 'ERROR when running ww3_prnc for '${forcww3[$k]}
             exit 1
@@ -28,8 +28,8 @@ if [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
     done
  # WW3 strt
 
-     echo "${SERIAL_LAUNCH_WW3}ww3_strt &> strt.out"
-     ${SERIAL_LAUNCH_WW3}ww3_strt &> strt.out
+     echo "${SERIAL_LAUNCH_WAV}ww3_strt &> strt.out"
+     ${SERIAL_LAUNCH_WAV}ww3_strt &> strt.out
      if [ ! -e restart.ww3 ]; then
         echo 'ERROR when running ww3_strt, restart.ww3 does not exist'
         exit 1

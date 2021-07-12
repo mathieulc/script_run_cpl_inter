@@ -1,0 +1,32 @@
+#!/bin/bash
+#MSUB -r <exp>       # request name
+#MSUB -o <exp>.jobid_%I.o
+#MSUB -e <exp>.jobid_%I.e
+#MSUB -j oe          #  VERIFIER que c'est OK sur Curie XXX
+#MSUB -n <nmpi>        # Total number of mpi task to use
+#MSUB -T 1800         
+#MSUB -x
+#MSUB -q skylake 
+#MSUB -A gen6895
+#MSUB -m scratch,store,work
+#===============================================================================
+
+umask 022
+set -u
+set +x   #  set -x par defaut sur Curie
+
+cd ${BRIDGE_MSUB_PWD}
+
+export MPI_LAUNCH=ccc_mprun
+export MPI_ext="-f"
+module purge
+module load intel/17.0.6.256
+module load mpi/openmpi/2.0.4
+module load flavor/hdf5/parallel
+module load netcdf-fortran/4.4.4
+module load netcdf-c/4.6.0
+module load hdf5/1.8.20
+export ncomod='nco/4.6.0'
+
+# < insert here variables definitions > !!! DO NOT REMOVE THIS LINE (used by submitjob) !!!
+

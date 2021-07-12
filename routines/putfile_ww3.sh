@@ -11,8 +11,8 @@ month$( printf "%02d"  ${MONTH_BEGIN_JOB} )
   echo 'WW3 post-processing after run:'
   # WW3 format to netcdf
 
-  echo "${SERIAL_LAUNCH_WW3}ww3_ounf &> ounf.out"
-  ${SERIAL_LAUNCH_WW3}ww3_ounf &> ounf.out 
+  echo "${SERIAL_LAUNCH_WAV}ww3_ounf &> ounf.out"
+  ${SERIAL_LAUNCH_WAV}ww3_ounf &> ounf.out 
  fi
  module load $ncomod
  ncrcat -O ww3.*.nc ww3.${year}${month}.nc #Concatenate all ww3*.nc file before exporting to OUTPUTDIR

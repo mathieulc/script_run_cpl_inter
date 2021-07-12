@@ -5,7 +5,7 @@
 
 # Get grid file
 
-cp -f ${INPUTDIRC}/*.sh ./ # Copy scripts to create the mask and the toy_file
+cp -f ${CPL_FILES_DIR}/*.sh ./ # Copy scripts to create the mask and the toy_file
 
 echo 'create input files for TOY'
 for k in `seq 0 $(( ${nbtoy} - 1))` ; do

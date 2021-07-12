@@ -24,17 +24,17 @@ if [ ${LOADL_STEP_NAME} == "get_file" ] || [ ${LOADL_STEP_NAME} == "XXX" ]; then
         mkdir -p ${JOBDIR}
 
 # some printings
-. ${SCRIPTDIR}/common_printing.sh
+. ${SCRIPTDIR}/routines/common_printing.sh
 
 cd ${EXEDIR} 
 
-        printf "\n ************* SCRIPT files *****************\n"
-        for file in ${SCRIPTDIR}/*.sh ; do cpfile ${file} . ; done; chmod 755 *.sh
+#        printf "\n ************* SCRIPT files *****************\n"
+#        for file in ${SCRIPTDIR}/*.sh ; do cpfile ${file} . ; done; chmod 755 *.sh
 
         printf "\n ************* EXECUTABLE files *****************\n"
-	    [ ${USE_OCE}  -eq 1 ] && cpfile ${CROCO_EXE_DIR}/croco.${RUN} crocox
-	    [ ${USE_ATM}  -eq 1 ] && cpfile ${WRF_EXE_DIR}/wrf.exe wrfexe
-	    [ ${USE_WW3}  -eq 1 ] && cp ${WW3_EXE_DIR}/ww3_* . && mv ww3_shel wwatch
+	    [ ${USE_OCE}  -eq 1 ] && cpfile ${OCE_EXE_DIR}/croco.${RUN} crocox
+	    [ ${USE_ATM}  -eq 1 ] && cpfile ${ATM_EXE_DIR}/wrf.exe wrfexe
+	    [ ${USE_WAV}  -eq 1 ] && cp ${WAV_EXE_DIR}/ww3_* . && mv ww3_shel wwatch
 	    [ ${USE_XIOS} -ge 1 ] && cpfile ${XIOS_EXE_DIR}/xios_server.exe .
             # If toy is used #
             if [ ${USE_TOY}  -eq 1 ]; then
@@ -50,7 +50,7 @@ cd ${EXEDIR}
 
         printf "\n ************* PARAMETER files *****************\n"
 # if xios
-        [ ${USE_XIOS} -ge 1 ] && {  for file in ${FILIN_XIOS}; do cpfile ${INPUTDIRX}/${file} . ; done; echo ""; }
+        [ ${USE_XIOS} -ge 1 ] && {  for file in ${FILIN_XIOS}; do cpfile ${XIOS_NAM_DIR}/${file} . ; done; echo ""; }
 
 # ocean/atmosphere input files (configuration, forcing, obc, levitus/restart...)
 
@@ -58,40 +58,40 @@ cd ${EXEDIR}
         RESTDIR_IN=${RESTDIR_ROOT}/${DATE_END_JOBm1}
 
         [ ${USE_OCE} -eq 1 ] && printf "\n ************* get OCEAN CONFIGURATION, OBC, BLK... files *****************\n" 
-        [ ${USE_OCE} -eq 1 ] && { . ./getfile_oce.sh ; }
+        [ ${USE_OCE} -eq 1 ] && { . ${SCRIPTDIR}/routines/getfile_oce.sh ; }
 
         [ ${USE_OCE} -eq 1 ] && printf "\n ************* get OCEAN RESTART files *****************\n" |tee ls_l/getrst_oce.txt
         [ ${USE_OCE} -eq 1 ] && printf "    see listing in ${EXEDIR}/ls_l/getrst_oce.txt \n"
-        [ ${USE_OCE} -eq 1 ] && { . ./getrst_oce.sh ; } >> ls_l/getrst_oce.txt
+        [ ${USE_OCE} -eq 1 ] && { . ${SCRIPTDIR}/routines/getrst_oce.sh ; } >> ls_l/getrst_oce.txt
 
         [ ${USE_ATM} -eq 1 ] && printf "\n ************* get ATMOSPHERE CONFIGURATION LOWINPUT, BDY... files *****************\n" 
-        [ ${USE_ATM} -eq 1 ] && { . ./getfile_atm.sh ; }
+        [ ${USE_ATM} -eq 1 ] && { . ${SCRIPTDIR}/routines/getfile_atm.sh ; }
 
 	[ ${USE_ATM} -eq 1 ] && printf "\n ************* get ATMOSPHERE RESTART files *****************\n" |tee ls_l/getrst_atm.txt
 	[ ${USE_ATM} -eq 1 ] && printf "    see listing in ${EXEDIR}/ls_l/getrst_atm.txt \n"
-	[ ${USE_ATM} -eq 1 ] && { . ./getrst_atm.sh ; } >> ls_l/getrst_atm.txt
+	[ ${USE_ATM} -eq 1 ] && { . ${SCRIPTDIR}/routines/getrst_atm.sh ; } >> ls_l/getrst_atm.txt
 
-        [ ${USE_WW3} -eq 1 ] && printf "\n ************* get WAVE CONFIGURATION files *****************\n"
-        [ ${USE_WW3} -eq 1 ] && { . ./getfile_ww3.sh ; }
+        [ ${USE_WAV} -eq 1 ] && printf "\n ************* get WAVE CONFIGURATION files *****************\n"
+        [ ${USE_WAV} -eq 1 ] && { . ${SCRIPTDIR}/routines/getfile_ww3.sh ; }
 
-        [ ${USE_WW3} -eq 1 ] && printf "\n ************* get WAVE RESTART files *****************\n" |tee ls_l/getrst_ww3.txt
-        [ ${USE_WW3} -eq 1 ] && printf "    see listing in ${EXEDIR}/ls_l/getrst_ww3.txt \n"
-        [ ${USE_WW3} -eq 1 ] && { . ./getrst_ww3.sh ; } >> ls_l/getrst_ww3.txt
+        [ ${USE_WAV} -eq 1 ] && printf "\n ************* get WAVE RESTART files *****************\n" |tee ls_l/getrst_ww3.txt
+        [ ${USE_WAV} -eq 1 ] && printf "    see listing in ${EXEDIR}/ls_l/getrst_ww3.txt \n"
+        [ ${USE_WAV} -eq 1 ] && { . ${SCRIPTDIR}/routines/getrst_ww3.sh ; } >> ls_l/getrst_ww3.txt
 
 	[ ${USE_CPL} -ge 1 ] && printf "\n ************* get OA3MCT RESTART files *****************\n"
-	[ ${USE_CPL} -ge 1 ] && { . ./getrst_cpl.sh ; }
+	[ ${USE_CPL} -ge 1 ] && { . ${SCRIPTDIR}/routines/getrst_cpl.sh ; }
 
         [ ${USE_TOY} -eq 1 ] && printf "\n ************* get TOY CONFIGURATION files *****************\n"
-        [ ${USE_TOY} -eq 1 ] && { . ./getfile_toy.sh ; }
+        [ ${USE_TOY} -eq 1 ] && { . ${SCRIPTDIR}/routines/getfile_toy.sh ; }
 
 
 # make the namelists from the namelist.base files
         printf "\n ************* make namelist files from namelist base files *****************\n"
-	[ ${USE_OCE} -eq 1 ] && ./namcroco.sh
-	[ ${USE_ATM} -eq 1 ] && ./namwrf.sh
-        [ ${USE_WW3} -eq 1 ] && echo "No namelist for WW3"
-        [ ${USE_TOY} -eq 1 ] && { . ./namtoy.sh ; }
-	[ ${USE_CPL} -ge 1 ] && ./namoa3mct.sh
+	[ ${USE_OCE} -eq 1 ] && ${SCRIPTDIR}/routines/namcroco.sh
+	[ ${USE_ATM} -eq 1 ] && ${SCRIPTDIR}/routines/namwrf.sh
+        [ ${USE_WAV} -eq 1 ] && echo "No namelist for WW3"
+        [ ${USE_TOY} -eq 1 ] && { . ${SCRIPTDIR}/routines/namtoy.sh ; }
+	[ ${USE_CPL} -ge 1 ] && ${SCRIPTDIR}/routines/namoa3mct.sh
         printf "\n date_chris : `date "+%Y%m%d-%H:%M:%S"`\n"
 
 fi # Step1
@@ -114,7 +114,7 @@ cd ${EXEDIR}
 #        echo "${EXEC} > out_run.txt 2>&1" 
 #              ${EXEC} > out_run.txt 2>&1
         printf "\n ***************** make app.conf file for Multiple Program Multiple Data *****************\n"
-        [ -f launch_${MACHINE}.sh ] && . ./launch_${MACHINE}.sh || { printf "\n Please create a file launch_${MACHINE}.sh \n" ; exit 0 ; }
+        [ -f ${SCRIPTDIR}/routines/launch_${MACHINE}.sh ] && { . ${SCRIPTDIR}/routines/launch_${MACHINE}.sh ; } || { printf "\n Please create a file launch_${MACHINE}.sh \n" ; exit 0 ; }
 
 	echo "launch run: $MPI_LAUNCH ${MPI_ext} app.conf " #${run_cmd} #$app.conf
 
@@ -161,18 +161,18 @@ cd ${EXEDIR}
         printf "\n date_chris : `date "+%Y%m%d-%H:%M:%S"`\n"
         [ ${USE_OCE} -eq 1 ] && printf "\n ************* put OCEAN OUTPUT/RESTART files *****************\n" |tee ls_l/putfile_oce.txt
         [ ${USE_OCE} -eq 1 ] && printf "    see listing in ${EXEDIR}/ls_l/putfile_oce.txt \n" 
-        [ ${USE_OCE} -eq 1 ] && { . ${SCRIPTDIR}/putfile_oce.sh ; } >> ls_l/putfile_oce.txt
+        [ ${USE_OCE} -eq 1 ] && { . ${SCRIPTDIR}/routines/putfile_oce.sh ; } >> ls_l/putfile_oce.txt
 
         [ ${USE_ATM} -eq 1 ] && printf "\n ************* put ATMOSPHERE OUTPUT/RESTART files *****************\n" |tee ls_l/putfile_atm.txt
         [ ${USE_ATM} -eq 1 ] && printf "    see listing in ${EXEDIR}/ls_l/putfile_atm.txt \n"
-        [ ${USE_ATM} -eq 1 ] && { . ${SCRIPTDIR}/putfile_atm.sh ; } >> ls_l/putfile_atm.txt
+        [ ${USE_ATM} -eq 1 ] && { . ${SCRIPTDIR}/routines/putfile_atm.sh ; } >> ls_l/putfile_atm.txt
        
-        [ ${USE_WW3} -eq 1 ] && printf "\n ************* put WAVE OUTPUT/RESTART files *****************\n" |tee ls_l/putfile_ww3.txt
-        [ ${USE_WW3} -eq 1 ] && printf "    see listing in ${EXEDIR}/ls_l/putfile_ww3.txt \n"
-        [ ${USE_WW3} -eq 1 ] && { . ${SCRIPTDIR}/putfile_ww3.sh ; } >> ls_l/putfile_ww3.txt
+        [ ${USE_WAV} -eq 1 ] && printf "\n ************* put WAVE OUTPUT/RESTART files *****************\n" |tee ls_l/putfile_ww3.txt
+        [ ${USE_WAV} -eq 1 ] && printf "    see listing in ${EXEDIR}/ls_l/putfile_ww3.txt \n"
+        [ ${USE_WAV} -eq 1 ] && { . ${SCRIPTDIR}/routines/putfile_ww3.sh ; } >> ls_l/putfile_ww3.txt
 
         [ ${USE_CPL} -ge 1 ] && printf "\n ************* put OA3MCT OUTPUT/RESTART files *****************\n" 
-        [ ${USE_CPL} -ge 1 ] && { . ${SCRIPTDIR}/putfile_cpl.sh ; }
+        [ ${USE_CPL} -ge 1 ] && { . ${SCRIPTDIR}/routines/putfile_cpl.sh ; }
 
 #-------------------------------------------------------------------------------
 #  save output control ascii files in jobs directory
@@ -186,8 +186,8 @@ cd ${EXEDIR}
         FILES_ATM="namelist.input rsl.error.0000 rsl.out.0000"
         [ ${USE_ATM} -eq 1 ] && {  for file in ${FILES_ATM}; do cpfile2 ${file} ${JOBDIR}; done; echo ""; }
 # if wave
-        FILES_WW3="log.ww3 strt.out ounf.out prnc.*.out grid.out"
-        [ ${USE_WW3} -eq 1 ] && {  for file in ${FILES_WW3}; do cpfile2 ${file} ${JOBDIR}; done; echo ""; }
+        FILES_WAV="log.ww3 strt.out ounf.out prnc.*.out grid.out"
+        [ ${USE_WAV} -eq 1 ] && {  for file in ${FILES_WAV}; do cpfile2 ${file} ${JOBDIR}; done; echo ""; }
 # if coupler
         FILES_CPL="nout.000000 wrfexe.timers* crocox.timers* wwatch.timers*"
         [ ${USE_CPL} -ge 1 ] && {  for file in ${FILES_CPL}; do cpfile2 ${file} ${JOBDIR}; done; echo ""; }
@@ -196,9 +196,7 @@ cd ${EXEDIR}
         [ ${AGRIFZ} -eq 1 ] && {  for file in ${FILES_AGRIFZ}; do cpfile2 ${file} ${JOBDIR}; done; echo ""; }
 # job
         FILES_JOB="${jobname}"
-        if [ ${COMPUTER} == "VARGAS" ] ; then
-            FILES_JOB="${FILES_JOB} ${ROOT_NAME_1}.get_file.jobid_*.txt ${ROOT_NAME_1}.run_model.jobid_*.txt ${ROOT_NAME_1}.put_file.jobid_*.txt " 
-        elif [ ${COMPUTER} == "IRENE" ]; then
+        if [ ${COMPUTER} == "IRENE" ]; then
             FILES_JOB="${FILES_JOB} ${ROOT_NAME_1}*.o ${ROOT_NAME_1}*.e"
         elif [ ${COMPUTER} == "JEANZAY" ]; then
             FILES_JOB="${FILES_JOB} ${ROOT_NAME_1}.out"
@@ -207,11 +205,7 @@ cd ${EXEDIR}
         fi
         cd ${JOBDIR_ROOT}; for file in ${FILES_JOB}; do mvfile2 ${file} ${JOBDIR}; done;  cd -; echo "";
 #
-#  mv output files in output directory 
-#
-#        mkdir output
-#        mv ${CEXPER}* output
-
+#  mv output files in output
         printf "\n date_chris : `date "+%Y%m%d-%H:%M:%S"`\n"
 
 #-------------------------------------------------------------------------------

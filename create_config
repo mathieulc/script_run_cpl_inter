@@ -57,63 +57,67 @@ export wconf=$SCRATCH/BENGUELA
 # CROCO parent directory 
 # (where croco_tools directory and croco source directory can be found)
 # -----------------
-export croco=$croco/..
+export croco=croco/
 
 # Options for you configuration
 # -----------------------------
-use_croco=1
-use_oasis=1
-use_wrf=1
-use_ww3=1
+use_oce=1
+use_cpl=1
+use_atm=1
+use_wav=1
 use_toy=0
 
+interannual_run=1
 #=========================================================================
 #=====================  END USER CHANGES  ================================
 #=========================================================================
 
-if [ $use_croco == 1 ] ; then 
+if [ $use_oce == 1 ] ; then 
  echo 'Copy CROCO useful scripts and input files'
  echo '-----------------------------------------'
  mkdir -p $hconf/croco_in
  mkdir -p $wconf/croco_files
- cp -r $tools/Coupling_tools/croco_in/* $hconf/croco_in/.
+ cp -r ${croco}/croco_tools/Coupling_tools/croco_in/* $hconf/croco_in/.
  cp -f $croco/croco/OCEAN/param.h $hconf/croco_in/.
  cp -f $croco/croco/OCEAN/jobcomp $hconf/croco_in/.
 
 fi
 
-if [ $use_ww3 == 1 ] ; then
+if [ $use_wav == 1 ] ; then
  echo 'Copy WW3 useful scripts and input files'
  echo '-----------------------------------------'
  mkdir -p $hconf/ww3_in
  mkdir -p $wconf/ww3_files
- cp -r $tools/Coupling_tools/ww3_in/* $hconf/ww3_in/.
+ cp -r ${croco}/croco_tools/Coupling_tools/ww3_in/* $hconf/ww3_in/.
 fi
 
-if [ $use_wrf == 1 ] ; then
+if [ $use_atm == 1 ] ; then
  echo 'Copy WRF useful scripts and input files'
  echo '-----------------------------------------'
  mkdir -p $hconf/wrf_in
  mkdir -p $wconf/wrf_files
- cp -r $tools/Coupling_tools/wrf_in/* $hconf/wrf_in/.
+ cp -r ${croco}/croco_tools/Coupling_tools/wrf_in/* $hconf/wrf_in/.
 fi
-if [ $use_oasis == 1 ] ; then
+if [ $use_cpl == 1 ] ; then
  echo 'Copy OASIS useful scripts and input files'
  echo '-----------------------------------------'
  mkdir -p $hconf/oasis_in
  mkdir -p $wconf/oasis_files
- cp -r $tools/Coupling_tools/oasis_in/* $hconf/oasis_in/.
+ cp -r ${croco}/croco_tools/Coupling_tools/oasis_in/* $hconf/oasis_in/.
 fi
 if [ $use_toy == 1 ] ; then
  echo 'Copy TOY sources, useful scripts and input files'
  echo '------------------------------------------------'
  mkdir -p $hconf/toy_in
  mkdir -p $wconf/toy_files
- cp -r $tools/Coupling_tools/toy_in/* $hconf/toy_in/.
+ cp -r ${croco}/croco_tools/Coupling_tools/toy_in/* $hconf/toy_in/.
 fi
 
 echo 'Copy run scripts'
 echo '----------------'
-
-cp $tools/Coupling_tools/* $hconf/.
+if [ $interannual_run == 1 ]; then
+    cp -r ../script_run_cpl_inter $hconf/.
+else
+    cp ${croco}/croco_tools/Coupling_tools/* $hconf/.
+fi
 

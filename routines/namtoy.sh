@@ -1,4 +1,4 @@
-. ./caltools.sh
+. ${SCRIPTDIR}/routines/caltools.sh
 ##
 
 ## -------------------------- #
@@ -21,7 +21,7 @@ if [ ${nbtoy} -eq 1 ] ; then
     TOY_NTIMES=$(( ( ${JDAY_END_JOB} - ${JDAY_BEGIN_JOB} + 1 ) * ${TOY_NTSP_DAY}     ))
     #
     sed -e "s/<toydt>/${TSP_TOY[0]}/g" -e "s/<toytimes>/${TOY_NTIMES}/g"   \
-    ${TOY_NAMEDIR}/${toynamelist[0]} > ./TOYNAMELIST.nam
+    ${TOY_NAM_DIR}/${toynamelist[0]} > ./TOYNAMELIST.nam
 #
 else 
     for k in `seq 0 $(( ${nbtoy} - 1 ))` ; do
@@ -32,6 +32,6 @@ else
 	TOY_NTIMES=$(( ( ${JDAY_END_JOB} - ${JDAY_BEGIN_JOB} + 1 ) * ${TOY_NTSP_DAY}     ))
         #
         sed -e "s/<toydt>/${TSP_TOY[$k]}/g" -e "s/<toytimes>/${TOY_NTIMES}/g"   \
-    ${TOY_NAMEDIR}/${toynamelist[$k]} > ./TOYNAMELIST.nam.${toytype[$k]}
+    ${TOY_NAM_DIR}/${toynamelist[$k]} > ./TOYNAMELIST.nam.${toytype[$k]}
     done
 fi

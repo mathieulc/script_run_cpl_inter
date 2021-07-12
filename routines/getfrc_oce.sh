@@ -22,7 +22,7 @@ if [ ${interponline} -eq 1 ]; then
         cur_M=$( printf "%02d\n"  $( echo $mdy | cut -d " " -f 1) )
   
         for varname in ${vnames} ; do
-            ${io_getfile} ${INPUTDIRO_onlinefrc}/${varname}_Y${cur_Y}M${cur_M}.nc ./
+            ${io_getfile} ${OCE_FILES_ONLINEDIR}/${varname}_Y${cur_Y}M${cur_M}.nc ./
         done
     done
     if [ ${JOB_DUR_MTH} -eq 0 ] ; then
@@ -30,7 +30,7 @@ if [ ${interponline} -eq 1 ]; then
         cur_Y=$( printf "%04d\n"  $( echo $mdy | cut -d " " -f 3) )
         cur_M=$( printf "%02d\n"  $( echo $mdy | cut -d " " -f 1) )
         for varname in ${vnames} ; do
-            ${io_getfile} ${INPUTDIRO_onlinefrc}/${varname}_Y${cur_Y}M${cur_M}.nc ./
+            ${io_getfile} ${OCE_FILES_ONLINEDIR}/${varname}_Y${cur_Y}M${cur_M}.nc ./
         done
     fi
 #
@@ -40,7 +40,7 @@ else
             cur_Y=$( echo $DATE_BEGIN_JOB | cut -c 1-4 )
             cur_M=$( echo $DATE_BEGIN_JOB | cut -c 5-6 )
             extend=$( echo $frc_ext | cut -c 1-3 )
-            ln -sf ${INPUTDIRO}/croco_${frc_ext}_Y${cur_Y}M${cur_M}.nc croco_${extend}.nc
+            ln -sf ${OCE_FILES_DIR}/croco_${frc_ext}_Y${cur_Y}M${cur_M}.nc croco_${extend}.nc
         else
             printf "\n\nSurface forcing is not yet implemented for job duration longer than a month (need to solve overlapping problem)=>  we stop...\n\n"
             exit 1
@@ -52,7 +52,7 @@ else
         cur_Y=$( echo $DATE_BEGIN_JOB | cut -c 1-4 )
         cur_M=$( echo $DATE_BEGIN_JOB | cut -c 5-6 )
 	extend=$( echo $frc_ext | cut -c 1-3 )
-        ln -sf ${INPUTDIRO}/croco_${frc_ext}_Y${cur_Y}M${cur_M}.nc croco_${extend}.nc
+        ln -sf ${OCE_FILES_DIR}/croco_${frc_ext}_Y${cur_Y}M${cur_M}.nc croco_${extend}.nc
     fi
 
 fi

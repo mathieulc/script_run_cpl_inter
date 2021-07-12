@@ -118,13 +118,13 @@ case $caltype in
 	    else
 	    ja=$jd
 	fi
-	./caldat.sh $ja julian
+	${SCRIPTDIR}/routines/caldat.sh $ja julian
 	exit
     	;;
     progreg)
 	jalpha=$(( (100*( $jd - 1867216)-25)/3652425 ))
 	ja=$(( $jd + 1 + $jalpha - $jalpha / 4 ))
-	./caldat.sh $ja julian
+	${SCRIPTDIR}/routines/caldat.sh $ja julian
 	exit
     	;;
     30d)

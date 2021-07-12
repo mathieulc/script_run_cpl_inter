@@ -1,0 +1,21 @@
+#!/bin/bash
+#PBS -q mpi_<nmpi>
+#PBS -l select=<nmpi>:ncpus=28:mpiprocs=8:mem=115g
+#PBS -l walltime=24:00:00
+#PBS -N <exp> 
+cd $PBS_O_WORKDIR
+
+#===============================================================================
+
+export MPI_ext="-configfile"
+source /usr/share/Modules/3.2.10/init/bash
+module purge
+module load intel-comp/18
+module load impi/2018.1.163
+export PATH=${PATH}:/home/datawork-wave/NETCDF2019/INTEL/bin
+export CPATH=${CPATH}:/home/datawork-wave/NETCDF2019/INTEL/include
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/datawork-wave/NETCDF2019/INTEL/lib
+export ncomod='nco'
+
+# < insert here variables definitions > !!! DO NOT REMOVE THIS LINE (used by submitjob) !!!
+

@@ -1,0 +1,24 @@
+#!/bin/bash
+#SBATCH --job-name=<exp>
+#SBATCH --ntasks=<nmpi>
+#SBATCH --ntasks-per-node=40
+#SBATCH --hint=nomultithread
+#SBATCH --time=1:00:00
+#SBATCH --output=<exp>.out
+#SBATCH --error=<exp>.out
+#SBATCH -A khe@cpu
+
+cd ${SLURM_SUBMIT_DIR}
+#===============================================================================
+
+export MPI_LAUNCH=srun
+export MPI_ext="--multi-prog"
+module load intel-compilers/19.0.4
+module load netcdf/4.7.2-mpi
+module load netcdf-fortran/4.5.2-mpi
+module load hdf5/1.10.5-mpi
+export ncomod='nco'
+
+# < insert here variables definitions > !!! DO NOT REMOVE THIS LINE (used by submitjob) !!!
+
+
