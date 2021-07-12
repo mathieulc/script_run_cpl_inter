@@ -38,10 +38,4 @@ if [ ${USE_WW3} -eq 1 ]; then
     echo "${mod_Str} ./wwatch" >> app.conf
 fi
 
-if [ ${USE_TOY} -eq 1 ]; then
-    mystartproc=$(( ${myendproc} + 1 ))
-    myendproc=$(( ${mystartproc} + ${NP_TOY} - 1 ))
 
-    mod_Str=$mystartproc"-"$myendproc
-    echo "${mod_Str} ./toyexe" >> app.conf
-fi

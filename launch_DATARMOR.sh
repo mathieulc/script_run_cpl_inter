@@ -1,4 +1,3 @@
-
 ############ CREATE app.conf for DATARMOR ###########
 
 if [ ${USE_ATM} -eq 1 ]; then
@@ -20,5 +19,12 @@ if [ ${USE_WW3} -eq 1 ]; then
 fi
 
 if [ ${USE_TOY} -eq 1 ]; then
-    echo "-n ${NP_TOY} ./toyexe" >> app.conf
+    if [ ${nbtoy} -eq 1 ]; then
+        echo "-n ${NP_TOY} ./toyexe" >> app.conf
+     else
+        for k in `seq 0 $(( ${nbtoy} - 1 ))`; do
+            echo "-n ${NP_TOY} ./toy${toytype[$k]}" >> app.conf     
+        done
+     fi
 fi
+##

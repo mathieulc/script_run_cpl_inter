@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -q mpi_<nmpi>
-#PBS -l select=1:ncpus=28:mpiprocs=28:mem=115g
+#PBS -l select=1:ncpus=28:mpiprocs=8:mem=115g
 #PBS -l walltime=24:00:00
 #PBS -N <exp> 
 cd $PBS_O_WORKDIR
@@ -21,34 +21,34 @@ set +x   #  set -x par defaut sur Curie
 #-------------------------------------------------------------------------------
 # where do we get the executables
 #-------------------------------------------------------------------------------
-export CROCO_EXE_DIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/croco_in"
-export WRF_EXE_DIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/croco_in"
-export WW3_EXE_DIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/croco_in"
-export TOY_EXE_DIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/toy_in"
-export XIOS_EXE_DIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/croco_in"
+export CROCO_EXE_DIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy_wav_atm/croco_in"
+export WRF_EXE_DIR=""
+export WW3_EXE_DIR=""
+export TOY_EXE_DIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy_wav_atm/toy_in"
+export XIOS_EXE_DIR=""
 
 #-------------------------------------------------------------------------------
 #  where do we get the input files?
 #-------------------------------------------------------------------------------
 export INPUTDIRO="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA/croco_files_frc"
 export INPUTDIRO_onlinefrc="" # When using online interpolation with CROCO
-export INPUTDIRA="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/croco_in"
-export INPUTDIRW="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/croco_in"
+export INPUTDIRA=""
+export INPUTDIRW=""
 export INPUTDIRC="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/oasis_in"  #Where restart_from_calm condition.sh is located, help to define namelist too
 export INPUTDIRX="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/croco_in"
 
 #-------------------------------------------------------------------------------
 #  where do we get the namelist files?
 #-------------------------------------------------------------------------------
-export OCE_NAMEDIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/croco_in"
+export OCE_NAMEDIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy_wav_atm/croco_in"
 export WRF_NAMEDIR="wrf_in"
 export WW3_NAMEDIR="ww3_in/inputs_ww3" #
-export TOY_NAMEDIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/toy_in" 
-export CPL_NAMEDIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/oasis_in/inputs_oasis"
+export TOY_NAMEDIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy_wav_atm/toy_in" 
+export CPL_NAMEDIR="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy_wav_atm/oasis_in/inputs_oasis"
 #-------------------------------------------------------------------------------
 #  where do we execute the job?
 #-------------------------------------------------------------------------------
-export EXEDIR_ROOT="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy/run_dir/execute"
+export EXEDIR_ROOT="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA_oce_toy_wav_atm/run_dir/execute"
 
 #-------------------------------------------------------------------------------
 #  where do we store the output files?

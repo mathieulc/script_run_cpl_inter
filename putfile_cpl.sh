@@ -11,10 +11,16 @@
    [[ ${USE_OCE} -eq 1 && ${USE_WW3} -eq 1 ]] && cp *ocn*_to_ww3t* ${RESTDIR_OUT}/. && cp *ww3t_to_ocnt* ${RESTDIR_OUT}/. 
 
     if [ ${USE_TOY} -eq 1 ] ; then
-        ${io_putfile} ${toytype}.nc ${RESTDIR_OUT}/${toytype}_${CEXPER}_${DATE_END_JOB}.nc
-        [ ${USE_OCE} -eq 1 ] && cp *toyt_to_ocnt* ${RESTDIR_OUT}/. && cp *ocn*_to_toyt* ${RESTDIR_OUT}/. 
-        [ ${USE_WW3} -eq 1 ] && cp *toyt_to_ww3t* ${RESTDIR_OUT}/. && cp *ww3t_to_toyt* ${RESTDIR_OUT}/.
-        [ ${USE_ATM} -eq 1 ] && cp *atmt_to_toyt* ${RESTDIR_OUT}/. && cp *toyt_to_atmt* ${RESTDIR_OUT}/.
+        for k in `seq 0 $(( ${nbtoy} - 1 ))`; do
+            printf "move ${toytype[$k]}.nc"
+            ${io_putfile} ${toytype[$k]}.nc ${RESTDIR_OUT}/${toytype[$k]}_${CEXPER}_${DATE_END_JOB}.nc
+        done
+        [ ${USE_OCE} -eq 1 ] && cp *toy*_to_ocn* ${RESTDIR_OUT}/. && cp *ocn*_to_toy* ${RESTDIR_OUT}/. 
+        [ ${USE_WW3} -eq 1 ] && cp *toy*_to_ww3t* ${RESTDIR_OUT}/. && cp *ww3t_to_toy* ${RESTDIR_OUT}/.
+        [ ${USE_ATM} -eq 1 ] && cp *toy*_to_atmt* ${RESTDIR_OUT}/. && cp *atmt_to_toy* ${RESTDIR_OUT}/.
+        if [ ${nbtoy} -gt 1 ]; then
+            cp *toy*_to_toy*
+	fi
     fi
 
 

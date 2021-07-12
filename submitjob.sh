@@ -35,10 +35,16 @@ cd -
 if [ ${USE_CPL} -ge 1 ]; then
   if [ $(( ${CPL_FREQ} % ${TSP_ATM} )) -ne 0 ] || \
      [ $(( ${CPL_FREQ} % ${TSP_OCE} )) -ne 0 ] || \
-     [ $(( ${CPL_FREQ} % ${TSP_WW3} )) -ne 0 ] || \
-     [ $(( ${CPL_FREQ} % ${TSP_TOY} )) -ne 0 ] ; then
+     [ $(( ${CPL_FREQ} % ${TSP_WW3} )) -ne 0 ] ; then
 #     [ $(( ${CPL_FREQ} % ${TSP_ICE} )) -ne 0 ] ; then
-     printf "\n\n Problem of consistency between Coupling Frequency and Time Step, we stop...\n\n" && exit 1
+     printf "\n\n Problem of consistency between Coupling Frequency and Time Step with ATM, OCE or WAV model, we stop...\n\n" && exit 1
+  fi
+  if [ ${USE_TOY} -eq 1 ]; then 
+      for k in `seq 0 $(( ${nbtoy} - 1))` ; do
+          if [ $(( ${CPL_FREQ} % ${TSP_TOY[$k]} )) -ne 0 ] ; then
+              printf "\n\n Problem of consistency between Coupling Frequency and Time Step for TOY model, we stop...\n\n" && exit 1
+          fi
+      done
   fi
 fi
 
@@ -51,7 +57,7 @@ fi
 [ ${USE_OCE}  -eq 1 ] && TOTOCE=$NP_CRO  || TOTOCE=0
 [ ${USE_ATM}  -eq 1 ] && TOTATM=$NP_WRF  || TOTATM=0
 [ ${USE_WW3}  -eq 1 ] && TOTWW3=$NP_WW3  || TOTWW3=0
-[ ${USE_TOY}  -eq 1 ] && TOTTOY=$NP_TOY  || TOTTOY=0
+[ ${USE_TOY}  -eq 1 ] && { for k in `seq 0 $(( ${nbtoy} - 1))`; do TOTTOY+=$NP_TOY ; done;}  || TOTTOY=0
 [ ${USE_XIOS_ATM} -eq 1 ] && TOTXIO=$NP_XIOS_ATM || TOTXIO=0
 [ ${USE_XIOS_OCE} -eq 1 ] && TOTXIO=$(( ${TOTXIO} + ${NP_XIOS_OCE} ))
 totalcore=$(( $TOTOCE + $TOTATM + $TOTWW3 + $TOTTOY + $TOTXIO ))

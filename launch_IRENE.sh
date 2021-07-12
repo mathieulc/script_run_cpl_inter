@@ -19,6 +19,4 @@ if [ ${USE_WW3} -eq 1 ]; then
     echo "${NP_WW3} ./wwatch" >> app.conf
 fi
 
-if [ ${USE_TOY} -eq 1 ]; then
-    echo "${NP_TOY} ./toyexe" >> app.conf
-fi
+

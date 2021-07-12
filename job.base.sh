@@ -35,8 +35,18 @@ cd ${EXEDIR}
 	    [ ${USE_OCE}  -eq 1 ] && cpfile ${CROCO_EXE_DIR}/croco.${RUN} crocox
 	    [ ${USE_ATM}  -eq 1 ] && cpfile ${WRF_EXE_DIR}/wrf.exe wrfexe
 	    [ ${USE_WW3}  -eq 1 ] && cp ${WW3_EXE_DIR}/ww3_* . && mv ww3_shel wwatch
-            [ ${USE_TOY}  -eq 1 ] && cpfile ${TOY_EXE_DIR}/toy_model toyexe
 	    [ ${USE_XIOS} -ge 1 ] && cpfile ${XIOS_EXE_DIR}/xios_server.exe .
+            # If toy is used #
+            if [ ${USE_TOY}  -eq 1 ]; then
+	        if [ ${nbtoy} -eq 1 ]; then
+		    cpfile ${TOY_EXE_DIR}/toy_model toyexe
+		else
+		    for k in `seq 0 $(( ${nbtoy} - 1))`; do
+			cpfile ${TOY_EXE_DIR}/toy_${toytype[$k]} toy${toytype[$k]}
+		    done
+		fi
+	    fi
+	    ##
 
         printf "\n ************* PARAMETER files *****************\n"
 # if xios
@@ -80,7 +90,7 @@ cd ${EXEDIR}
 	[ ${USE_OCE} -eq 1 ] && ./namcroco.sh
 	[ ${USE_ATM} -eq 1 ] && ./namwrf.sh
         [ ${USE_WW3} -eq 1 ] && echo "No namelist for WW3"
-        [ ${USE_TOY} -eq 1 ] && ./namtoy.sh
+        [ ${USE_TOY} -eq 1 ] && { . ./namtoy.sh ; }
 	[ ${USE_CPL} -ge 1 ] && ./namoa3mct.sh
         printf "\n date_chris : `date "+%Y%m%d-%H:%M:%S"`\n"
 
@@ -92,7 +102,7 @@ if [ ${LOADL_STEP_NAME} == "run_model" ] || [ ${LOADL_STEP_NAME} == "XXX" ] ; th
         
         export JOBDIR="${JOBDIR_ROOT}/${ROOT_NAME_2}"
         export EXEDIR="${EXEDIR_ROOT}/${ROOT_NAME_2}"
- 
+
 cd ${EXEDIR} 
 
 #       ls -l > ls_l/ls_pre_exe.txt
@@ -104,7 +114,8 @@ cd ${EXEDIR}
 #        echo "${EXEC} > out_run.txt 2>&1" 
 #              ${EXEC} > out_run.txt 2>&1
         printf "\n ***************** make app.conf file for Multiple Program Multiple Data *****************\n"
-        [ -f launch_${MACHINE}.sh ] && { ./launch_${MACHINE}.sh ; } || { printf "\n Please create a file launch_${MACHINE}.sh \n" ; exit 0 ; }       
+        [ -f launch_${MACHINE}.sh ] && . ./launch_${MACHINE}.sh || { printf "\n Please create a file launch_${MACHINE}.sh \n" ; exit 0 ; }
+
 	echo "launch run: $MPI_LAUNCH ${MPI_ext} app.conf " #${run_cmd} #$app.conf
 
 ##### RUN ######

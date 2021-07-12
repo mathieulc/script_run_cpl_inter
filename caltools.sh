@@ -1,5 +1,5 @@
 #!/bin/bash
-set -u
+#set -u
 
 
 export CALTYPE=greg

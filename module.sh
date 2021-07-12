@@ -76,7 +76,7 @@ elif [ ${MACHINE} == "DATARMOR" ]; then
   module load impi/2018.1.163
   export PATH=${PATH}:/home/datawork-wave/NETCDF2019/INTEL/bin
   export CPATH=${CPATH}:/home/datawork-wave/NETCDF2019/INTEL/include
-
+  export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/datawork-wave/NETCDF2019/INTEL/lib
   #[ -f ../run_env ] && source ../run_env
   export ncomod='nco'
 

@@ -29,7 +29,7 @@ set +x   #  set -x par defaut sur Curie
 export CROCO_EXE_DIR="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/croco_in"
 export WRF_EXE_DIR="$HOME/WRF/exe_coupled_xios"
 export WW3_EXE_DIR="$HOME/WW3/exe_owa_BENGUELA"
-export TOY_EXE_DIR="/gpfswork/rech/khe/umi89tk/CONFIG/BENGUELA_oce_frc/toy_in"
+export TOY_EXE_DIR=""
 export XIOS_EXE_DIR="$HOME/XIOS/bin"
 
 #-------------------------------------------------------------------------------

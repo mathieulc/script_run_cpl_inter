@@ -8,7 +8,7 @@ export MACHINE="DATARMOR" #DATARMOR / JEANZAY /IRENE
 #  Config : Ocean - Atmosphere - Coupling
 #-------------------------------------------------------------------------------
 export CONFIG=BEGUELA
-export RUN=frc
+export RUN=owa
 
 #
 export USE_ATM=0
@@ -19,13 +19,12 @@ export USE_XIOS_OCE=0
 #
 export USE_WW3=0
 #
-export USE_TOY=0
+export USE_TOY=1
 #
 export USE_XIOS=$(( ${USE_XIOS_ATM} + ${USE_XIOS_OCE} ))
 #export USE_ICE=0 # Not setup yet
 #export USE_CPL=$(( ${USE_ATM} * ${USE_OCE} + ${USE_ATM} * ${USE_WW3} + ${USE_OCE} * ${USE_WW3} ))
 [ ${USE_TOY} -eq 1 ] && export USE_CPL=1 || export USE_CPL=$(( ${USE_ATM} * ${USE_OCE} + ${USE_ATM} * ${USE_WW3} + ${USE_OCE} * ${USE_WW3} ))
-
 
 export AGRIFZ=0
 export AGRIF_NAMES=""
@@ -34,7 +33,7 @@ export AGRIF_NAMES=""
 # ----------------------------
 ### OASIS namelist ###
 
-export namcouplename=namcouple.base.${RUN}.toywav 
+export namcouplename=namcouple.base.${RUN}.toywavatm 
 
 #### WRF namelist ###
 
@@ -57,13 +56,26 @@ export forcin=() # forcing file(s) list (leave empty if none)
 export forcww3=() # name of ww3_prnc.inp extension/input file
 
 ### TOY ###
-export toyfile="/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA/outputs_frc_ww3_CFSR/ww3.frc.200501.nc"
-export timerange='1,745'
-export toytype="wav" #oce,atm,wav
-[ ${toytype} == "oce" ] && model_to_toy="croco"
-[ ${toytype} == "atm" ] && model_to_toy="wrf"
-[ ${toytype} == "wav" ] && model_to_toy="ww3"
-export toynamelist="TOYNAMELIST.nam.${toytype}.${RUN}"
+if [ ${USE_TOY} -eq 1 ]; then
+
+
+#export toytype=(\
+# wav \
+# atm)
+export toytype=("wav" "atm") #oce,atm,wav
+export nbtoy=${#toytype[@]}
+export toyfile=("/home2/datawork/mlecorre/COUPLING/CONFIG/BENGUELA/outputs_frc_ww3_CFSR/ww3.frc.200501.nc" "/home2/scratch/mlecorre/BEGUELA/outputs/20050101_20050131/wrfout_d01_20050101_20050131.nc")
+export timerange=('1,745' '2,125')
+export model_to_toy=()
+export toynamelist=()
+#
+for k in `seq 0 $(( ${nbtoy} - 1))` ; do
+    [ ${toytype[$k]} == "oce" ] && model_to_toy+=("croco")
+    [ ${toytype[$k]} == "atm" ] && model_to_toy+=("wrf")
+    [ ${toytype[$k]} == "wav" ] && model_to_toy+=("ww3")
+    toynamelist+=("TWOTOYNAMELIST.nam.${toytype[$k]}.${RUN}") 
+done
+fi
 
 ### XIOS ### 
 export FILIN_XIOS="iodef.xml context_roms.xml context_wrf.xml field_def.xml domain_def.xml file_def_croco.xml file_def_wrf.xml" # files needed for xios. Need to be in INPUTDIRX (cf header.*)
@@ -102,7 +114,6 @@ export NP_TOY=2
 #-------------------------------------------------------------------------------
 #  Various
 #-------------------------------------------------------------------------------
-export DEBUG="FALSE"     
 export SCRIPT_DEBUG="FALSE"     
 export LEVITUS=0  # for init state  ... si demarrage climato (levitus ou autre)
 
@@ -144,7 +155,17 @@ export TSP_WW_REF=1800  # TMAX / 2
 export TSP_WW_SRC=10
 
 ### TOY ###
-export TSP_TOY=${TSP_WW3} 
+#!!!! WARNING !!!!
+# When using toy, please put the output frequency of "toyfile" in the TSP of the model
+# example: ww3.200501.nc output_frequency=3600 -----> TSP_WW3=3600
+#!!!!!!!!!!!!!!!!!
+export TSP_TOY=() 
+for k in `seq 0 $(( ${nbtoy} - 1))` ; do
+    [ ${toytype[$k]} == "oce" ] && TSP_TOY+=("${TSP_OCE}")
+    [ ${toytype[$k]} == "atm" ] && TSP_TOY+=("${TSP_ATM}")
+    [ ${toytype[$k]} == "wav" ] && TSP_TOY+=("${TSP_WW3}")
+done
+ 
 
 ### CPL ###
 export CPL_FREQ=21600
