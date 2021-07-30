@@ -13,6 +13,10 @@ export CPATH=${CPATH}:/home/datawork-wave/NETCDF2019/INTEL/include
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/datawork-wave/NETCDF2019/INTEL/lib
 export NETCDF=/home/datawork-wave/NETCDF2019/INTEL
 
+# -- Option for job launching
+export MPI_ext="-configfile"
+export ncomod='nco'
+
 #----------------------------------------------------------------
 # Environment variables related to compilers
 #----------------------------------------------------------------

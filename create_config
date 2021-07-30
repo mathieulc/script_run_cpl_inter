@@ -158,7 +158,7 @@ if [ $interannual_run == 1 ]; then
     head -n 35 ./namelist_base.sh > mynamelist.sh
 
     for k in `seq 0 $(( ${#models[@]} - 1))` ; do
-        [ ${models[$k]} == "oce" ] && printf "export OCE_EXE_DIR==\n" >> mynamelist.sh
+        [ ${models[$k]} == "oce" ] && printf "export OCE_EXE_DIR=\n" >> mynamelist.sh
         [ ${models[$k]} == "atm" ] && printf "export ATM_EXE_DIR=\n" >> mynamelist.sh
         [ ${models[$k]} == "wav" ] && printf "export WAV_EXE_DIR=\n" >> mynamelist.sh
         [ ${models[$k]} == "toy" ] && printf "export TOY_EXE_DIR=\n" >> mynamelist.sh

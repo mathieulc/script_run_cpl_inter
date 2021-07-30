@@ -55,6 +55,8 @@ export USE_TOY=$(( ${USE_TOYATM} + ${USE_TOYOCE} + ${USE_TOYWAV} ))
 [ ${USE_TOY} -ge 1 ] && export USE_CPL=1 || export USE_CPL=$(( ${USE_ATM} * ${USE_OCE} + ${USE_ATM} * ${USE_WAV} + ${USE_OCE} * ${USE_WAV} ))
 
 ### TOY ###
+[ -n $toytype ] && toytype=()
+
 export nbtoy=${#toytype[@]}
 export model_to_toy=()
 export toynamelist=()

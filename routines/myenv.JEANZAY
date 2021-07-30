@@ -13,6 +13,11 @@ export NETCDF_CONFIG=$NETCDF/bin/nf-config
 export NETCDF_LIBDIR=$NETCDF/lib
 export NETCDF_LIBDIR=$NETCDF/include
 
+# -- Option for job launching
+export MPI_LAUNCH=srun
+export MPI_ext="--multi-prog"
+export ncomod='nco'
+
 # -- Environment variables
 
 export FC=ifort

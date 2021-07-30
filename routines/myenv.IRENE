@@ -12,6 +12,12 @@ export NETCDF_ROOT="/ccc/products/netcdf-c-4.6.0/intel--17.0.4.196__openmpi--2.0
 export NETCDF_FORTRAN_ROOT="/ccc/products/netcdf-fortran-4.4.4/intel--17.0.4.196__openmpi--2.0.2/hdf5__parallel"
 export HDF5_ROOT="/ccc/products/hdf5-1.8.20/intel--17.0.4.196__openmpi--2.0.2/parallel"
 
+# -- Option for job launching
+
+export MPI_LAUNCH=ccc_mprun
+export MPI_ext="-f"
+export ncomod='nco/4.6.0'
+
 
 #----------------------------------------------------------------
 # Environment variables related to compilers
