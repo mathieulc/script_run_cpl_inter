@@ -20,17 +20,20 @@ printf  "%16s%10d%20s%10d%20s%10d\n"     "YEAR_BEGIN_JOB:  " ${YEAR_BEGIN_JOB}  
 printf  "%16s%10d%20s%10d%20s%10d\n"     "MONTH_BEGIN_JOB: " ${MONTH_BEGIN_JOB}  "MONTH_END_JOB: " ${MONTH_END_JOB}   "MONTH_BEGIN_JOBp1: " ${MONTH_BEGIN_JOBp1}
 printf  "%16s%10d%20s%10d%20s%10d\n\n\n" "DAY_BEGIN_JOB:   " ${DAY_BEGIN_JOB}    "DAY_END_JOB:   " ${DAY_END_JOB}    "DAY_BEGIN_JOBp1:   " ${DAY_BEGIN_JOBp1} 
 
-printf "%-15s : %-80s\n" "RUNDIR" "${RUNDIR}"
+printf "%-15s : %-80s\n" "CHOME" "${CHOME}"
+printf "%-15s : %-80s\n" "CWORK" "${CWORK}"
 printf "%-15s : %-80s\n" "SCRIPTDIR" "${SCRIPTDIR}"
-printf "%-15s : %-80s\n\n" "JOBDIR" "${JOBDIR}"
+printf "%-15s : %-80s\n\n" "JOBDIR" "${JOBDIR_ROOT}"
 
-printf "%-15s : %-80s\n" "INPUTDIRA" "${INPUTDIRA}"
-printf "%-15s : %-80s\n" "INPUTDIRO" "${INPUTDIRO}"
-printf "%-15s : %-80s\n" "INPUTDIRC" "${INPUTDIRC}"
+printf "%-15s : %-80s\n" "ATM_INPUTDIR" "${ATM_FILES_DIR}"
+printf "%-15s : %-80s\n" "OCE_INPUTDIR" "${OCE_FILES_DIR}"
+printf "%-15s : %-80s\n" "WAV_INPUTDIR" "${WAV_FILES_DIR}"
+printf "%-15s : %-80s\n" "CPL_INPUTDIR" "${CPL_FILES_DIR}"
 printf "%-15s : %-80s\n" "OUTPUTDIR_ROOT" "${OUTPUTDIR_ROOT}"
 printf "%-15s : %-80s\n" "RESTDIR_ROOT" "${RESTDIR_ROOT}"
 
-printf "%-15s : %-80s\n\n" "EXEDIR" "${EXEDIR}"
+printf "%-15s : %-80s\n\n" "EXEDIR" "${EXEDIR_ROOT}"
 
 printf "%-15s : %-80s\n\n" "LD_LIBRARY_PATH" "${LD_LIBRARY_PATH}"
+
 

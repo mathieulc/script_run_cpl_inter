@@ -16,7 +16,7 @@ if [ ${USE_ATM} -eq 1 ]; then
 fi
 #
 if [ ${USE_OCE} -eq 1 ]; then
-    [ ${USE_ATM} -eq 1 ] && { mystartproc=$(( ${myendproc} + 1 )) ; myendproc=$(( ${mystartproc} + ${NP_OCE} - 1 )); } || { myendproc=$(( ${NP_OCE} - 1 )) ; }
+    [ ${USE_ATM} -eq 1 ] && { mystartproc=$(( ${myendproc} + 1 )) ; myendproc=$(( ${mystartproc} + ${NP_OCEX}*${NP_OCEY} - 1 )); } || { myendproc=$(( ${NP_OCEX} * ${NP_OCEY} - 1 )) ; }
     mod_Str=$mystartproc"-"$myendproc
     echo "$mod_Str ./crocox" >> app.conf
     if [ ${USE_XIOS_OCE} -eq 1 ]; then

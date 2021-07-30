@@ -28,7 +28,7 @@ sed -e "s/<yr1>/${YEAR_BEGIN_JOB}/g"  -e "s/<mo1>/${ms}/g"  -e "s/<dy1>/${ds}/g"
     -e "s/<yr2>/${YEAR_END_JOB}/g"  -e "s/<mo2>/${me}/g"  -e "s/<dy2>/${de}/g"  -e "s/<hr2>/24/g" \
     -e "s/<wav_int>/${wav_int}/g"  -e "s/<wav_rst>/$(( ${TOTAL_JOB_DUR} * 24 * 3600))/g" \
     -e "s/<wavdt>/${TSP_WAV}/g" \
-    ${WAV_NAM_DIR}/ww3_shel.inp.base.${RUN} > ./ww3_shel.inp
+    ${WAV_NAM_DIR}/ww3_shel.inp.base.${RUNtype} > ./ww3_shel.inp
 
 
 echo 'link ww3 input files and copy associated settings files'

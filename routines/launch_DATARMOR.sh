@@ -8,7 +8,7 @@ if [ ${USE_ATM} -eq 1 ]; then
 fi
 
 if [ ${USE_OCE} -eq 1 ]; then
-    echo "-n ${NP_OCE} ./crocox croco.in" >> app.conf
+    echo "-n $(( ${NP_OCEX} * ${NP_OCEY} )) ./crocox croco.in" >> app.conf
     if [ ${USE_XIOS_OCE} -eq 1 ]; then
         echo "-n ${NP_XIOS_OCE} ./xios_server.exe" >> app.conf
     fi

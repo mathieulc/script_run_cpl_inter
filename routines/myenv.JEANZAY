@@ -1,0 +1,39 @@
+#!/bin/bash
+
+module load intel-compilers/19.0.4
+module load netcdf/4.7.2-mpi
+module load netcdf-fortran/4.5.2-mpi
+module load hdf5/1.10.5-mpi
+
+# -- for NETCDF
+# --> 
+export NETCDF_CONFIG0=nf-config
+export NETCDF=$( $NETCDF_CONFIG0 --prefix )
+export NETCDF_CONFIG=$NETCDF/bin/nf-config
+export NETCDF_LIBDIR=$NETCDF/lib
+export NETCDF_LIBDIR=$NETCDF/include
+
+# -- Environment variables
+
+export FC=ifort
+export CC=icc
+
+#-------------
+# WRF
+#-------------
+export NETCDF4=1
+export NETCDF_classic=1
+export WRFIO_NCD_LARGE_FILE_SUPPORT=1
+
+#-------------
+# WW3
+#-------------
+export LD_LIBRARY_PATH=$NETCDF/lib:$LD_LIBRARY_PATH
+export WWATCH3_NETCDF=NC4
+
+#-------------
+# WPS
+#-------------
+export JASPERLIB="$HOME/softs/grib2/lib"
+export JASPERINC="$HOME/softs/grib2/include"
+

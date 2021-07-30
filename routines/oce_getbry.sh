@@ -73,7 +73,7 @@ for i in `seq 0 $(( ${JOB_DUR_MTH}-1 ))`; do
 done
 
 if [ ${JOB_DUR_MTH} -eq 0 ] ; then
-    printf "Job duration is less than a month ---> Using netcdf of the current month"
+    printf "Job duration is less than a month ---> Using netcdf of the current month\n"
     cur_Y=$( echo $DATE_BEGIN_JOB | cut -c 1-4 )
     cur_M=$( echo $DATE_BEGIN_JOB | cut -c 5-6 )    
 

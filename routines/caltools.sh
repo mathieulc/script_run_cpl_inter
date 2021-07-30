@@ -26,6 +26,16 @@ echo $( printf "%04d\n" $y)$( printf "%02d\n" $m)$( printf "%02d\n" $d)
 }
 
 
+function sec2hour
+{
+secs=$1
+h=$(( $secs / 3600 ))
+m=$(( ( $secs / 60 ) % 60 ))
+s=$(( $secs % 60 ))
+
+echo $( printf "%02d:%02d:%02d\n" $h $m $s )
+}
+
 ##------------------------------------------------------------------------------
 ## Date of the beginning of the experiment (in $CALTYPE calendar):
 ##------------------------------------------------------------------------------

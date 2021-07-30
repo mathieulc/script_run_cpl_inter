@@ -49,30 +49,34 @@
 #=======================  USER CHANGES  ==================================
 #=========================================================================
 
+# Machine you are working on
+# --------------------------
+
+export MACHINE="DATARMOR"
+
 # Home and Work configuration directories
 # ---------------------------------------
-export hconf=$confs/BENGUELA
-export wconf=$SCRATCH/BENGUELA
+export CONFIG=BENGUELA
+export hconf=/${CONFIG} 
+export wconf=$SCRATCH/${CONFIG}
 
 # CROCO parent directory 
 # (where croco_tools directory and croco source directory can be found)
 # -----------------
-export croco=croco/
+export croco=/home2/datawork/mlecorre/COUPLING/croco
 
 # Options for you configuration
 # -----------------------------
-use_oce=1
-use_cpl=1
-use_atm=1
-use_wav=1
-use_toy=0
+
+models=("cpl" "oce" "atm" "wav") #av: "cpl" "oce" "atm" "wav" "xios"
+
 
 interannual_run=1
 #=========================================================================
 #=====================  END USER CHANGES  ================================
 #=========================================================================
 
-if [ $use_oce == 1 ] ; then 
+if [[ ${models[@]} =~ "oce" ]] ; then 
  echo 'Copy CROCO useful scripts and input files'
  echo '-----------------------------------------'
  mkdir -p $hconf/croco_in
@@ -83,7 +87,7 @@ if [ $use_oce == 1 ] ; then
 
 fi
 
-if [ $use_wav == 1 ] ; then
+if [[ ${models[@]} =~ "wav" ]] ; then
  echo 'Copy WW3 useful scripts and input files'
  echo '-----------------------------------------'
  mkdir -p $hconf/ww3_in
@@ -91,21 +95,21 @@ if [ $use_wav == 1 ] ; then
  cp -r ${croco}/croco_tools/Coupling_tools/ww3_in/* $hconf/ww3_in/.
 fi
 
-if [ $use_atm == 1 ] ; then
+if [[ ${models[@]} =~ "atm" ]] ; then
  echo 'Copy WRF useful scripts and input files'
  echo '-----------------------------------------'
  mkdir -p $hconf/wrf_in
  mkdir -p $wconf/wrf_files
  cp -r ${croco}/croco_tools/Coupling_tools/wrf_in/* $hconf/wrf_in/.
 fi
-if [ $use_cpl == 1 ] ; then
+if [[ ${models[@]} =~ "cpl" ]] ; then
  echo 'Copy OASIS useful scripts and input files'
  echo '-----------------------------------------'
  mkdir -p $hconf/oasis_in
  mkdir -p $wconf/oasis_files
  cp -r ${croco}/croco_tools/Coupling_tools/oasis_in/* $hconf/oasis_in/.
 fi
-if [ $use_toy == 1 ] ; then
+if [[ ${models[@]} =~ "toy" ]] ; then
  echo 'Copy TOY sources, useful scripts and input files'
  echo '------------------------------------------------'
  mkdir -p $hconf/toy_in
@@ -113,10 +117,69 @@ if [ $use_toy == 1 ] ; then
  cp -r ${croco}/croco_tools/Coupling_tools/toy_in/* $hconf/toy_in/.
 fi
 
+
+
 echo 'Copy run scripts'
 echo '----------------'
 if [ $interannual_run == 1 ]; then
-    cp -r ../script_run_cpl_inter $hconf/.
+    cp -r ${croco}/croco_tools/Coupling_tools/script_run_cpl_inter $hconf/.
+##### Create path file #####
+    cd $hconf/script_run_cpl_inter/routines/paths
+    cat ./paths_base.sh >> tmppath
+
+    # add model path part
+    for k in `seq 0 $(( ${#models[@]} - 1))` ; do
+        [ ${models[$k]} == "cpl" ] && printf "export CPL=\"\"\n" >> tmppath 
+        [ ${models[$k]} == "oce" ] && printf "export OCE=\"\"\n" >> tmppath
+        [ ${models[$k]} == "atm" ] && printf "export ATM=\"\"\n" >> tmppath
+        [ ${models[$k]} == "wav" ] && printf "export WAV=\"\"\n" >> tmppath
+        [ ${models[$k]} == "toy" ] && printf "export TOY=\"\"\n" >> tmppath
+        [ ${models[$k]} == "xios" ] && printf "export XIOS=\"\"\n" >> tmppath
+    done
+
+    #add path to files
+
+    for k in ${models[@]} ; do
+        cat ./path_${k}.sh >> tmppath
+    done
+
+    sed -e "s|export MACHINE=.*|export MACHINE=\"${MACHINE}\"|g" \
+        -e "s|export CONFIG=.*|export CONFIG=${CONFIG}|g" \
+        tmppath > tmppath1
+
+    mv tmppath1 tmppath
+    mv tmppath ${hconf}/
+    cd ${hconf}
+    cat script_run_cpl_inter/routines/myenv.${MACHINE} tmppath >> myenv_mypath.sh
+    chmod 755 myenv_mypath.sh
+    \rm tmppath
+##### Create namelist file #####
+    cd script_run_cpl_inter/routines/namelists
+    head -n 35 ./namelist_base.sh > mynamelist.sh
+
+    for k in `seq 0 $(( ${#models[@]} - 1))` ; do
+        [ ${models[$k]} == "oce" ] && printf "export OCE_EXE_DIR==\n" >> mynamelist.sh
+        [ ${models[$k]} == "atm" ] && printf "export ATM_EXE_DIR=\n" >> mynamelist.sh
+        [ ${models[$k]} == "wav" ] && printf "export WAV_EXE_DIR=\n" >> mynamelist.sh
+        [ ${models[$k]} == "toy" ] && printf "export TOY_EXE_DIR=\n" >> mynamelist.sh
+        [ ${models[$k]} == "xios" ] && printf "export XIOS_EXE_DIR=\n" >> mynamelist.sh
+    done
+
+    sed -n "42,44p" ./namelist_base.sh >> mynamelist.sh
+
+    for k in ${models[@]} ; do
+        cat ./namelist_${k}.sh >> mynamelist.sh
+    done
+
+    tail -n 32 ./namelist_base.sh >> mynamelist.sh
+
+    sed -e "s|export CEXPER=.*|export CEXPER=${CONFIG}|g" \
+        mynamelist.sh > mynamelist1.sh
+
+    mv mynamelist1.sh mynamelist.sh
+    chmod 755 mynamelist.sh
+    mv mynamelist.sh ../../.
+######
 else
     cp ${croco}/croco_tools/Coupling_tools/* $hconf/.
 fi

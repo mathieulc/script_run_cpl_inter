@@ -3,15 +3,16 @@ set -u
 set +x     # pour CURIE
 
 umask 022
-
+source ../myenv_mypath.sh
 #-------------------------------------------------------------------------------
 #  namelist of the experiment
 #-------------------------------------------------------------------------------
-cat namelist_exp.sh >> namelist_exp.tmp
-cat path.sh >> namelist_exp.tmp
-cat ./routines/common_definitions.sh >> namelist_exp.tmp
+#cat mypath.sh >> mynamelist.tmp
+cat mynamelist.sh >> mynamelist.tmp
+cat myjob.sh >> mynamelist.tmp
+cat ./routines/common_definitions.sh >> mynamelist.tmp
 
-. ./namelist_exp.tmp
+. ./mynamelist.tmp
 
 [ ! -d ${JOBDIR_ROOT} ] && mkdir -p ${JOBDIR_ROOT}  # for the first submitjob.sh call
 
@@ -50,22 +51,32 @@ fi
 # create job and submit it
 #-------------------------------------------------------------------------------
 
-[ ${USE_OCE}  -eq 1 ] && TOTOCE=$NP_OCE  || TOTOCE=0
+[ ${USE_OCE}  -eq 1 ] && TOTOCE=$(( $NP_OCEX * $NP_OCEY )) || TOTOCE=0
 [ ${USE_ATM}  -eq 1 ] && TOTATM=$NP_ATM  || TOTATM=0
-[ ${USE_WAV}  -eq 1 ] && TOTWW3=$NP_WAV  || TOTWAV=0
+[ ${USE_WAV}  -eq 1 ] && TOTWAV=$NP_WAV  || TOTWAV=0
 [ ${USE_TOY}  -eq 1 ] && { for k in `seq 0 $(( ${nbtoy} - 1))`; do TOTTOY+=$NP_TOY ; done;}  || TOTTOY=0
 [ ${USE_XIOS_ATM} -eq 1 ] && TOTXIO=$NP_XIOS_ATM || TOTXIO=0
 [ ${USE_XIOS_OCE} -eq 1 ] && TOTXIO=$(( ${TOTXIO} + ${NP_XIOS_OCE} ))
 totalcore=$(( $TOTOCE + $TOTATM + $TOTWAV + $TOTTOY + $TOTXIO ))
-[ ${COMPUTER} == "DATARMOR" ] && totalcore=$(( $totalcore /29 +1))
 
-sed -e "/< insert here variables definitions >/r namelist_exp.tmp" \
+[ ${COMPUTER} == "DATARMOR" ] && nbnode=$(( $totalcore /29 +1)) || nbnode=0
+
+
+if [ ${MACHINE} == "IRENE" ]; then
+    timedur=${TIMEJOB}
+else
+    timedur=$( sec2hour ${TIMEJOB} )
+fi
+
+sed -e "/< insert here variables definitions >/r mynamelist.tmp" \
     -e "s/<exp>/${ROOT_NAME_1}/g" \
+    -e "s/<nbnode>/${nbnode}/g" \
     -e "s/<nmpi>/${totalcore}/g" \
+    -e "s/<timedur>/${timedur}/g" \
     ./routines/header.${COMPUTER} > HEADER_tmp
     cat HEADER_tmp ./routines/job.base.sh >  ${JOBDIR_ROOT}/${jobname}
     \rm HEADER_tmp
-    \rm ./namelist_exp.tmp
+    \rm ./mynamelist.tmp
 
 
 cd ${JOBDIR_ROOT}
