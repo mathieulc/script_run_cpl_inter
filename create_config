@@ -125,7 +125,7 @@ if [ $interannual_run == 1 ]; then
     cp -r ${croco}/croco_tools/Coupling_tools/script_run_cpl_inter $hconf/.
 ##### Create path file #####
     cd $hconf/script_run_cpl_inter/routines/paths
-    cat ./paths_base.sh >> tmppath
+    cat ./path_base.sh >> tmppath
 
     # add model path part
     for k in `seq 0 $(( ${#models[@]} - 1))` ; do
