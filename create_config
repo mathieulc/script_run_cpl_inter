@@ -145,6 +145,8 @@ if [ $interannual_run == 1 ]; then
 
     sed -e "s|export MACHINE=.*|export MACHINE=\"${MACHINE}\"|g" \
         -e "s|export CONFIG=.*|export CONFIG=${CONFIG}|g" \
+        -e "s|export CHOME=.*|export CHOME=${hconf}|g" \
+        -e "s|export CWORK=.*|export CWORK=${wconf}|g" \
         tmppath > tmppath1
 
     mv tmppath1 tmppath
@@ -171,7 +173,7 @@ if [ $interannual_run == 1 ]; then
         cat ./namelist_${k}.sh >> mynamelist.sh
     done
 
-    tail -n 32 ./namelist_base.sh >> mynamelist.sh
+    tail -n 34 ./namelist_base.sh >> mynamelist.sh
 
     sed -e "s|export CEXPER=.*|export CEXPER=${CONFIG}|g" \
         mynamelist.sh > mynamelist1.sh
