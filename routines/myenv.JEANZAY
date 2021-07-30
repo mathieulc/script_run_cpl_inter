@@ -16,6 +16,7 @@ export NETCDF_LIBDIR=$NETCDF/include
 # -- Environment variables
 
 export FC=ifort
+export MPIF90=mpiifort
 export CC=icc
 
 #-------------

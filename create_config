@@ -130,7 +130,7 @@ if [ $interannual_run == 1 ]; then
     # add model path part
     for k in `seq 0 $(( ${#models[@]} - 1))` ; do
         [ ${models[$k]} == "cpl" ] && printf "export CPL=\"\"\n" >> tmppath 
-        [ ${models[$k]} == "oce" ] && printf "export OCE=\"\"\n" >> tmppath
+        [ ${models[$k]} == "oce" ] && printf "export OCE=\"${croco}/croco/OCEAN\"\n" >> tmppath
         [ ${models[$k]} == "atm" ] && printf "export ATM=\"\"\n" >> tmppath
         [ ${models[$k]} == "wav" ] && printf "export WAV=\"\"\n" >> tmppath
         [ ${models[$k]} == "toy" ] && printf "export TOY=\"\"\n" >> tmppath

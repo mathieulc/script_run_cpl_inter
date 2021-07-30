@@ -8,12 +8,12 @@ if [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
 #    CROCOSRC=/ccc/work/cont005/ra0542/massons/now/models/croco
     cd ${JOBDIR_ROOT}
     printf "\n\n CROCO online compilation is on \n\n" 
-#    rsync -a ${OCE_SRC}/OCEAN/ OCEAN/
+#    rsync -a ${OCE}/OCEAN/ OCEAN/
     [ ! -d Run_croco ] && rm -rf Run_croco
     mkdir Run_croco
-    rsync -a ${OCE_SRC}/param.h   Run_croco/.
-    rsync -a ${OCE_SRC}/cppdefs.h Run_croco/.
-    rsync -a ${OCE_SRC}/jobcomp   Run_croco/.
+    rsync -a ${OCE}/param.h   Run_croco/.
+    rsync -a ${OCE}/cppdefs.h Run_croco/.
+    rsync -a ${OCE}/jobcomp   Run_croco/.
 
 #-------------------------------------------------------------------------------
 #   sed on files
@@ -21,7 +21,7 @@ if [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
     cd Run_croco
     # Option of compilation
 #    sed -e "s/-O3 /-O3 -xAVX /" jobcomp > tmp$$i
-sed -e "s|SOURCE=.*|SOURCE=${OCE_SRC} |g" \
+sed -e "s|SOURCE=.*|SOURCE=${OCE} |g" \
     -e "s|FC=.*|FC=${FC}|g" \
     -e "s|MPIF90=.*|MPIF90=${MPIF90}|g" \
     -e "s|PRISM_ROOT_DIR=.*|PRISM_ROOT_DIR="${CPL}"|g" \
