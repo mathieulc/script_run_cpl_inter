@@ -5,7 +5,7 @@
 # Real job duration in sec (converted to MACHINE format in submit job)
 export TIMEJOB=86400
 
-# Project Id (No need on datarmor)
+# Project Id, on which hours will be taken (No need on datarmor)
 export projectid=""
 
 #-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ export CHAINED_JOB="FALSE" #If TRUE  , place all the jobs in the queue at the be
 # MODE_TEST: extension du nom de l'experience
 #            pour tourner differents tests dans la meme experience
 # on peut lancer plusieurs tests en même temps mais pas être en production et lancer des tests
-export         MODE_TEST="TEST"    #   mode Production 
+export         MODE_TEST=""    #   mode Production 
 
 #-------------------------------------------------------------------------------
 #  Multi-Step

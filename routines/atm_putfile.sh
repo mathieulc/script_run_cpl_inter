@@ -8,10 +8,14 @@ if [ ${USE_XIOS_ATM} -eq 1 ] ; then
         mv ${file}* ${OUTPUTDIR}/${file}_${DATE_BEGIN_JOB}_${DATE_END_JOB}.nc
     done
 else
+    module load $ncomod
     for dom in `seq 1 $NB_dom`; do
-        mv wrfout_d0${dom}_${YEAR_BEGIN_JOB}-* ${OUTPUTDIR}/wrfout_d0${dom}_${DATE_BEGIN_JOB}_${DATE_END_JOB}.nc
+        ncea -O -F -d time,1,-1 wrfout_d0${dom}_${YEAR_BEGIN_JOB}-* wrfout_d0${dom}_${DATE_BEGIN_JOB}_${DATE_END_JOB}.nc
+        \rm wrfout_d0${dom}_${YEAR_BEGIN_JOB}-*        
+        mv wrfout_d0${dom}_${DATE_BEGIN_JOB}_${DATE_END_JOB}.nc ${OUTPUTDIR}/.
         mv wrfxtrm_d0${dom}_${YEAR_BEGIN_JOB}-* ${OUTPUTDIR}/wrfxtrm_d0${dom}_${DATE_BEGIN_JOB}_${DATE_END_JOB}.nc
    done
+   module unload $ncomod
 fi
 
 #-------------------------------------------------------------------------------
