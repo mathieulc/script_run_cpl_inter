@@ -4,6 +4,10 @@
 
 # Real job duration in sec (converted to MACHINE format in submit job)
 export TIMEJOB=86400
+
+# Project Id (No need on datarmor)
+export projectid=""
+
 #-------------------------------------------------------------------------------
 # Run date settings
 #-------------------------------------------------------------------------------

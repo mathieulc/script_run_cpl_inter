@@ -6,7 +6,7 @@
 #SBATCH --time=<timedur>
 #SBATCH --output=<exp>.out
 #SBATCH --error=<exp>.out
-#SBATCH -A khe@cpu
+#SBATCH -A <projectid>
 
 cd ${SLURM_SUBMIT_DIR}
 #===============================================================================

@@ -72,6 +72,7 @@ sed -e "/< insert here variables definitions >/r mynamelist.tmp" \
     -e "s/<exp>/${ROOT_NAME_1}/g" \
     -e "s/<nbnode>/${nbnode}/g" \
     -e "s/<nmpi>/${totalcore}/g" \
+    -e "s/<projectid>/${projectid}/g" \
     -e "s/<timedur>/${timedur}/g" \
     ./routines/header.${COMPUTER} > HEADER_tmp
     cat HEADER_tmp ./routines/job.base.sh >  ${JOBDIR_ROOT}/${jobname}

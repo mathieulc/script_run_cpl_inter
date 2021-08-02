@@ -7,15 +7,14 @@
 #MSUB -T <timedur>         
 #MSUB -x
 #MSUB -q skylake 
-#MSUB -A gen6895
+#MSUB -A <projectid>
 #MSUB -m scratch,store,work
 #===============================================================================
 
-umask 022
-set -u
-set +x   #  set -x par defaut sur Curie
-
-cd ${BRIDGE_MSUB_PWD}
+#umask 022
+#set -u
+#set +x   #  set -x par defaut sur Curie
+#cd ${BRIDGE_MSUB_PWD}
 
 source ../myenv_mypath.sh
 
