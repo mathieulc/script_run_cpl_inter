@@ -47,7 +47,20 @@ export XIOS_EXE_DIR=$XIOS
 ############################ END USER CHANGE ###################################
 ################################################################################
 
+if [ ${USE_ATM} == 0 ]; then
+    export TSP_ATM=0
+    export atmnx=56 ; export atmny=50
+fi
 
+if [ ${USE_OCE} == 0 ]; then
+    export TSP_OCE=0
+    export ocenx=41 ; export oceny=42
+fi
+
+if [ ${USE_WAV} == 0 ]; then
+    export TSP_WAV=0
+    export wavnx=41 ; export wavny=42
+fi
 
 # KEY for XIOS and TOY #
 export USE_XIOS=$(( ${USE_XIOS_ATM} + ${USE_XIOS_OCE} ))

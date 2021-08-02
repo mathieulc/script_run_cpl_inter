@@ -173,7 +173,7 @@ if [ $interannual_run == 1 ]; then
         cat ./namelist_${k}.sh >> mynamelist.sh
     done
 
-    tail -n 34 ./namelist_base.sh >> mynamelist.sh
+    tail -n 47 ./namelist_base.sh >> mynamelist.sh
 
     sed -e "s|export CEXPER=.*|export CEXPER=${CONFIG}|g" \
         mynamelist.sh > mynamelist1.sh
