@@ -13,8 +13,8 @@ if [ ${interponline} -eq 1 ]; then
 #    
     printf "Creating link to data for the job duration\n"
     
-    for i in `seq -1 $(( ${JOB_DUR_MTH} ))`; do
-        [ ${i} -eq -1 ] && printf "Adding link to the previous month (for temporal interpolation)\n"
+    for i in `seq 0 $(( ${JOB_DUR_MTH} ))`; do
+#        [ ${i} -eq -1 ] && printf "Adding link to the previous month (for temporal interpolation)\n"
         [ ${i} -eq ${JOB_DUR_MTH} ] && printf "Adding link to the following month (for temporal interpolation)\n"
 
         mdy=$( valid_date $(( $MONTH_BEGIN_JOB + $i )) $DAY_BEGIN_JOB $YEAR_BEGIN_JOB )
