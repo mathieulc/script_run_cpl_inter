@@ -3,7 +3,7 @@
 ################################################################################
 
 # Real job duration in sec (converted to MACHINE format in submit job)
-export TIMEJOB=86400
+export TIMEJOB=1800
 
 # Project Id, on which hours will be taken (No need on datarmor)
 export projectid=""

@@ -4,7 +4,14 @@
 #-------------------------------------------------------------------------------
 
 # Get grid file
-${io_getfile} ${OCE_FILES_DIR}/croco_grd.nc                croco_grd.nc
+for nn in $( seq 0 ${AGRIFZ} ); do
+    if [ ${nn} -gt 0 ];    then
+        agrif_ext=".${nn}"
+    else
+        agrif_ext=""
+    fi
+    ${io_getfile} ${OCE_FILES_DIR}/croco_grd.nc${agrif_ext}                croco_grd.nc${agrif_ext}
+done
 
 # Get boundary foring
 . ${SCRIPTDIR}/routines/oce_getbry.sh
@@ -13,7 +20,14 @@ ${io_getfile} ${OCE_FILES_DIR}/croco_grd.nc                croco_grd.nc
 [ ${surfrc_flag} == "TRUE" ] && . ${SCRIPTDIR}/routines/oce_getfrc.sh
 
 # Get tide forcing if any
-[ ${tide_flag} == "TRUE" ] && ${io_getfile} ${OCE_FILES_DIR}/croco_frc.nc ./ 
+for nn in $( seq 0 ${AGRIFZ} ); do
+    if [ ${nn} -gt 0 ];    then
+        agrif_ext=".${nn}"
+    else
+        agrif_ext=""
+    fi
+    [ ${tide_flag} == "TRUE" ] && ${io_getfile} ${OCE_FILES_DIR}/croco_frc.nc${agrif_ext} ./ 
+done
 
           
 	       

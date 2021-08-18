@@ -36,7 +36,7 @@ export WRFIO_NCD_LARGE_FILE_SUPPORT=1
 # # for WPS  
 # #-------------
 export JASPERLIB=$NETCDF/lib
-export JASPERINC=$NETCDF/include/jas
+export JASPERINC=$NETCDF/include/jasper
 #-------------
 # WW3
 #-------------

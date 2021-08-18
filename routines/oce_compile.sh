@@ -91,6 +91,13 @@ sed -e "s|SOURCE=.*|SOURCE=${OCE} |g" \
     if [ ${USE_XIOS_OCE} -eq 1 ]; then
 	sed -e "s/#  *undef  *XIOS/# define XIOS/g" cppdefs.h > tmp$$
     	mv tmp$$ cppdefs.h
+        if [ ${USE_CPL} ] ;then
+            sed -e "s/XIOS_withOASIS=.*/XIOS_withOASIS=1/g" cppdefs.h > tmp$$
+            mv tmp$$ cppdefs.h
+        else
+            sed -e "s/XIOS_withOASIS=.*/XIOS_withOASIS=0/g" cppdefs.h > tmp$$
+            mv tmp$$ cppdefs.h
+        fi
         printf "\n Output will be handled by XIOS\n"
     fi
 #

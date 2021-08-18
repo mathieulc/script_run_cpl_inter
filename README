@@ -20,7 +20,7 @@ https://croco-ocean.gitlabpages.inria.fr/croco_doc/tutos/tutos.16.coupling.html
   -------
 
 - cd script_run_cpl_inter
-- eddit myjob.sh => (dates, CPUs, etc)
-- eddit mynamelist.sh => (models, settings, exepaths, rundir, etc)
-- lauch ./submitjob.sh
+- edit myjob.sh => (dates, CPUs, etc)
+- edit mynamelist.sh => (models, settings, exepaths, rundir, etc)
+- launch ./submitjob.sh
 

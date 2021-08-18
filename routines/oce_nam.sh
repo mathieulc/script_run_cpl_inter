@@ -36,10 +36,10 @@ set -ue
 #
 for nn in $( seq 0 ${AGRIFZ} ) 
 do
-    if [ ${nn} -gt 0 ] 
-    then
+    if [ ${nn} -gt 0 ];    then
 	namfile=croco.in.${nn}
-	cp ${OCE_NAM_DIR}/${nn}_croco.in.base ${namfile}
+	cp ${OCE_NAM_DIR}/croco.in.base.${nn} ${namfile}
+        cp ${OCE_NAM_DIR}/AGRIF_FixedGrids.in ./
 	SUBTIME=$( sed -n -e "$(( 2 * ${nn} )) p" AGRIF_FixedGrids.in | awk '{print $7 }' )
     else
 	namfile=croco.in
@@ -60,7 +60,7 @@ do
 
     mdy=$( valid_date $(( $MONTH_END_JOB + 1 )) $DAY_END_JOB $YEAR_END_JOB )
     end_Y=$( printf "%04d\n"  $( echo $mdy | cut -d " " -f 3) )
-    end_M=$( printf "%02d\n"  $( echo $mdy | cut -d " " -f 1) )
+    end_M=$( printf "%01d\n"  $( echo $mdy | cut -d " " -f 1) )
 #
 
 
