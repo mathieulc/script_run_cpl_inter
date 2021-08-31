@@ -24,7 +24,6 @@ then
   for dom in $wrfcpldom ; do
      echo 'set CPLMASK to 1 in coupled domain'$dom
      echo "ncap2 -O -s 'CPLMASK(:,0,:,:)=(LANDMASK-1)*(-1)' ./wrfinput_$dom ./wrfinput_$dom"
-     echo $ncomod
      module load $ncomod
      ncap2 -O -s "CPLMASK(:,0,:,:)=(LANDMASK-1)*(-1)" ./wrfinput_$dom ./wrfinput_$dom
      module unload $ncomod

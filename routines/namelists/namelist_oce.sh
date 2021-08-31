@@ -16,7 +16,6 @@ export hmin=75; # minimum water depth in CROCO, delimiting coastline in WW3
 
 # domains
 export AGRIFZ=0
-export AGRIF_NAMES=""
 
 # forcing files
 export ini_ext='ini_SODA' # ini extension file (ini_SODA,...)

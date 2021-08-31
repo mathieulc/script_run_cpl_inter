@@ -9,15 +9,28 @@ if [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
     cp -f ${CPL_FILES_DIR}/*.sh ./ #cpfile2
 #
     if [ ${USE_ATM} -eq 1 ] ; then
-        varlist='WRF_d01_EXT_d01_SURF_NET_SOLAR WRF_d01_EXT_d01_EVAP-PRECIP WRF_d01_EXT_d01_SURF_NET_NON-SOLAR WRF_d01_EXT_d01_TAUX WRF_d01_EXT_d01_TAUY WRF_d01_EXT_d01_TAUMOD WRF_d01_EXT_d01_WND_U_01 WRF_d01_EXT_d01_WND_V_01'
-        echo 'create restart file for oasis from calm conditions for variables:'${varlist}
-        ./create_oasis_restart_from_calm_conditions.sh wrfinput_d01 atm.nc wrf "${varlist}"
+        for dom in $wrfcpldom ; do
+            varlist="WRF_${dom}_EXT_d01_SURF_NET_SOLAR WRF_${dom}_EXT_d01_EVAP-PRECIP WRF_${dom}_EXT_d01_SURF_NET_NON-SOLAR WRF_${dom}_EXT_d01_TAUX WRF_${dom}_EXT_d01_TAUY WRF_${dom}_EXT_d01_TAUMOD WRF_${dom}_EXT_d01_WND_U_01 WRF_${dom}_EXT_d01_WND_V_01"
+            echo 'create restart file for oasis from calm conditions for variables:'${varlist}
+            if [ ${dom} == "d01" ]; then
+                ./create_oasis_restart_from_calm_conditions.sh wrfinput_${dom} atm.nc wrf "${varlist}"
+            else 
+                ./create_oasis_restart_from_calm_conditions.sh wrfinput_${dom} atm${dom}.nc wrf "${varlist}"
+            fi
+        done
     fi
 #
     if [ ${USE_OCE} -eq 1 ] ; then
-        varlist='SRMSSTV0 SRMSSHV0 SRMVOCE0 SRMUOCE0'
-        echo 'create restart file for oasis from calm conditions for variables:'${varlist}
-        ./create_oasis_restart_from_calm_conditions.sh croco_grd.nc oce.nc croco "${varlist}"
+        for nn in $( seq 0 ${AGRIFZ} ); do
+            if [ ${nn} -gt 0 ]; then
+                agrif_ext=".${nn}"
+            else
+                agrif_ext=""
+            fi
+            varlist="SRMSSTV${nn} SRMSSHV${nn} SRMVOCE${nn} SRMUOCE${nn}"
+            echo 'create restart file for oasis from calm conditions for variables:'${varlist}
+            ./create_oasis_restart_from_calm_conditions.sh croco_grd.nc${agrif_ext} oce.nc${agrif_ext} croco "${varlist}"
+        done
     fi
 #
     if [ ${USE_WAV} -eq 1 ] ; then
