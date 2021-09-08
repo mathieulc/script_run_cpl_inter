@@ -1,17 +1,16 @@
 #-------------------------------------------------------------------------------
 # OCE
 #-------------------------------------------------------------------------------
-# namelist
+# namelist [Info: grid size is directly read in oce_compile.sh and cpl_nam.sh ]
 
 # Online Compilation
-export ONLINE_COMP=1
+export ONLINE_COMP=0
 
 # Time steps
 export TSP_OCE=1200
 export TSP_OCEF=60
 
-# Grid sizes
-export ocenx=41 ; export oceny=42
+# Parameter 
 export hmin=75; # minimum water depth in CROCO, delimiting coastline in WW3 
 
 # domains

@@ -85,8 +85,20 @@ for k in `seq 0 $(( ${nbtoy} - 1))` ; do
     else
         printf "\n No namelist available for three namelist toy\n" ; exit 0
     fi
-    [ ${toytype[$k]} == "oce" ] && TSP_TOY+=("${TSP_OCE}")
-    [ ${toytype[$k]} == "atm" ] && TSP_TOY+=("${TSP_ATM}")
-    [ ${toytype[$k]} == "wav" ] && TSP_TOY+=("${TSP_WAV}")
+    if [ ${toytype[$k]} == "oce" ]; then
+        targ=$( ncdump -v time ${toyfile[$k]} | grep "time = " | sed -n '2p' | cut -d ' ' -f 4-5 )
+        tsp=$(( $( echo "${targ}" | cut -d ',' -f 2) - $( echo "${targ}" | cut -d ',' -f 1) ))
+        TSP_TOY+=("${tsp}")
+    elif [ ${toytype[$k]} == "atm" ]; then
+        targ=$( ncks -v XTIME ${toyfile[$k]} | grep "XTIME ="| cut -d '=' -f 2 | cut -d ',' -f 1-2)
+        tsp=$(( $( echo "${targ}" | cut -d ',' -f 2)*60 - $( echo "${targ}" | cut -d ',' -f 1)*60 ))
+        TSP_TOY+=("${tsp}")
+    elif [ ${toytype[$k]} == "wav" ]; then
+        targ=$( ncdump -v time ${toyfile[$k]} | grep "time =" | sed -n '2p' | cut -d ' ' -f 4-5)
+        arg1=$( echo "${time}" | cut -d ',' -f 2 )
+        arg2=$( echo "${time}" | cut -d ',' -f 1 )
+        tsp=$( echo "(${arg1}  - ${arg2})*86400" | bc | cut -d '.' -f 1)
+        TSP_TOY+=("${tsp}")
+    fi
 done
 ######

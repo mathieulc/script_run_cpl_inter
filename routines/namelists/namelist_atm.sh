@@ -8,7 +8,7 @@ export atmnamelist=namelist.input.prep.${CEXPER}.${RUNtype}
 export TSP_ATM=100 #100   # 100 90 75 72 60 45
 
 # Grid size
-export atmnx=56 ; export atmny=50
+#[ Grid size should be already put in the namelist. When coupled it is directly read in cpl_nam.sh ]
 
 # domains
 export NB_dom=1 # Number of coupled domains

@@ -31,6 +31,11 @@ sed -e "s|SOURCE=.*|SOURCE=${OCE} |g" \
     mv tmp$$ jobcomp
 
     # MPI and Grid size
+    printf "Reading grid size in ${OCE_FILES_DIR}/croco_grd.nc"
+    dimx=$( ncdump -h  ${OCE_FILES_DIR}/croco_grd.nc  | grep "xi_rho =" | cut -d ' ' -f 3)
+    dimy=$( ncdump -h  ${OCE_FILES_DIR}/croco_grd.nc | grep "eta_rho =" | cut -d ' ' -f 3)
+    printf "Grid size is ${dimx}X${dimy}"
+    #
     sed -e "s/NP_XI *= *[0-9]* *,/NP_XI=${NP_OCEX},/g" \
         -e "s/NP_ETA *= *[0-9]* *,/NP_ETA=${NP_OCEY},/g" \
         -e "s/LLm0 *= *[0-9]* *,/LLm0=$(( ${ocenx} )),/g" \

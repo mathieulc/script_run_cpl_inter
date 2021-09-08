@@ -26,8 +26,8 @@ export YEAR_BEGIN_JOB=2005
 export MONTH_BEGIN_JOB=1
 export DAY_BEGIN_JOB=1
 #                                                            Duration of the Job
-export JOB_DUR_MTH=0
-export JOB_DUR_DAY=1
+export JOB_DUR_MTH=1
+export JOB_DUR_DAY=0
 
 #-------------------------------------------------------------------------------
 #  Job submission type

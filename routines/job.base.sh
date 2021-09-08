@@ -94,7 +94,7 @@ cd ${EXEDIR}
 	[ ${USE_ATM} -eq 1 ] && ${SCRIPTDIR}/routines/atm_nam.sh
         [ ${USE_WAV} -eq 1 ] && echo "No namelist for WAV"
         [ ${USE_TOY} -eq 1 ] && { . ${SCRIPTDIR}/routines/toy_nam.sh ; }
-	[ ${USE_CPL} -ge 1 ] && ${SCRIPTDIR}/routines/cpl_nam.sh
+	[ ${USE_CPL} -ge 1 ] && { . ${SCRIPTDIR}/routines/cpl_nam.sh ; }
         printf "\n date_chris : `date "+%Y%m%d-%H:%M:%S"`\n"
 
 fi # Step1
