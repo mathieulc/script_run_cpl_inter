@@ -8,7 +8,7 @@ source ../myenv_mypath.sh
 #  namelist of the experiment
 #-------------------------------------------------------------------------------
 #cat mypath.sh >> mynamelist.tmp
-cat mynamelist.sh >> mynamelist.tmp
+cat mynamelist.sh > mynamelist.tmp
 cat myjob.sh >> mynamelist.tmp
 cat ./routines/common_definitions.sh >> mynamelist.tmp
 
