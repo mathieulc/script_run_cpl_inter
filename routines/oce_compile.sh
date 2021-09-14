@@ -38,8 +38,8 @@ sed -e "s|SOURCE=.*|SOURCE=${OCE} |g" \
     #
     sed -e "s/NP_XI *= *[0-9]* *,/NP_XI=${NP_OCEX},/g" \
         -e "s/NP_ETA *= *[0-9]* *,/NP_ETA=${NP_OCEY},/g" \
-        -e "s/LLm0 *= *[0-9]* *,/LLm0=$(( ${ocenx} )),/g" \
-        -e "s/MMm0 *= *[0-9]* *,/MMm0=$(( ${oceny} )),/g" \
+        -e "s/LLm0 *= *[0-9]* *,/LLm0=$(( ${dimx} - 2 )),/g" \
+        -e "s/MMm0 *= *[0-9]* *,/MMm0=$(( ${dimy} - 2 )),/g" \
         param.h > tmp$$
     mv tmp$$ param.h
 #
