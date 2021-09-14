@@ -48,17 +48,17 @@ export XIOS_EXE_DIR=$XIOS
 ################################################################################
 
 if [ ${USE_ATM} == 0 ]; then
-    export TSP_ATM=0
+    export TSP_ATM=1
     export atmnx=56 ; export atmny=50
 fi
 
 if [ ${USE_OCE} == 0 ]; then
-    export TSP_OCE=0
+    export TSP_OCE=1
     export ocenx=41 ; export oceny=42
 fi
 
 if [ ${USE_WAV} == 0 ]; then
-    export TSP_WAV=0
+    export TSP_WAV=1
     export wavnx=41 ; export wavny=42
 fi
 
