@@ -5,7 +5,9 @@ RUNNING interannual model
 * Create configuration file system
   --------------------------------
 - Be sure that you work in a bash environment (if not just do: bash)
+- Put your script_run_cpl_inter anywhere you want. 
 - Edit and run create_config
+- In create_config, l.125, eventually eddit the location of script_run_cpl_inter
 - Edit and source myenv_mypath.sh
 
 * Compiling

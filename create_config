@@ -122,9 +122,11 @@ fi
 echo 'Copy run scripts'
 echo '----------------'
 if [ $interannual_run == 1 ]; then
-    cp -r ${croco}/croco_tools/Coupling_tools/script_run_cpl_inter $hconf/.
+    cp -r ${PWD}/../script_run_cpl_inter $hconf/my_script_cpl
+    cp create_config $hconf/my_script_cpl/create_config.bck
+#    cp -r ${croco}/croco_tools/Coupling_tools/script_run_cpl_inter $hconf/.
 ##### Create path file #####
-    cd $hconf/script_run_cpl_inter/routines/paths
+    cd $hconf/my_script_cpl/routines/paths
     cat ./path_base.sh >> tmppath
 
     # add model path part
@@ -152,11 +154,11 @@ if [ $interannual_run == 1 ]; then
     mv tmppath1 tmppath
     mv tmppath ${hconf}/
     cd ${hconf}
-    cat script_run_cpl_inter/routines/myenv.${MACHINE} tmppath > myenv_mypath.sh
+    cat my_script_cpl/routines/myenv.${MACHINE} tmppath > myenv_mypath.sh
     chmod 755 myenv_mypath.sh
     \rm tmppath
 ##### Create namelist file #####
-    cd script_run_cpl_inter/routines/namelists
+    cd my_script_cpl/routines/namelists
     head -n 35 ./namelist_base.sh > mynamelist.sh
 
     for k in `seq 0 $(( ${#models[@]} - 1))` ; do
