@@ -16,7 +16,7 @@ export CWORK=/home2/datawork/mlecorre/COUPLING/CONFIG/$CONFIG
 #-------------------------------------------------------------------------------
 # Tools paths
 #-------------------------------------------------------------------------------
-export SCRIPTDIR=$CHOME/script_run_cpl_inter #/routines
+export SCRIPTDIR=$CHOME/my_script_cpl #/routines
 
 #-------------------------------------------------------------------------------
 # Model source paths
