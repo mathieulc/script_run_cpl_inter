@@ -106,7 +106,6 @@ if [[ ${models[@]} =~ "cpl" ]] ; then
  echo 'Copy OASIS useful scripts and input files'
  echo '-----------------------------------------'
  mkdir -p $hconf/oasis_in
- mkdir -p $wconf/oasis_files
  cp -r ${croco}/croco_tools/Coupling_tools/oasis_in/* $hconf/oasis_in/.
 fi
 if [[ ${models[@]} =~ "toy" ]] ; then
