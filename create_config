@@ -123,7 +123,7 @@ echo 'Copy run scripts'
 echo '----------------'
 if [ $interannual_run == 1 ]; then
     cp -r ${PWD}/../script_run_cpl_inter $hconf/my_script_cpl
-    cp create_config $hconf/my_script_cpl/create_config.bck
+    mv $hconf/my_script_cpl/create_config $hconf/my_script_cpl/create_config.bck
 #    cp -r ${croco}/croco_tools/Coupling_tools/script_run_cpl_inter $hconf/.
 ##### Create path file #####
     cd $hconf/my_script_cpl/routines/paths
