@@ -122,8 +122,8 @@ fi
 echo 'Copy run scripts'
 echo '----------------'
 if [ $interannual_run == 1 ]; then
-    [ -d $hconf/my_script_cpl ] && \rm -r $hconf/my_script_cpl 
-    cp -r ${PWD}/../script_run_cpl_inter $hconf/my_script_cpl
+    [ -d $hconf/my_script_cpl ] && \rm -Rf $hconf/my_script_cpl 
+    cp -Rf ${PWD}/../script_run_cpl_inter $hconf/my_script_cpl
     mv $hconf/my_script_cpl/create_config $hconf/my_script_cpl/create_config.bck
 #    cp -r ${croco}/croco_tools/Coupling_tools/script_run_cpl_inter $hconf/.
 ##### Create path file #####
