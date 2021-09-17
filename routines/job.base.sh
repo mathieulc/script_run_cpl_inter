@@ -34,6 +34,7 @@ cd ${EXEDIR}
         printf "\n ************* EXECUTABLE files *****************\n"
             if [ ${USE_OCE}  -eq 1 ]; then
 		[ ${ONLINE_COMP} -eq 1 ] && { . ${SCRIPTDIR}/routines/oce_compile.sh ; } || { cpfile ${OCE_EXE_DIR}/croco.${RUNtype} crocox ; }
+                [ ${USE_XIOS_OCE} -eq 1 ] && cp *.xml ${XIOS_NAM_DIR}/
             fi
 #	    [ ${USE_OCE}  -eq 1 ] && cpfile ${OCE_EXE_DIR}/croco.${RUNtype} crocox
 	    [ ${USE_ATM}  -eq 1 ] && cpfile ${ATM_EXE_DIR}/wrf.exe wrfexe
