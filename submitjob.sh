@@ -1,9 +1,10 @@
 #!/bin/bash  
+
+source ../myenv_mypath.sh
 set -u
 set +x     # pour CURIE
-
 umask 022
-source ../myenv_mypath.sh
+
 #-------------------------------------------------------------------------------
 #  namelist of the experiment
 #-------------------------------------------------------------------------------
