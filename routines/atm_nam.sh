@@ -27,7 +27,7 @@ sed -e "s/<yr1>/${YEAR_BEGIN_JOB}/g"   -e "s/<yr2>/${YEAR_END_JOB}/g"  \
     -e "s/<xtrm_int_m>/${atm_diag_int_m}/g"   -e "s/<xtrm_nb_out>/${atm_diag_frames}/g"  \
     -e "s/<nproc_x>/${atm_nprocX}/g"            -e "s/<nproc_y>/${atm_nprocY}/g"             \
     -e "s/<niotaskpg>/${atm_niotaskpg}/g"       -e "s/<niogp>/${atm_niogp}/g"                \
-    -e "s/<dt>/${TSP_ATM}/g"                    \
+    -e "s/time_step                           =.*/time_step                           =${TSP_ATM},/g"                    \
     $ATM_NAM_DIR/${atmnamelist} > ./namelist.input
 
 
