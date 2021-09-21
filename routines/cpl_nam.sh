@@ -1,4 +1,4 @@
-set -ue
+#set -ue
 #set -vx
 #
 . ${SCRIPTDIR}/routines/caltools.sh
@@ -22,13 +22,19 @@ sed -e "s/<runtime>/$(( ${TOTAL_JOB_DUR} * 86400 ))/g" \
 ### For ATM ###
 if [ ${USE_ATM} == 1 ]; then
     for dom in $wrfcpldom ; do
-        file="wrfinput_${dom}"
+#
+        if [ ${DATE_BEGIN_JOB} -eq ${DATE_BEGIN_EXP} ]; then
+            file="wrfinput_${dom}"
+        else
+            file="wrfrst_${dom}*"
+        fi 
+#
         if [ $dom == "d01" ]; then
             searchf=("<atmdt>" "<atmnx>" "<atmny>")
         else 
             searchf=("<atmdt${dom}>" "<atmnx${dom}>" "<atmny${dom}>")
         fi
-    
+#
         dimx=$( ncdump -h  $file  | grep "west_east_stag =" | cut -d ' ' -f 3)
         dimy=$( ncdump -h  $file  | grep "south_north_stag =" | cut -d ' ' -f 3)
     

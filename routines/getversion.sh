@@ -41,14 +41,20 @@ if [ -d .git ]; then
   echo "Type 'git log' for more commits, or 'git show' for full commit details."
 else
   echo "Not a git repository."
-  if [ $1 == ${ATM} ]; then
-     [ -f README ]  && printf "\n $(head -n 1 README) \n" || printf "\n Could not find version \n"
-  fi 
-  if [ $1 == ${OCE} ]; then
-     [ -f ../readme_version_croco.txt ]  && printf "\n $(head -n 3 readme_version_croco.txt) \n" || printf "\n Could not find version \n"
+  if [ ${USE_ATM} == 1 ]; then
+      if [ $1 == ${ATM} ]; then
+         [ -f README ]  && printf "\n $(head -n 1 README) \n" || printf "\n Could not find version \n"
+      fi 
   fi
-  if [ $1 == ${WAV} ]; then
-     [ -f README ]  && printf "\n $(head -n 1 README) \n" || printf "\n Could not find version \n"
+  if [ ${USE_OCE} == 1 ]; then
+      if [ $1 == ${OCE} ]; then
+         [ -f ../readme_version_croco.txt ]  && printf "\n $(head -n 3 readme_version_croco.txt) \n" || printf "\n Could not find version \n"
+      fi
+  fi
+  if [ ${USE_WAV} == 1 ]; then
+      if [ $1 == ${WAV} ]; then
+         [ -f README ]  && printf "\n $(head -n 1 README) \n" || printf "\n Could not find version \n"
+      fi
   fi
 fi
 
