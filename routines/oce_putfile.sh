@@ -3,8 +3,10 @@
 #                                                                      Average
 #-------------------------------------------------------------------------------
 
-if [ ${USE_XIOS} -eq 1 ]; then 
-    mv ${CONFIG}_* ${OUTPUTDIR}/
+if [ ${USE_XIOS_OCE} -eq 1 ]; then 
+    for file in ${OCE_XIOS_NAME}; do
+        mv ${file}* ${OUTPUTDIR}/
+    done
 else
     module load $ncomod
     for nn in $( seq 0 ${AGRIFZ} ); do

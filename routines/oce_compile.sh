@@ -129,6 +129,7 @@ sed -e "s|SOURCE=.*|SOURCE=${OCE} |g" \
     mv croco croco.${RUNtype}
 # save exe for next jobs
     rsync -av croco.${RUNtype} ${EXEDIR}/crocox
+    [ ${USE_XIOS_OCE} -eq 1 ] && { cp *.xml ${XIOS_NAM_DIR}/ ;}
     cd ${EXEDIR}
 else
     

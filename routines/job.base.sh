@@ -33,8 +33,12 @@ cd ${EXEDIR}
 
         printf "\n ************* EXECUTABLE files *****************\n"
             if [ ${USE_OCE}  -eq 1 ]; then
-		[ ${ONLINE_COMP} -eq 1 ] && { . ${SCRIPTDIR}/routines/oce_compile.sh ; } || { cpfile ${OCE_EXE_DIR}/croco.${RUNtype} crocox ; }
-                [ ${USE_XIOS_OCE} -eq 1 ] && { cp *.xml ${XIOS_NAM_DIR}/ ;}
+                if [ ${ONLINE_COMP} -eq 1 ]; then
+                    . ${SCRIPTDIR}/routines/oce_compile.sh 
+                else
+                    cpfile ${OCE_EXE_DIR}/croco.${RUNtype} crocox
+                    [ ${USE_XIOS_OCE} -eq 1 ] && { cp ${OCE_EXE_DIR}/*.xml ${XIOS_NAM_DIR}/ ;}
+                fi
                 . ${SCRIPTDIR}/routines/getversion.sh ${OCE}
             fi
 #	    [ ${USE_OCE}  -eq 1 ] && cpfile ${OCE_EXE_DIR}/croco.${RUNtype} crocox
