@@ -68,9 +68,16 @@ sed -e "s/<ocentimes>/${OCE_NTIMES}/g" -e "s/<ocedt>/${TSP_OCE_2}/g"   -e "s/<oc
     -e "s/<oce_nrst>/${OCE_NTIMES}/g"   -e "s/<oce_nhis>/${oce_nhis}/g" -e "s/<oce_navg>/${oce_navg}/g"     \
     -e "s/<yr1>/${YEAR_BEGIN_JOB}/g"             -e "s/<mo1>/${MONTH_BEGIN_JOB}/g"           \
     -e "s/<yr2>/${end_Y}/g"             -e "s/<mo2>/${end_M}/g"           \
-    -e "s/<title>/${CEXPER}/g"  \
     ${namfile} > namelist.tmp
 
+if [ ${USE_XIOS_OCE} -eq 1 ]; then
+    sed -e "s/<title>/${OCE_OUTPUT_PREFIX}/g" \
+    namelist.tmp > tmp$$
+else
+    sed -e "s/<title>/${CEXPER}/g" \
+    namelist.tmp > tmp$$
+fi
+    mv tmp$$ namelist.tmp
     mv namelist.tmp ${namfile}
 #
 #cat namelist
