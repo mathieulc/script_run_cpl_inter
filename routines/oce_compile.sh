@@ -31,18 +31,25 @@ sed -e "s|SOURCE=.*|SOURCE=${OCE} |g" \
     mv tmp$$ jobcomp
 
     # MPI and Grid size
-    sed -e "s/# undef  MPI/# define  MPI/g" \
+    sed -e "s/# define BENGUELA_LR/# define ${CEXPER}/g" \
+        -e "s/# undef  MPI/# define  MPI/g" \
         ./cppdefs.h > tmp$$
     mv tmp$$ cppdefs.h
     printf "\n\nReading grid size in ${OCE_FILES_DIR}/croco_grd.nc \n\n"
     dimx=$( ncdump -h  ${OCE_FILES_DIR}/croco_grd.nc  | grep "xi_rho =" | cut -d ' ' -f 3)
     dimy=$( ncdump -h  ${OCE_FILES_DIR}/croco_grd.nc | grep "eta_rho =" | cut -d ' ' -f 3)
-    printf "\nGrid size is ${dimx}X${dimy}\n"
-    #
+    dimz=$( ncdump -h  ${OCE_FILES_DIR}/croco_${ini_ext}*.nc | grep "s_rho =" | cut -d ' ' -f 3)
+    printf "\nGrid size is (in Lx X Ly X Nz ) : ${dimx}X${dimy}X${dimz}\n"
+    #add new line for new conf in param.h
+    sed -i '187i/#  elif defined NEWCONFIG/' param.h
+    sed -i '188i/      parameter (LLm0=DIMX,   MMm0=DIMY,   N=DIMZ)/' param.h
+    # update necessary things
     sed -e "s/NP_XI *= *[0-9]* *,/NP_XI=${NP_OCEX},/g" \
         -e "s/NP_ETA *= *[0-9]* *,/NP_ETA=${NP_OCEY},/g" \
-        -e "s/LLm0 *= *[0-9]* *,/LLm0=$(( ${dimx} - 2 )),/g" \
-        -e "s/MMm0 *= *[0-9]* *,/MMm0=$(( ${dimy} - 2 )),/g" \
+        -e "s/NEWCONFIG/${CEXPER}/g" \
+        -e "s/DIMX/$(( ${dimx} - 2 ))/g" \
+        -e "s/DIMY/$(( ${dimy} - 2 ))/g" \
+        -e "s/DIMZ/${dimz}/g" \
         param.h > tmp$$
     mv tmp$$ param.h
 #
