@@ -41,8 +41,8 @@ sed -e "s|SOURCE=.*|SOURCE=${OCE} |g" \
     dimz=$( ncdump -h  ${OCE_FILES_DIR}/croco_${ini_ext}*.nc | grep "s_rho =" | cut -d ' ' -f 3)
     printf "\nGrid size is (in Lx X Ly X Nz ) : ${dimx}X${dimy}X${dimz}\n"
     #add new line for new conf in param.h
-    sed -i '187i/#  elif defined NEWCONFIG/' param.h
-    sed -i '188i/      parameter (LLm0=DIMX,   MMm0=DIMY,   N=DIMZ)/' param.h
+    sed -i '187i#  elif defined NEWCONFIG' param.h
+    sed -i '188i      parameter (LLm0=DIMX,   MMm0=DIMY,   N=DIMZ)' param.h
     # update necessary things
     sed -e "s/NP_XI *= *[0-9]* *,/NP_XI=${NP_OCEX},/g" \
         -e "s/NP_ETA *= *[0-9]* *,/NP_ETA=${NP_OCEY},/g" \
@@ -54,7 +54,7 @@ sed -e "s|SOURCE=.*|SOURCE=${OCE} |g" \
     mv tmp$$ param.h
 #
     if [ $USE_CPL -ge 1 ]; then
-        if [ $USE_ATM -eq 1 ]; then 
+        if [ $USE_ATM -eq 1 ] || [ $USE_TOYATM -eq 1 ]; then 
             sed -e "s/#  *undef  *OA_COUPLING/# define OA_COUPLING/g" cppdefs.h > tmp$$
             printf "\n Coupling with ATM \n"
 	    mv tmp$$ cppdefs.h
@@ -62,7 +62,7 @@ sed -e "s|SOURCE=.*|SOURCE=${OCE} |g" \
             sed -e "s/#  *define  *OA_COUPLING/# undef OA_COUPLING/g" cppdefs.h > tmp$$
 	    mv tmp$$ cppdefs.h
 	fi
-        if [ $USE_WAV -eq 1 ]; then
+        if [ $USE_WAV -eq 1 ] [ $USE_TOYWAV -eq 1 ]; then
             sed -e "s/#  *undef  *OW_COUPLING/# define OW_COUPLING/g" cppdefs.h > tmp$$
             printf "\n Coupling with WAV \n"
 	    mv tmp$$ cppdefs.h
